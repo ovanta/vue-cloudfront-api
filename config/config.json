@@ -1,4 +1,5 @@
 {
+    "dbname": "vue-cloudfront",
     "server": {
         "port": 4001
     }
