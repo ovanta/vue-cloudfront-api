@@ -22,9 +22,11 @@ module.exports = async req => {
         const apikey = uuidv1();
         opuser.apikeys.push({
             key: apikey,
-            expire: config.auth.apikeyExpiry
+            expiry: Date.now() + config.auth.apikeyExpiry
         });
 
+        // Save user with new apikey
+        await opuser.save();
         return {apikey};
     });
 };

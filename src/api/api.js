@@ -14,7 +14,7 @@ fs.readdirSync(basePath).forEach(file => {
             error = e;
         }
 
-        console.log(error, data);
+        // console.log(file, error, data);
         res.send({error, data});
     });
 });

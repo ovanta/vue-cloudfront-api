@@ -35,7 +35,7 @@ module.exports = async req => {
                 password: bcrypt.hashSync(password, config.auth.saltRounds),
                 apikeys: [{
                     key: apikey,
-                    expire: config.auth.apikeyExpiry
+                    expiry: Date.now() + config.auth.apikeyExpiry
                 }]
             }).save(),
 
