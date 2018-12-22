@@ -1,10 +1,11 @@
 const mongoose = require('./db');
 
 module.exports = mongoose.model('Node', {
+    owner: String,   // Owner id
     id: String,      // Unique id of node
     parent: String,  // Parent id
     lastModified: Number,   // Last modified timestamp
-    type: String,    // 'folder' or 'file'
+    type: String,    // 'dir' or 'file'
     name: String,    // Folder / filename,
     marked: Boolean, // If marked
 

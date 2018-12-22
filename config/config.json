@@ -2,5 +2,24 @@
     "dbname": "vue-cloudfront",
     "server": {
         "port": 4001
+    },
+    "auth": {
+        "apikeyExpiry": 12960000000,
+        "saltRounds": 10
+    },
+    "errors": {
+        "invalid": {
+            "username": "A username should contain only numbers, letters, and underscores. No other characters are permitted.",
+            "password": "Password need to have between 6 and 20 characters."
+        },
+        "user": {
+            "notFound": "This user could not be found, did you misspell something?",
+            "alreadyExists": "A user with this username already exists, please try another.",
+            "wrongPassword": "The password you have entered was incorrect, please try again."
+        }
+    },
+    "validation": {
+        "username": "^[\\w\\d]{2,15}$",
+        "password": "^(.){6,20}$"
     }
 }
