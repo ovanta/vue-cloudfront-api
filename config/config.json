@@ -12,16 +12,23 @@
         "invalid": {
             "username": "A username can contain only numbers, letters, and underscores.",
             "password": "Password need to have between 6 and 20 characters.",
-            "apikey": "Invalid APIKey, please try logging out and back in."
+            "apikey": "Invalid APIKey, please try logging out and back in.",
+            "dirname": "Name cannot be emtpy and not above 100 characters.",
+            "hexcolor": "Color format must be hexadecimal."
         },
         "user": {
             "notFound": "User not found.",
             "alreadyExists": "Username already exists.",
             "wrongPassword": "Incorrect password."
+        },
+        "impossible": {
+            "notfound": "Node not found."
         }
     },
     "validation": {
         "username": "^[\\w\\d]{2,15}$",
-        "password": "^(.){4,20}$"
+        "password": "^(.){4,20}$",
+        "dirname": "^(.){1,100}$",
+        "hexcolor": "^#([\\dA-Fa-f]{6})$"
     }
 }
