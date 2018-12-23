@@ -6,9 +6,9 @@ const config = require('../../config/config');
 const node = require('../models/node');
 
 module.exports = async req => {
-    const [, apikey, parent] = req.url.match(/apikey=(.*?)&parent=(.*)/);
+    const {apikey, parent} = req.query;
 
-    // Find user and validate dir name
+    // Authenticate user
     const user = await authViaApiKey(apikey);
 
     // Create formidable instance and set save-path
