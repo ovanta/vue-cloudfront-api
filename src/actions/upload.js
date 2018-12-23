@@ -44,10 +44,10 @@ module.exports = async req => {
                     lastModified: Date.now(),
                     marked: false,
                     size: file.size
-                }));
+                }).save());
             });
 
-            Promise.all(nodes.map(v => v.save())).then(resolve);
+            Promise.all(nodes).then(resolve);
         });
     });
 

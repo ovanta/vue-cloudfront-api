@@ -8,7 +8,7 @@ module.exports = async req => {
     const user = await authViaApiKey(apikey);
 
     // Find all nodes from this user and filter props
-    return node.find({owner: user.id, id: {$in: nodes}}).then(nodes => {
+    return node.find({owner: user.id, id: {$in: nodes}}).exec().then(nodes => {
 
         // Mark folders
         return Promise.all(nodes.map(v => {
