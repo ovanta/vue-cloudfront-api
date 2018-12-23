@@ -6,16 +6,15 @@ const api = express.Router();
 const basePath = `${__dirname}/../actions`;
 fs.readdirSync(basePath).forEach(file => {
     api.post(`/${file.match(/^[^.]+/)}`, async (req, res) => {
-        let error = null, data = {};
 
-        try {
-            data = await require(`${basePath}/${file}`)(req);
-        } catch (e) {
-            error = e;
-        }
+        const response = await require(`${basePath}/${file}`)(req).then(res => {
+            return {data: res, error: null};
+        }).catch(reason => {
+            return {data: {}, error: reason};
+        });
 
         // console.log(file, error, data);
-        res.send({error, data});
+        res.send(response);
     });
 });
 
