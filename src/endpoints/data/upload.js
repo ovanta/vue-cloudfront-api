@@ -36,7 +36,7 @@ module.exports = async req => {
                 const nodeid = uuidv1();
 
                 // Rename file
-                const [dir] = file.path.match(/.*\\/);
+                const [dir] = file.path.match(/.*[\\/]/);
                 fs.rename(file.path, `${dir}${nodeid}`, () => 0);
 
                 // Create and push new node

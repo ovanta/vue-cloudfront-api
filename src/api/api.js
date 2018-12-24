@@ -1,5 +1,8 @@
 const express = require('express');
 const api = express.Router();
+const bodyParser = require('body-parser');
+
+const json = bodyParser.json({limit: '50mb'});
 
 // Bind handler
 const addMark = require('../endpoints/nodes/addMark.js');
@@ -32,21 +35,21 @@ const mapHandler = mod => {
     };
 };
 
-api.post('/addMark', mapHandler(addMark));
-api.post('/changeColor', mapHandler(changeColor));
-api.post('/checkApiKey', mapHandler(checkApiKey));
-api.post('/copy', mapHandler(copy));
-api.post('/createFolder', mapHandler(createFolder));
-api.post('/move', mapHandler(move));
-api.post('/removeMark', mapHandler(removeMark));
-api.post('/rename', mapHandler(rename));
-api.post('/update', mapHandler(update));
+api.post('/addMark', json, mapHandler(addMark));
+api.post('/changeColor', json, mapHandler(changeColor));
+api.post('/checkApiKey', json, mapHandler(checkApiKey));
+api.post('/copy', json, mapHandler(copy));
+api.post('/createFolder', json, mapHandler(createFolder));
+api.post('/move', json, mapHandler(move));
+api.post('/removeMark', json, mapHandler(removeMark));
+api.post('/rename', json, mapHandler(rename));
+api.post('/update', json, mapHandler(update));
 
-api.post('/login', mapHandler(login));
-api.post('/register', mapHandler(register));
-api.post('/settings', mapHandler(settings));
+api.post('/login', json, mapHandler(login));
+api.post('/register', json, mapHandler(register));
+api.post('/settings', json, mapHandler(settings));
 
-api.post('/delete', mapHandler(del));
+api.post('/delete', json, mapHandler(del));
 api.post('/upload', mapHandler(upload));
 api.get('/download', download);
 
