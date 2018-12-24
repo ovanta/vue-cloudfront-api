@@ -1,6 +1,6 @@
 {
     "dbname": "vue-cloudfront",
-    "storagepath": "/data",
+    "storagepath": "/_storage",
     "server": {
         "port": 4001
     },
