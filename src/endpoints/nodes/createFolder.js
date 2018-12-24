@@ -1,8 +1,8 @@
 const uuidv1 = require('uuid/v1');
-const authViaApiKey = require('../auth/authViaApiKey');
-const config = require('../../config/config');
-const node = require('../models/node');
-const _ = require('../utils/utils');
+const authViaApiKey = require('../tools/authViaApiKey');
+const config = require('../../../config/config');
+const node = require('../../models/node');
+const _ = require('../../utils/utils');
 
 module.exports = async req => {
     const {parent, apikey} = req.body;

@@ -4,13 +4,17 @@
     "description": "Official RESTful api for vue-cloudfront",
     "author": "Simon Reinisch",
     "license": "MIT",
+    "keywords": [],
     "main": "/src/app.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Simonwep/vue-cloudfront-api.git"
+    },
     "scripts": {
         "test": "nodemon ./src/app.js",
         "launch": "node ./src/app.js",
         "lint": "eslint ./src"
     },
-    "keywords": [],
     "dependencies": {
         "bcrypt": "^3.0.2",
         "body-parser": "^1.18.3",

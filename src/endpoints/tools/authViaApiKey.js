@@ -1,5 +1,5 @@
-const config = require('../../config/config');
-const user = require('../models/user');
+const config = require('../../../config/config');
+const user = require('../../models/user');
 
 module.exports = async apikey => {
 

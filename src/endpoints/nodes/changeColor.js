@@ -1,6 +1,6 @@
-const authViaApiKey = require('../auth/authViaApiKey');
-const config = require('../../config/config');
-const node = require('../models/node');
+const authViaApiKey = require('../tools/authViaApiKey');
+const config = require('../../../config/config');
+const node = require('../../models/node');
 
 module.exports = async req => {
     const {nodes, newColor, apikey} = req.body;

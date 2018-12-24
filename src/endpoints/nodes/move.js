@@ -1,7 +1,7 @@
-const resolveChilds = require('./tools/resolveChilds');
-const authViaApiKey = require('../auth/authViaApiKey');
-const config = require('../../config/config');
-const node = require('../models/node');
+const resolveChilds = require('../tools/resolveChilds');
+const authViaApiKey = require('../tools/authViaApiKey');
+const config = require('../../../config/config');
+const node = require('../../models/node');
 
 module.exports = async req => {
     const {destination, nodes, apikey} = req.body;
@@ -13,6 +13,12 @@ module.exports = async req => {
     // Check if user paste folder into itself or one of its siblings
     if (childs.some(v => v.id === destination)) {
         throw config.errors.invalid.move;
+    }
+
+    // Check if destination exists and is a folder
+    const destNode = await node.findOne({owner: user.id, id: destination}).exec();
+    if (!destNode || destNode.type !== 'dir') {
+        throw config.errors.invalid.destination;
     }
 
     // Move childs

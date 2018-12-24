@@ -1,7 +1,7 @@
 const uuidv1 = require('uuid/v1');
 const bcrypt = require('bcrypt');
-const config = require('../../config/config');
-const user = require('../models/user');
+const config = require('../../../config/config');
+const user = require('../../models/user');
 
 module.exports = async req => {
     const {username, password} = req.body;

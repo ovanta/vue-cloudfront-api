@@ -1,15 +1,21 @@
 const fs = require('fs');
 const uuidv1 = require('uuid/v1');
 const mongoose = require('mongoose');
-const authViaApiKey = require('../auth/authViaApiKey');
-const config = require('../../config/config');
-const node = require('../models/node');
+const authViaApiKey = require('../tools/authViaApiKey');
+const config = require('../../../config/config');
+const node = require('../../models/node');
 
 module.exports = async req => {
     const {destination, nodes, apikey} = req.body;
 
     // Authenticate
     const user = await authViaApiKey(apikey);
+
+    // Check if destination exists and is a folder
+    const destNode = await node.findOne({owner: user.id, id: destination}).exec();
+    if (!destNode || destNode.type !== 'dir') {
+        throw config.errors.invalid.destination;
+    }
 
     async function addChilds(n) {
         const newId = uuidv1();
@@ -39,8 +45,8 @@ module.exports = async req => {
         } else {
 
             // Copy file
-            const src = `${__dirname}/../../${config.storagepath}/${n.id}`;
-            const dest = `${__dirname}/../../${config.storagepath}/${newId}`;
+            const src = `${__dirname}/../../..${config.storagepath}/${n.id}`;
+            const dest = `${__dirname}/../../..${config.storagepath}/${newId}`;
             if (fs.existsSync(src)) {
                 fs.copyFileSync(src, dest);
             }

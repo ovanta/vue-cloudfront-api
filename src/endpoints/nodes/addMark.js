@@ -1,5 +1,5 @@
-const authViaApiKey = require('../auth/authViaApiKey');
-const node = require('../models/node');
+const authViaApiKey = require('../tools/authViaApiKey');
+const node = require('../../models/node');
 
 module.exports = async req => {
     const {nodes, apikey} = req.body;
@@ -12,7 +12,7 @@ module.exports = async req => {
 
         // Mark folders
         return Promise.all(nodes.map(v => {
-            v.marked = false;
+            v.marked = true;
             v.lastModified = Date.now();
             return v.save();
         }));

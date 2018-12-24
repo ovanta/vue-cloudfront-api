@@ -15,6 +15,7 @@
             "apikey": "Invalid APIKey, please try logging out and back in.",
             "dirname": "Name cannot be emtpy and not above 100 characters.",
             "hexcolor": "Color format must be hexadecimal.",
+            "destination": "Target folder does not exist or is a file.",
             "move": "Cannot put a folder into itself."
         },
         "user": {
