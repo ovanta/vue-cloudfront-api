@@ -24,7 +24,8 @@
             "wrongPassword": "Incorrect password."
         },
         "impossible": {
-            "notfound": "Node not found."
+            "notfound": "Node not found.",
+            "deleteroot": "Cannot delete root directory"
         }
     },
     "validation": {

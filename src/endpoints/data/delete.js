@@ -15,6 +15,11 @@ module.exports = async req => {
     for (let i = 0; i < childs.length; i++) {
         const node = childs[i];
 
+        // Prevent deleting to root element
+        if (node.parent === 'root') {
+            throw config.errors.impossible.deleteroot;
+        }
+
         // Remove file if node is an file
         if (node.type === 'file') {
 

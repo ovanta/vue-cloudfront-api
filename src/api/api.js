@@ -25,9 +25,16 @@ const del = require('../endpoints/data/delete.js');
 
 const mapHandler = mod => {
     return async (req, res) => {
+
         const response = await mod(req).then(res => {
             return {data: res, error: null};
         }).catch(reason => {
+
+            if (typeof reason !== 'string') {
+                console.warn('Suspicious error', reason);
+                reason = 'Try again later please.';
+            }
+
             return {data: null, error: reason};
         });
 

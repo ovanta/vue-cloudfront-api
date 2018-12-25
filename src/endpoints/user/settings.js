@@ -18,7 +18,7 @@ module.exports = async req => {
     if (newUsername) {
 
         // Check if already a user has this username
-        if (!!(await user.findOne({username: newUsername}).exec())) {
+        if (await user.findOne({username: newUsername}).exec()) {
             throw config.errors.user.alreadyExists;
         }
 
