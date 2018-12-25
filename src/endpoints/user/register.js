@@ -7,6 +7,11 @@ const user = require('../../models/user');
 module.exports = async req => {
     const {username, password} = req.body;
 
+    // Check if registrations are disabled
+    if (config.disableregistration) {
+        throw config.errors.impossible.disableregistration;
+    }
+
     // Check to see if the user already exists and throw error if so
     return user.findOne({username}).exec().then(async opuser => {
 

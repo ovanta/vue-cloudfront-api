@@ -1,6 +1,7 @@
 {
     "dbname": "vue-cloudfront",
     "storagepath": "/_storage",
+    "disableregistration": false,
     "server": {
         "port": 4001
     },
@@ -24,6 +25,7 @@
             "wrongPassword": "Incorrect password."
         },
         "impossible": {
+            "disableregistration": "Registration is currently not available.",
             "notfound": "Node not found.",
             "deleteroot": "Cannot delete root directory"
         }
