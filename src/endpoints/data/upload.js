@@ -1,6 +1,6 @@
 const formidable = require('formidable');
 const fs = require('fs');
-const uuidv1 = require('uuid/v1');
+const {uid} = require('../../utils/utils');
 const authViaApiKey = require('../tools/authViaApiKey');
 const config = require('../../../config/config');
 const node = require('../../models/node');
@@ -33,7 +33,7 @@ module.exports = async req => {
             // Rename files and create nodes
             const nodes = [];
             Object.values(files).forEach(file => {
-                const nodeid = uuidv1();
+                const nodeid = uid();
 
                 // Rename file
                 const [dir] = file.path.match(/.*[\\/]/);

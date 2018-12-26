@@ -1,4 +1,4 @@
-const uuidv1 = require('uuid/v1');
+const {uid} = require('../../utils/utils');
 const authViaApiKey = require('../tools/authViaApiKey');
 const config = require('../../../config/config');
 const node = require('../../models/node');
@@ -18,7 +18,7 @@ module.exports = async req => {
 
         return node({
             owner: user.id,
-            id: uuidv1(),
+            id: uid(),
             parent: parent.id,
             type: 'dir',
             name: 'New Folder',

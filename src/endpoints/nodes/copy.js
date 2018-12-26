@@ -1,5 +1,5 @@
 const fs = require('fs');
-const uuidv1 = require('uuid/v1');
+const {uid} = require('../../utils/utils');
 const mongoose = require('mongoose');
 const authViaApiKey = require('../tools/authViaApiKey');
 const config = require('../../../config/config');
@@ -18,7 +18,7 @@ module.exports = async req => {
     }
 
     async function addChilds(n) {
-        const newId = uuidv1();
+        const newId = uid();
 
         // Node is new
         n._id = mongoose.Types.ObjectId();

@@ -1,4 +1,4 @@
-const uuidv1 = require('uuid/v1');
+const {uid} = require('../../utils/utils');
 const bcrypt = require('bcrypt');
 const config = require('../../../config/config');
 const user = require('../../models/user');
@@ -19,7 +19,7 @@ module.exports = async req => {
         }
 
         // Create and append new apikey
-        const apikey = uuidv1();
+        const apikey = uid();
         opuser.apikeys.push({
             key: apikey,
             expiry: Date.now() + config.auth.apikeyExpiry

@@ -1,4 +1,4 @@
-const uuidv1 = require('uuid/v1');
+const {uid} = require('../../utils/utils');
 const bcrypt = require('bcrypt');
 const config = require('../../../config/config');
 const node = require('../../models/node');
@@ -28,8 +28,8 @@ module.exports = async req => {
             throw config.errors.invalid.password;
         }
 
-        const apikey = uuidv1();
-        const userid = uuidv1();
+        const apikey = uid();
+        const userid = uid();
 
         await Promise.all([
 
@@ -47,7 +47,7 @@ module.exports = async req => {
             // Create entry node
             node({
                 owner: userid,
-                id: uuidv1(),
+                id: uid(),
                 parent: 'root',
                 lastModified: Date.now(),
                 type: 'dir',
