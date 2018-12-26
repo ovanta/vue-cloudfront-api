@@ -21,6 +21,7 @@ const settings = require('../endpoints/user/settings.js');
 const deleteAccount = require('../endpoints/user/deleteAccount.js');
 
 const download = require('../endpoints/data/download.js');
+const static = require('../endpoints/data/static.js');
 const upload = require('../endpoints/data/upload.js');
 const del = require('../endpoints/data/delete.js');
 
@@ -56,6 +57,7 @@ api.post('/update', json, mapHandler(update));
 
 api.post('/delete', json, mapHandler(del));
 api.post('/upload', mapHandler(upload));
+api.get('/static/*', static);
 api.get('/download', download);
 
 api.post('/login', json, mapHandler(login));
