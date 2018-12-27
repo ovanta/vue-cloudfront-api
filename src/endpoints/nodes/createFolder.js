@@ -5,7 +5,7 @@ const node = require('../../models/node');
 const _ = require('../../utils/utils');
 
 module.exports = async req => {
-    const {parent, apikey} = req.body;
+    const {parent, name, apikey} = req.body;
 
     const user = await authViaApiKey(apikey);
 
@@ -21,7 +21,7 @@ module.exports = async req => {
             id: uid(),
             parent: parent.id,
             type: 'dir',
-            name: 'New Folder',
+            name: name || 'New Folder',
             lastModified: Date.now(),
             color: '#7E58C2',
             marked: false
