@@ -15,6 +15,11 @@ module.exports = mongoose.model('Node', {
         type: Number
     },
 
+    staticIds: {
+        required: false,
+        type: [String]
+    },
+
     // Folder specific
     color: {
         required: false,

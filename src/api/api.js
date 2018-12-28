@@ -14,6 +14,8 @@ const move = require('../endpoints/nodes/move.js');
 const removeMark = require('../endpoints/nodes/removeMark.js');
 const rename = require('../endpoints/nodes/rename.js');
 const update = require('../endpoints/nodes/update.js');
+const addStaticId = require('../endpoints/nodes/addStaticId.js');
+const removeStaticId = require('../endpoints/nodes/removeStaticId.js');
 
 const login = require('../endpoints/user/login.js');
 const register = require('../endpoints/user/register.js');
@@ -54,6 +56,8 @@ api.post('/move', json, mapHandler(move));
 api.post('/removeMark', json, mapHandler(removeMark));
 api.post('/rename', json, mapHandler(rename));
 api.post('/update', json, mapHandler(update));
+api.post('/addStaticId', json, mapHandler(addStaticId));
+api.post('/removeStaticId', json, mapHandler(removeStaticId));
 
 api.post('/delete', json, mapHandler(del));
 api.post('/upload', mapHandler(upload));
