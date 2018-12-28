@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const authViaApiKey = require('../tools/authViaApiKey');
 const config = require('../../../config/config');
-const user = require('../../models/user');
+const userModel = require('../../models/user');
 
 module.exports = async req => {
     const {currentPassword, newUsername, newPassword, apikey} = req.body;
@@ -18,7 +18,7 @@ module.exports = async req => {
     if (newUsername) {
 
         // Check if already a user has this username
-        if (await user.findOne({username: newUsername}).exec()) {
+        if (await userModel.findOne({username: newUsername}).exec()) {
             throw config.errors.user.alreadyExists;
         }
 

@@ -1,8 +1,8 @@
 const fs = require('fs');
 const authViaApiKey = require('../tools/authViaApiKey');
 const config = require('../../../config/config');
-const node = require('../../models/node');
 const resolveChilds = require('../tools/resolveChilds');
+const nodeModel = require('../../models/node');
 
 module.exports = async req => {
     const {nodes, apikey} = req.body;
@@ -33,7 +33,7 @@ module.exports = async req => {
 
     // Remove nodes
     const ids = childs.map(v => v.id);
-    return node.deleteMany({owner: user.id, id: {$in: ids}})
+    return nodeModel.deleteMany({owner: user.id, id: {$in: ids}})
         .exec()
         .then(() => null);
 };

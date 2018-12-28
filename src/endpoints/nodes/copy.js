@@ -3,7 +3,7 @@ const {uid} = require('../../utils/utils');
 const mongoose = require('mongoose');
 const authViaApiKey = require('../tools/authViaApiKey');
 const config = require('../../../config/config');
-const node = require('../../models/node');
+const nodeModel = require('../../models/node');
 
 module.exports = async req => {
     const {destination, nodes, apikey} = req.body;
@@ -12,7 +12,7 @@ module.exports = async req => {
     const user = await authViaApiKey(apikey);
 
     // Check if destination exists and is a folder
-    const destNode = await node.findOne({owner: user.id, id: destination}).exec();
+    const destNode = await nodeModel.findOne({owner: user.id, id: destination}).exec();
     if (!destNode || destNode.type !== 'dir') {
         throw config.errors.invalid.destination;
     }
@@ -27,7 +27,7 @@ module.exports = async req => {
         if (n.type === 'dir') {
 
             // Find all nodes which have n as parent
-            await node.find({owner: user.id, parent: n.id}).exec().then(async rnodes => {
+            await nodeModel.find({owner: user.id, parent: n.id}).exec().then(async rnodes => {
                 for (let i = 0, n; n = rnodes[i], i < rnodes.length; i++) {
 
                     // Node is new
@@ -57,8 +57,8 @@ module.exports = async req => {
         return Promise.resolve();
     }
 
-    const rnodes = await node.find({owner: user.id, id: {$in: nodes}}).exec();
-    const destNodes = await node.find({owner: user.id, parent: destination}).exec();
+    const rnodes = await nodeModel.find({owner: user.id, id: {$in: nodes}}).exec();
+    const destNodes = await nodeModel.find({owner: user.id, parent: destination}).exec();
     for (let i = 0, n; n = rnodes[i], i < rnodes.length; i++) {
 
         // Parent is the copy destination, also gets a new id

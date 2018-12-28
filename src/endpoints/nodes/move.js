@@ -1,7 +1,7 @@
 const resolveChilds = require('../tools/resolveChilds');
 const authViaApiKey = require('../tools/authViaApiKey');
 const config = require('../../../config/config');
-const node = require('../../models/node');
+const nodeModel = require('../../models/node');
 
 module.exports = async req => {
     const {destination, nodes, apikey} = req.body;
@@ -16,13 +16,13 @@ module.exports = async req => {
     }
 
     // Check if destination exists and is a folder
-    const destNode = await node.findOne({owner: user.id, id: destination}).exec();
+    const destNode = await nodeModel.findOne({owner: user.id, id: destination}).exec();
     if (!destNode || destNode.type !== 'dir') {
         throw config.errors.invalid.destination;
     }
 
     // Move childs
-    await node.find({owner: user.id, id: {$in: nodes}}).exec().then(async nodes => {
+    await nodeModel.find({owner: user.id, id: {$in: nodes}}).exec().then(async nodes => {
 
         // Apply new parent
         for (let i = 0; i < nodes.length; i++) {

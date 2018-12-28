@@ -3,7 +3,7 @@ const fs = require('fs');
 const {uid} = require('../../utils/utils');
 const authViaApiKey = require('../tools/authViaApiKey');
 const config = require('../../../config/config');
-const node = require('../../models/node');
+const nodeModel = require('../../models/node');
 
 module.exports = async req => {
     const {apikey, parent} = req.query;
@@ -12,7 +12,7 @@ module.exports = async req => {
     const user = await authViaApiKey(apikey);
 
     // Check if destination exists and is a folder
-    const destNode = await node.findOne({owner: user.id, id: parent}).exec();
+    const destNode = await nodeModel.findOne({owner: user.id, id: parent}).exec();
     if (!destNode || destNode.type !== 'dir') {
         throw config.errors.invalid.destination;
     }
@@ -40,7 +40,7 @@ module.exports = async req => {
                 fs.rename(file.path, `${dir}${nodeid}`, () => 0);
 
                 // Create and push new node
-                nodes.push(node({
+                nodes.push(nodeModel({
                     owner: user.id,
                     id: nodeid,
                     parent: parent,

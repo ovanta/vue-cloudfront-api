@@ -1,8 +1,8 @@
 const {uid} = require('../../utils/utils');
 const bcrypt = require('bcrypt');
 const config = require('../../../config/config');
-const node = require('../../models/node');
-const user = require('../../models/user');
+const nodeModel = require('../../models/node');
+const userModel = require('../../models/user');
 
 module.exports = async req => {
     const {username, password} = req.body;
@@ -13,7 +13,7 @@ module.exports = async req => {
     }
 
     // Check to see if the user already exists and throw error if so
-    return user.findOne({username}).exec().then(async opuser => {
+    return userModel.findOne({username}).exec().then(async opuser => {
 
         // Validate
         if (opuser) {
@@ -34,7 +34,7 @@ module.exports = async req => {
         await Promise.all([
 
             // Create user
-            user({
+            userModel({
                 id: userid,
                 username,
                 password: bcrypt.hashSync(password, config.auth.saltRounds),
@@ -45,7 +45,7 @@ module.exports = async req => {
             }).save(),
 
             // Create entry node
-            node({
+            nodeModel({
                 owner: userid,
                 id: uid(),
                 parent: 'root',

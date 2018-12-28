@@ -7,7 +7,7 @@ const json = bodyParser.json({limit: '50mb'});
 // Bind handler
 const addMark = require('../endpoints/nodes/addMark.js');
 const changeColor = require('../endpoints/nodes/changeColor.js');
-const checkApiKey = require('../endpoints/nodes/checkApiKey.js');
+const checkApiKey = require('./checkApiKey.js');
 const copy = require('../endpoints/nodes/copy.js');
 const createFolder = require('../endpoints/nodes/createFolder.js');
 const move = require('../endpoints/nodes/move.js');

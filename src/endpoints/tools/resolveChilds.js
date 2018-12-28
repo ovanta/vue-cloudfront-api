@@ -1,6 +1,6 @@
 const fs = require('fs');
 const config = require('../../../config/config');
-const node = require('../../models/node');
+const nodeModel = require('../../models/node');
 
 module.exports = async (user, nodes) => {
 
@@ -10,7 +10,7 @@ module.exports = async (user, nodes) => {
     async function addChilds(n) {
 
         // Find all nodes which have n as parent
-        await node.find({owner: user.id, parent: n.id}).exec().then(async rnodes => {
+        await nodeModel.find({owner: user.id, parent: n.id}).exec().then(async rnodes => {
             for (let i = 0; i < rnodes.length; i++) {
                 const rnode = rnodes[i];
                 totalNodes.push(rnode);
@@ -24,7 +24,7 @@ module.exports = async (user, nodes) => {
     }
 
     for (let i = 0; i < nodes.length; i++) {
-        const rnode = await node.findOne({owner: user.id, id: nodes[i]}).exec();
+        const rnode = await nodeModel.findOne({owner: user.id, id: nodes[i]}).exec();
         totalNodes.push(rnode);
 
         if (rnode.type === 'dir') {

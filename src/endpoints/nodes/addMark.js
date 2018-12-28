@@ -1,5 +1,5 @@
 const authViaApiKey = require('../tools/authViaApiKey');
-const node = require('../../models/node');
+const nodeModel = require('../../models/node');
 
 module.exports = async req => {
     const {nodes, apikey} = req.body;
@@ -8,7 +8,7 @@ module.exports = async req => {
     const user = await authViaApiKey(apikey);
 
     // Find all nodes from this user and filter props
-    return node.find({owner: user.id, id: {$in: nodes}}).exec().then(nodes => {
+    return nodeModel.find({owner: user.id, id: {$in: nodes}}).exec().then(nodes => {
 
         // Mark folders
         return Promise.all(nodes.map(v => {

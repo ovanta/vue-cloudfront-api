@@ -1,5 +1,5 @@
 const config = require('../../../config/config');
-const user = require('../../models/user');
+const userModel = require('../../models/user');
 
 module.exports = async apikey => {
 
@@ -7,7 +7,7 @@ module.exports = async apikey => {
         throw config.errors.invalid.apikey;
     }
 
-    return user.findOne({
+    return userModel.findOne({
         apikeys: {
             $elemMatch: {
                 key: apikey, // Match key

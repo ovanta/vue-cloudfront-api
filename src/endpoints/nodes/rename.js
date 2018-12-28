@@ -1,6 +1,6 @@
 const authViaApiKey = require('../tools/authViaApiKey');
 const config = require('../../../config/config');
-const node = require('../../models/node');
+const nodeModel = require('../../models/node');
 
 module.exports = async req => {
     const {target, newName, apikey} = req.body;
@@ -12,7 +12,7 @@ module.exports = async req => {
     }
 
     // Find all nodes from this user and filter props
-    return node.findOne({owner: user.id, id: target}).then(node => {
+    return nodeModel.findOne({owner: user.id, id: target}).then(node => {
 
         if (!node) {
             throw config.errors.impossible.notfound;

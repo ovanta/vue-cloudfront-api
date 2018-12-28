@@ -1,7 +1,7 @@
 const fs = require('fs');
 const authViaApiKey = require('../tools/authViaApiKey');
 const config = require('../../../config/config');
-const node = require('../../models/node');
+const nodeModel = require('../../models/node');
 
 module.exports = async (req, res) => {
     const {id, apikey} = req.query;
@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
     const user = await authViaApiKey(apikey);
 
     // Check if user is owner
-    node.findOne({owner: user.id, id}).then(node => {
+    nodeModel.findOne({owner: user.id, id}).then(node => {
 
         // Check node
         if (!node) {

@@ -2,8 +2,8 @@ const fs = require('fs');
 const bcrypt = require('bcrypt');
 const authViaApiKey = require('../tools/authViaApiKey');
 const config = require('../../../config/config');
-const user = require('../../models/user');
-const node = require('../../models/node');
+const userModel = require('../../models/user');
+const nodeModel = require('../../models/node');
 
 module.exports = async req => {
     const {password, apikey} = req.body;
@@ -19,12 +19,12 @@ module.exports = async req => {
     return Promise.all([
 
         // Delete files
-        node.find({owner: currentUser.id}).then(nodes => {
+        nodeModel.find({owner: currentUser.id}).then(nodes => {
             for (let i = 0, n; n = nodes[i], i < nodes.length; i++) {
                 if (n.type === 'file') {
 
                     // Build local storage path and check if file exists
-                    const path = `${__dirname}/../../..${config.storagepath}/${node.id}`;
+                    const path = `${__dirname}/../../..${config.storagepath}/${nodeModel.id}`;
                     if (fs.existsSync(path)) {
                         fs.unlink(path, () => 0);
                     }
@@ -33,9 +33,9 @@ module.exports = async req => {
         }),
 
         // Remove nodes
-        node.deleteMany({owner: currentUser.id}).exec(),
+        nodeModel.deleteMany({owner: currentUser.id}).exec(),
 
         // Remove user
-        user.deleteOne({id: currentUser.id})
+        userModel.deleteOne({id: currentUser.id})
     ]);
 };

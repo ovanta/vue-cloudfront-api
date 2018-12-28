@@ -1,7 +1,7 @@
 const {uid} = require('../../utils/utils');
 const authViaApiKey = require('../tools/authViaApiKey');
 const config = require('../../../config/config');
-const node = require('../../models/node');
+const nodeModel = require('../../models/node');
 const _ = require('../../utils/utils');
 
 module.exports = async req => {
@@ -10,13 +10,13 @@ module.exports = async req => {
     const user = await authViaApiKey(apikey);
 
     // Find all nodes from this user and filter props
-    return node.findOne({owner: user.id, id: parent}).then(parent => {
+    return nodeModel.findOne({owner: user.id, id: parent}).then(parent => {
 
         if (!parent) {
             throw config.errors.impossible.notfound;
         }
 
-        return node({
+        return nodeModel({
             owner: user.id,
             id: uid(),
             parent: parent.id,

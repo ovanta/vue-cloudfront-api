@@ -1,13 +1,13 @@
 const {uid} = require('../../utils/utils');
 const bcrypt = require('bcrypt');
 const config = require('../../../config/config');
-const user = require('../../models/user');
+const userModel = require('../../models/user');
 
 module.exports = async req => {
     const {username, password} = req.body;
 
     // Check to see if the user already exists and throw error if so
-    return user.findOne({username}).exec().then(async opuser => {
+    return userModel.findOne({username}).exec().then(async opuser => {
 
         // Validate
         if (!opuser) {

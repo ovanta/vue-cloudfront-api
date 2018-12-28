@@ -1,6 +1,6 @@
 const authViaApiKey = require('../tools/authViaApiKey');
 const config = require('../../../config/config');
-const node = require('../../models/node');
+const nodeModel = require('../../models/node');
 
 module.exports = async req => {
     const {nodes, newColor, apikey} = req.body;
@@ -12,7 +12,7 @@ module.exports = async req => {
     }
 
     // Find all nodes from this user and filter props
-    return node.find({owner: user.id, id: {$in: nodes}}).then(nodes => {
+    return nodeModel.find({owner: user.id, id: {$in: nodes}}).then(nodes => {
 
         // Change colors and save choosed nodes
         return Promise.all(nodes.map(v => {
