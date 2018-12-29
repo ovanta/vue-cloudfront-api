@@ -15,6 +15,7 @@ module.exports = async req => {
             // Add new static id
             const newUid = uid();
             node.staticIds.push(newUid);
+            node.lastModified = Date.now();
             return node.save().then(() => newUid);
         } else {
             return null;

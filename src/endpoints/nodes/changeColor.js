@@ -15,10 +15,10 @@ module.exports = async req => {
     return nodeModel.find({owner: user.id, id: {$in: nodes}}).then(nodes => {
 
         // Change colors and save choosed nodes
-        return Promise.all(nodes.map(v => {
-            v.color = newColor;
-            v.lastModified = Date.now();
-            return v.save();
+        return Promise.all(nodes.map(node => {
+            node.color = newColor;
+            node.lastModified = Date.now();
+            return node.save();
         }));
 
     }).then(() => null);

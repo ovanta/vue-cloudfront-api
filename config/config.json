@@ -3,7 +3,7 @@
     "storagepath": "/_storage",
     "disableregistration": false,
     "server": {
-        "port": 4001
+        "port": 8080
     },
     "auth": {
         "apikeyExpiry": 12960000000,

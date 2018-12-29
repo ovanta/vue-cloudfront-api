@@ -11,10 +11,10 @@ module.exports = async req => {
     return nodeModel.find({owner: user.id, id: {$in: nodes}}).exec().then(nodes => {
 
         // Mark folders
-        return Promise.all(nodes.map(v => {
-            v.marked = true;
-            v.lastModified = Date.now();
-            return v.save();
+        return Promise.all(nodes.map(node => {
+            node.marked = true;
+            node.lastModified = Date.now();
+            return node.save();
         }));
 
     }).then(() => null);
