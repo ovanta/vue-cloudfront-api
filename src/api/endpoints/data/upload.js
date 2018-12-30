@@ -19,7 +19,7 @@ module.exports = async req => {
 
     // Create formidable instance and set save-path
     const form = new formidable.IncomingForm();
-    form.uploadDir = `${__dirname}/../../../${config.storagepath}`;
+    form.uploadDir = `${__dirname}/../../../../${config.storagepath}`;
 
     return new Promise(async resolve => {
 
