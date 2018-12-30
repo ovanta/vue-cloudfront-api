@@ -5,7 +5,7 @@ const nodeModel = require('../../../models/node');
 module.exports = async req => {
     const {target, newName, apikey} = req.body;
 
-    // Find user and validate dir name
+    // Find user
     const user = await authViaApiKey(apikey);
     if (!new RegExp(config.validation.dirname).test(newName)) {
         throw config.errors.invalid.dirname;

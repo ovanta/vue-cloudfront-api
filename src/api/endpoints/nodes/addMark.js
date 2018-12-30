@@ -4,7 +4,7 @@ const nodeModel = require('../../../models/node');
 module.exports = async req => {
     const {nodes, apikey} = req.body;
 
-    // Find user and validate dir name
+    // Find user
     const user = await authViaApiKey(apikey);
 
     // Find all nodes from this user and filter props

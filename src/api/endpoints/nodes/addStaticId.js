@@ -5,7 +5,7 @@ const {uid} = require('../../../utils');
 module.exports = async req => {
     const {node, apikey} = req.body;
 
-    // Find user and validate dir name
+    // Find user
     const user = await authViaApiKey(apikey);
 
     // Find requested node

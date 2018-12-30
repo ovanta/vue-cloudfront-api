@@ -23,9 +23,12 @@ const settings = require('./endpoints/user/settings.js');
 const deleteAccount = require('./endpoints/user/deleteAccount.js');
 
 const download = require('./endpoints/data/download.js');
-const static = require('./endpoints/data/static.js');
+const statics = require('./endpoints/data/static.js');
 const upload = require('./endpoints/data/upload.js');
 const del = require('./endpoints/data/delete.js');
+
+const getEvents = require('./endpoints/events/getEvents');
+const updateEvents = require('./endpoints/events/updateEvents');
 
 const mapHandler = mod => {
     return async (req, res) => {
@@ -47,6 +50,7 @@ const mapHandler = mod => {
     };
 };
 
+// Nodes endpoint
 api.post('/addMark', json, mapHandler(addMark));
 api.post('/changeColor', json, mapHandler(changeColor));
 api.post('/checkApiKey', json, mapHandler(checkApiKey));
@@ -59,14 +63,20 @@ api.post('/update', json, mapHandler(update));
 api.post('/addStaticId', json, mapHandler(addStaticId));
 api.post('/removeStaticId', json, mapHandler(removeStaticId));
 
+// Data related
 api.post('/delete', json, mapHandler(del));
 api.post('/upload', mapHandler(upload));
-api.get('/static/*', static);
+api.get('/static/*', statics);
 api.get('/download', download);
 
+// User stuff
 api.post('/login', json, mapHandler(login));
 api.post('/register', json, mapHandler(register));
 api.post('/settings', json, mapHandler(settings));
 api.post('/deleteAccount', json, mapHandler(deleteAccount));
+
+// Events
+api.post('/updateEvents', json, mapHandler(updateEvents));
+api.post('/getEvents', json, mapHandler(getEvents));
 
 module.exports = api;

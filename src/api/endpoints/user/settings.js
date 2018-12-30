@@ -7,10 +7,10 @@ module.exports = async req => {
     const {currentPassword, newUsername, newPassword, apikey} = req.body;
 
     // Find user and validate color
-    const currentUser = await authViaApiKey(apikey);
+    const user = await authViaApiKey(apikey);
 
     // Validate password
-    if (!bcrypt.compareSync(currentPassword, currentUser.password)) {
+    if (!bcrypt.compareSync(currentPassword, user.password)) {
         throw  config.errors.user.wrongPassword;
     }
 
@@ -24,7 +24,7 @@ module.exports = async req => {
 
         // Validate username
         if (new RegExp(config.validation.username).test(newUsername)) {
-            currentUser.username = newUsername;
+            user.username = newUsername;
         } else {
             throw config.errors.invalid.username;
         }
@@ -35,11 +35,11 @@ module.exports = async req => {
 
         // Validate password
         if (new RegExp(config.validation.password).test(newPassword)) {
-            currentUser.password = bcrypt.hashSync(newPassword, config.auth.saltRounds);
+            user.password = bcrypt.hashSync(newPassword, config.auth.saltRounds);
         } else {
             throw config.errors.invalid.password;
         }
     }
 
-    return currentUser.save().then(() => null);
+    return user.save().then(() => null);
 };

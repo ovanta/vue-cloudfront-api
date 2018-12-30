@@ -8,6 +8,11 @@ module.exports = mongoose.model('User', {
     apikeys: [{
         key: String,
         expiry: Number
-    }]
+    }],
+
+    events: {
+        type: Object,
+        default: {}
+    }
 });
 
