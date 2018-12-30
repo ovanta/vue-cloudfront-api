@@ -1,9 +1,9 @@
 const formidable = require('formidable');
 const fs = require('fs');
-const {uid} = require('../../utils/utils');
-const authViaApiKey = require('../tools/authViaApiKey');
-const config = require('../../../config/config');
-const nodeModel = require('../../models/node');
+const {uid} = require('../../../utils');
+const authViaApiKey = require('../../tools/authViaApiKey');
+const config = require('../../../../config/config');
+const nodeModel = require('../../../models/node');
 
 module.exports = async req => {
     const {apikey, parent} = req.query;

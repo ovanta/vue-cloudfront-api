@@ -1,6 +1,6 @@
-const authViaApiKey = require('../tools/authViaApiKey');
-const nodeModel = require('../../models/node');
-const _ = require('../../utils/utils');
+const authViaApiKey = require('../../tools/authViaApiKey');
+const nodeModel = require('../../../models/node');
+const _ = require('../../../utils');
 
 module.exports = async req => authViaApiKey(req.body.apikey).then(user => {
 

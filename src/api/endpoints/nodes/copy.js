@@ -1,9 +1,9 @@
 const fs = require('fs');
-const {uid} = require('../../utils/utils');
+const {uid} = require('../../../utils');
 const mongoose = require('mongoose');
-const authViaApiKey = require('../tools/authViaApiKey');
-const config = require('../../../config/config');
-const nodeModel = require('../../models/node');
+const authViaApiKey = require('../../tools/authViaApiKey');
+const config = require('../../../../config/config');
+const nodeModel = require('../../../models/node');
 
 module.exports = async req => {
     const {destination, nodes, apikey} = req.body;

@@ -1,7 +1,7 @@
-const resolveChilds = require('../tools/resolveChilds');
-const authViaApiKey = require('../tools/authViaApiKey');
-const config = require('../../../config/config');
-const nodeModel = require('../../models/node');
+const resolveChilds = require('../../tools/resolveChilds');
+const authViaApiKey = require('../../tools/authViaApiKey');
+const config = require('../../../../config/config');
+const nodeModel = require('../../../models/node');
 
 module.exports = async req => {
     const {destination, nodes, apikey} = req.body;

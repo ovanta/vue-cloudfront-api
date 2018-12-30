@@ -1,8 +1,8 @@
 const fs = require('fs');
-const authViaApiKey = require('../tools/authViaApiKey');
-const config = require('../../../config/config');
-const resolveChilds = require('../tools/resolveChilds');
-const nodeModel = require('../../models/node');
+const authViaApiKey = require('../../tools/authViaApiKey');
+const config = require('../../../../config/config');
+const resolveChilds = require('../../tools/resolveChilds');
+const nodeModel = require('../../../models/node');
 
 module.exports = async req => {
     const {nodes, apikey} = req.body;

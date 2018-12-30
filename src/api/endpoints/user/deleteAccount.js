@@ -1,9 +1,9 @@
 const fs = require('fs');
 const bcrypt = require('bcrypt');
-const authViaApiKey = require('../tools/authViaApiKey');
-const config = require('../../../config/config');
-const userModel = require('../../models/user');
-const nodeModel = require('../../models/node');
+const authViaApiKey = require('../../tools/authViaApiKey');
+const config = require('../../../../config/config');
+const userModel = require('../../../models/user');
+const nodeModel = require('../../../models/node');
 
 module.exports = async req => {
     const {password, apikey} = req.body;

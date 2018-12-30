@@ -5,27 +5,27 @@ const bodyParser = require('body-parser');
 const json = bodyParser.json({limit: '50mb'});
 
 // Bind handler
-const addMark = require('../endpoints/nodes/addMark.js');
-const changeColor = require('../endpoints/nodes/changeColor.js');
-const checkApiKey = require('./checkApiKey.js');
-const copy = require('../endpoints/nodes/copy.js');
-const createFolder = require('../endpoints/nodes/createFolder.js');
-const move = require('../endpoints/nodes/move.js');
-const removeMark = require('../endpoints/nodes/removeMark.js');
-const rename = require('../endpoints/nodes/rename.js');
-const update = require('../endpoints/nodes/update.js');
-const addStaticId = require('../endpoints/nodes/addStaticId.js');
-const removeStaticId = require('../endpoints/nodes/removeStaticId.js');
+const addMark = require('./endpoints/nodes/addMark.js');
+const changeColor = require('./endpoints/nodes/changeColor.js');
+const checkApiKey = require('./endpoints/user/checkApiKey.js');
+const copy = require('./endpoints/nodes/copy.js');
+const createFolder = require('./endpoints/nodes/createFolder.js');
+const move = require('./endpoints/nodes/move.js');
+const removeMark = require('./endpoints/nodes/removeMark.js');
+const rename = require('./endpoints/nodes/rename.js');
+const update = require('./endpoints/nodes/update.js');
+const addStaticId = require('./endpoints/nodes/addStaticId.js');
+const removeStaticId = require('./endpoints/nodes/removeStaticId.js');
 
-const login = require('../endpoints/user/login.js');
-const register = require('../endpoints/user/register.js');
-const settings = require('../endpoints/user/settings.js');
-const deleteAccount = require('../endpoints/user/deleteAccount.js');
+const login = require('./endpoints/user/login.js');
+const register = require('./endpoints/user/register.js');
+const settings = require('./endpoints/user/settings.js');
+const deleteAccount = require('./endpoints/user/deleteAccount.js');
 
-const download = require('../endpoints/data/download.js');
-const static = require('../endpoints/data/static.js');
-const upload = require('../endpoints/data/upload.js');
-const del = require('../endpoints/data/delete.js');
+const download = require('./endpoints/data/download.js');
+const static = require('./endpoints/data/static.js');
+const upload = require('./endpoints/data/upload.js');
+const del = require('./endpoints/data/delete.js');
 
 const mapHandler = mod => {
     return async (req, res) => {
@@ -37,7 +37,7 @@ const mapHandler = mod => {
             if (typeof reason !== 'string') {
                 /* eslint-disable no-console */
                 console.warn('Suspicious error', reason);
-                reason = 'Try again later please.';
+                reason = 'Internal error.';
             }
 
             return {data: null, error: reason};

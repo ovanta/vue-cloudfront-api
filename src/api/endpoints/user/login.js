@@ -1,7 +1,7 @@
-const {uid} = require('../../utils/utils');
+const {uid} = require('../../../utils');
 const bcrypt = require('bcrypt');
-const config = require('../../../config/config');
-const userModel = require('../../models/user');
+const config = require('../../../../config/config');
+const userModel = require('../../../models/user');
 
 module.exports = async req => {
     const {username, password} = req.body;

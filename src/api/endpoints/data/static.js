@@ -1,7 +1,7 @@
 const fs = require('fs');
-const authViaApiKey = require('../tools/authViaApiKey');
-const config = require('../../../config/config');
-const nodeModel = require('../../models/node');
+const authViaApiKey = require('../../tools/authViaApiKey');
+const config = require('../../../../config/config');
+const nodeModel = require('../../../models/node');
 
 module.exports = async (req, res) => {
     const {id, apikey} = req.query;

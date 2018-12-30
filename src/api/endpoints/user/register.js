@@ -1,8 +1,8 @@
-const {uid} = require('../../utils/utils');
+const {uid} = require('../../../utils');
 const bcrypt = require('bcrypt');
-const config = require('../../../config/config');
-const nodeModel = require('../../models/node');
-const userModel = require('../../models/user');
+const config = require('../../../../config/config');
+const nodeModel = require('../../../models/node');
+const userModel = require('../../../models/user');
 
 module.exports = async req => {
     const {username, password} = req.body;
@@ -38,6 +38,7 @@ module.exports = async req => {
                 id: userid,
                 username,
                 password: bcrypt.hashSync(password, config.auth.saltRounds),
+
                 apikeys: [{
                     key: apikey,
                     expiry: Date.now() + config.auth.apikeyExpiry

@@ -1,4 +1,4 @@
-const {dbname} = require('../../config/config');
+const {dbname} = require('../config/config');
 const mongoose = require('mongoose');
 
 // Connect to database

@@ -1,4 +1,4 @@
-const mongoose = require('./db');
+const mongoose = require('../db');
 
 module.exports = mongoose.model('Node', {
     owner: String,   // Owner id
