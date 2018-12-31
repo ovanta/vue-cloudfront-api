@@ -45,8 +45,8 @@ module.exports = async req => {
         } else {
 
             // Copy file
-            const src = `${__dirname}/../../..${config.storagepath}/${n.id}`;
-            const dest = `${__dirname}/../../..${config.storagepath}/${newId}`;
+            const src = `${_storagePath}/${n.id}`;
+            const dest = `${_storagePath}/${newId}`;
             if (fs.existsSync(src)) {
                 fs.copyFileSync(src, dest);
             }

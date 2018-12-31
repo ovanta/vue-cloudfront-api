@@ -1,5 +1,4 @@
 const fs = require('fs');
-const config = require('../../../config/config');
 const nodeModel = require('../../models/node');
 
 module.exports = async (user, nodes) => {
@@ -40,7 +39,7 @@ module.exports = async (user, nodes) => {
         if (node.type === 'file') {
 
             // Build local storage path and check if file exists
-            const path = `${__dirname}/../../..${config.storagepath}/${node.id}`;
+            const path = `${_storagePath}/${node.id}`;
             if (fs.existsSync(path)) {
                 fs.unlink(path, () => 0);
             }

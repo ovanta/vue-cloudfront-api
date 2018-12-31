@@ -14,16 +14,16 @@ module.exports = async (req, res) => {
 
         // Check node
         if (!node) {
-            throw config.errors.impossible.notfound;
+            throw config.errors.impossible.nodeNotFound;
         }
 
         // Check file
-        const path = `${__dirname}/../../..${config.storagepath}/${node.id}`;
+        const path = `${_storagePath}/${node.id}`;
         if (fs.existsSync(path)) {
             res.contentType(node.name);
             fs.createReadStream(path).pipe(res);
         } else {
-            throw config.errors.impossible.notfound;
+            throw config.errors.impossible.nodeNotFound;
         }
     });
 };

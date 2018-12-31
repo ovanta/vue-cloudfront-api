@@ -13,7 +13,7 @@ module.exports = async req => {
     return nodeModel.findOne({owner: user.id, id: parent}).then(parent => {
 
         if (!parent) {
-            throw config.errors.impossible.notfound;
+            throw config.errors.impossible.nodeNotFound;
         }
 
         return nodeModel({

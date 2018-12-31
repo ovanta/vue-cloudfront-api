@@ -3,6 +3,10 @@ const cors = require('cors');
 const compression = require('compression');
 const api = require('./api/api');
 const config = require('../config/config');
+const path = require('path');
+
+// Resolve storage path
+global._storagePath = path.resolve(`./${config.storagepath}`);
 
 // Create app
 const app = express();
@@ -21,4 +25,3 @@ app.use('/api', api);
 
 // Start
 app.listen(config.server.port);
-

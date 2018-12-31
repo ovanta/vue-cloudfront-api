@@ -24,7 +24,7 @@ module.exports = async req => {
                 if (n.type === 'file') {
 
                     // Build local storage path and check if file exists
-                    const path = `${__dirname}/../../..${config.storagepath}/${nodeModel.id}`;
+                    const path = `${_storagePath}/${nodeModel.id}`;
                     if (fs.existsSync(path)) {
                         fs.unlink(path, () => 0);
                     }

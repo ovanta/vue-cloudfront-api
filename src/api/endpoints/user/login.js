@@ -11,7 +11,7 @@ module.exports = async req => {
 
         // Validate
         if (!opuser) {
-            throw config.errors.user.notFound;
+            throw config.errors.user.userNotFound;
         }
 
         if (!bcrypt.compareSync(password, opuser.password)) {

@@ -15,7 +15,7 @@ module.exports = async req => {
     return nodeModel.findOne({owner: user.id, id: target}).then(node => {
 
         if (!node) {
-            throw config.errors.impossible.notfound;
+            throw config.errors.impossible.nodeNotFound;
         }
 
         node.name = newName;

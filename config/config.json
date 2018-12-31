@@ -21,13 +21,13 @@
             "eventname": "Event does not exist"
         },
         "user": {
-            "notFound": "User not found.",
+            "userNotFound": "User not found.",
             "alreadyExists": "Username already exists.",
             "wrongPassword": "Incorrect password."
         },
         "impossible": {
             "disableregistration": "Registration is currently not available.",
-            "notfound": "Node not found.",
+            "nodeNotFound": "Node not found.",
             "deleteroot": "Cannot delete root directory"
         }
     },
