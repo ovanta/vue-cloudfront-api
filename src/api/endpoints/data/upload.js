@@ -19,6 +19,7 @@ module.exports = async req => {
 
     // Create formidable instance and set save-path
     const form = new formidable.IncomingForm();
+    form.maxFileSize = config.maxRequestSize;
     form.uploadDir = _storagePath;
 
     return new Promise(async resolve => {
@@ -32,7 +33,7 @@ module.exports = async req => {
 
             // Rename files and create nodes
             const nodes = [];
-            Object.values(files).forEach(file => {
+            for (const file of Object.values(files)) {
                 const nodeid = uid();
 
                 // Rename file
@@ -50,9 +51,9 @@ module.exports = async req => {
                     marked: false,
                     size: file.size
                 }).save());
-            });
+            }
 
             Promise.all(nodes).then(resolve);
         });
-    });
+    }).then(() => null);
 };
