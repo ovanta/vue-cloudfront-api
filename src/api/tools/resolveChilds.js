@@ -24,10 +24,13 @@ module.exports = async (user, nodes) => {
 
     for (let i = 0; i < nodes.length; i++) {
         const rnode = await nodeModel.findOne({owner: user.id, id: nodes[i]}).exec();
-        totalNodes.push(rnode);
 
-        if (rnode.type === 'dir') {
-            await addChilds(rnode);
+        if(rnode){
+            totalNodes.push(rnode);
+
+            if (rnode.type === 'dir') {
+                await addChilds(rnode);
+            }
         }
     }
 

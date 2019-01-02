@@ -8,8 +8,8 @@ module.exports = async req => {
     const {username, password} = req.body;
 
     // Check if registrations are disabled
-    if (config.disableregistration) {
-        throw config.errors.impossible.disableregistration;
+    if (config.disableRegistration) {
+        throw config.errors.impossible.disableRegistration;
     }
 
     // Check to see if the user already exists and throw error if so
