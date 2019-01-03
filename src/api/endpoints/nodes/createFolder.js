@@ -16,7 +16,7 @@ module.exports = async req => {
             throw config.errors.impossible.nodeNotFound;
         }
 
-        return nodeModel({
+        return new nodeModel({
             owner: user.id,
             id: uid(),
             parent: parent.id,

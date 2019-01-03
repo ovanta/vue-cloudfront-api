@@ -34,7 +34,7 @@ module.exports = async req => {
         await Promise.all([
 
             // Create user
-            userModel({
+            new userModel({
                 id: userid,
                 username,
                 password: bcrypt.hashSync(password, config.auth.saltRounds),
@@ -46,7 +46,7 @@ module.exports = async req => {
             }).save(),
 
             // Create entry node
-            nodeModel({
+            new nodeModel({
                 owner: userid,
                 id: uid(),
                 parent: 'root',

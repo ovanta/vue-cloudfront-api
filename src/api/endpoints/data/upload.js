@@ -1,6 +1,6 @@
 const formidable = require('formidable');
 const fs = require('fs');
-const {uid} = require('../../../utils');
+const {uid, pick} = require('../../../utils');
 const authViaApiKey = require('../../tools/authViaApiKey');
 const config = require('../../../../config/config');
 const nodeModel = require('../../../models/node');
@@ -41,7 +41,7 @@ module.exports = async req => {
                 fs.rename(file.path, `${dir}${nodeid}`, () => 0);
 
                 // Create and push new node
-                nodes.push(nodeModel({
+                nodes.push(new nodeModel({
                     owner: user.id,
                     id: nodeid,
                     parent: parent,
@@ -53,7 +53,10 @@ module.exports = async req => {
                 }).save());
             }
 
-            Promise.all(nodes).then(resolve);
+            Promise.all(nodes).then(n => {
+                const filteredNodes = n.map(v => pick(v, ['id', 'parent', 'lastModified', 'type', 'name', 'marked', 'size', 'staticIds']));
+                resolve(filteredNodes);
+            });
         });
-    }).then(() => null);
+    });
 };
