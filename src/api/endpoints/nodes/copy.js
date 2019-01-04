@@ -1,5 +1,5 @@
 const fs = require('fs');
-const {uid} = require('../../../utils');
+const {uid,pick} = require('../../../utils');
 const mongoose = require('mongoose');
 const authViaApiKey = require('../../tools/authViaApiKey');
 const config = require('../../../../config/config');
@@ -17,7 +17,8 @@ module.exports = async req => {
         throw config.errors.invalid.destination;
     }
 
-    async function addChilds(n) {
+    const newNodes = [];
+    async function addChilds(n, newParent) {
         const newId = uid();
 
         // Node is new
@@ -30,16 +31,8 @@ module.exports = async req => {
             await nodeModel.find({owner: user.id, parent: n.id}).exec().then(async rnodes => {
                 for (let i = 0, n; n = rnodes[i], i < rnodes.length; i++) {
 
-                    // Node is new
-                    n._id = mongoose.Types.ObjectId();
-                    n.isNew = true;
-
                     // Find all children recursive
-                    await addChilds(n);
-
-                    // Element got a new parent
-                    n.parent = newId;
-                    await n.save();
+                    await addChilds(n, newId);
                 }
             });
         } else {
@@ -52,26 +45,32 @@ module.exports = async req => {
             }
         }
 
+        // Update id and parent
         n.id = newId;
-        await n.save();
-        return Promise.resolve();
+        n.parent = newParent;
+        newNodes.push(await n.save());
     }
 
     const rnodes = await nodeModel.find({owner: user.id, id: {$in: nodes}}).exec();
     const destNodes = await nodeModel.find({owner: user.id, parent: destination}).exec();
     for (let i = 0, n; n = rnodes[i], i < rnodes.length; i++) {
 
-        // Parent is the copy destination, also gets a new id
-        n.parent = destination;
-
         // Apply new name
         n.name = buildCopyName(n, destNodes);
 
         // Find all children recursive
-        await addChilds(n);
+        await addChilds(n, destination);
     }
 
-    return Promise.resolve();
+    return Promise.resolve({
+        nodes: newNodes.map(v => {
+            if (v.type === 'dir') {
+                return pick(v, ['id', 'parent', 'lastModified', 'type', 'name', 'marked', 'color']);
+            } else {
+                return pick(v, ['id', 'parent', 'lastModified', 'type', 'name', 'marked', 'size', 'staticIds']);
+            }
+        })
+    });
 };
 
 function buildCopyName(node, nodes) {

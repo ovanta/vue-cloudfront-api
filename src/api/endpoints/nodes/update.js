@@ -1,6 +1,6 @@
 const authViaApiKey = require('../../tools/authViaApiKey');
 const nodeModel = require('../../../models/node');
-const _ = require('../../../utils');
+const {pick} = require('../../../utils');
 
 module.exports = async req => authViaApiKey(req.body.apikey).then(user => {
 
@@ -9,13 +9,12 @@ module.exports = async req => authViaApiKey(req.body.apikey).then(user => {
         return {
             nodes: res.map(v => {
                 if (v.type === 'dir') {
-                    return _.pick(v, ['id', 'parent', 'lastModified', 'type', 'name', 'marked', 'color']);
+                    return pick(v, ['id', 'parent', 'lastModified', 'type', 'name', 'marked', 'color']);
                 } else {
-                    return _.pick(v, ['id', 'parent', 'lastModified', 'type', 'name', 'marked', 'size', 'staticIds']);
+                    return pick(v, ['id', 'parent', 'lastModified', 'type', 'name', 'marked', 'size', 'staticIds']);
                 }
             })
         };
     });
-
 });
 
