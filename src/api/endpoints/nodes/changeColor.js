@@ -8,14 +8,18 @@ module.exports = async req => {
     // Find user and validate color
     const user = await authViaApiKey(apikey);
     if (!new RegExp(config.validation.hexcolor).test(newColor)) {
-        throw config.errors.invalid.hexcolor;
+        throw 'Color must be in hexadecimal format.';
     }
 
     // Find all nodes from this user and filter props
-    return nodeModel.find({owner: user.id, id: {$in: nodes}}).then(nodes => {
+    return nodeModel.find({owner: user.id, id: {$in: nodes}}).then(nds => {
+
+        if (nds.length !== nodes.length) {
+            throw 'Request contains invalid nodes';
+        }
 
         // Change colors and save choosed nodes
-        return Promise.all(nodes.map(node => {
+        return Promise.all(nds.map(node => {
             node.color = newColor;
             node.lastModified = Date.now();
             return node.save();

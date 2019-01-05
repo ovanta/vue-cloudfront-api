@@ -8,14 +8,14 @@ module.exports = async req => {
     // Find user
     const user = await authViaApiKey(apikey);
     if (!new RegExp(config.validation.dirname).test(newName)) {
-        throw config.errors.invalid.dirname;
+        throw 'Invalid new name';
     }
 
     // Find all nodes from this user and filter props
     return nodeModel.findOne({owner: user.id, id: target}).then(node => {
 
         if (!node) {
-            throw config.errors.impossible.nodeNotFound;
+            throw 'Can\'t find target node';
         }
 
         node.name = newName;

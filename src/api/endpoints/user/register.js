@@ -9,7 +9,7 @@ module.exports = async req => {
 
     // Check if registrations are disabled
     if (config.disableRegistration) {
-        throw config.errors.impossible.disableRegistration;
+        throw 'Registration is currently disabled';
     }
 
     // Check to see if the user already exists and throw error if so
@@ -17,15 +17,15 @@ module.exports = async req => {
 
         // Validate
         if (opuser) {
-            throw  config.errors.user.alreadyExists;
+            throw  'A user with this name already exist';
         }
 
         if (!new RegExp(config.validation.username).test(username)) {
-            throw config.errors.invalid.username;
+            throw 'Username is too short or contains invalid characters';
         }
 
         if (!new RegExp(config.validation.password).test(password)) {
-            throw config.errors.invalid.password;
+            throw 'Password is too short';
         }
 
         const apikey = uid();

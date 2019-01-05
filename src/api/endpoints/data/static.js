@@ -1,6 +1,5 @@
 const fs = require('fs');
 const authViaApiKey = require('../../tools/authViaApiKey');
-const config = require('../../../../config/config');
 const nodeModel = require('../../../models/node');
 
 module.exports = async (req, res) => {
@@ -14,7 +13,7 @@ module.exports = async (req, res) => {
 
         // Check node
         if (!node) {
-            throw config.errors.impossible.nodeNotFound;
+            throw 'Can\'t find target node';
         }
 
         // Check file
@@ -23,7 +22,8 @@ module.exports = async (req, res) => {
             res.contentType(node.name);
             fs.createReadStream(path).pipe(res);
         } else {
-            throw config.errors.impossible.nodeNotFound;
+            console.warn(`Invalid file path: ${path}`); // eslint-disable-line no-console
+            throw 'Can\'t find target node';
         }
     });
 };

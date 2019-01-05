@@ -20,7 +20,7 @@ module.exports = async req => {
 
     // Check if validation has failed
     if (validationResult.errors.length) {
-        throw validationResult.errors;
+        throw 'Invalid event scheme';
     }
 
     // Fill events

@@ -1,6 +1,5 @@
 const fs = require('fs');
 const authViaApiKey = require('../../tools/authViaApiKey');
-const config = require('../../../../config/config');
 const resolveChilds = require('../../tools/resolveChilds');
 const nodeModel = require('../../../models/node');
 
@@ -17,7 +16,7 @@ module.exports = async req => {
 
         // Prevent deleting to root element
         if (node.parent === 'root') {
-            throw config.errors.impossible.deleteroot;
+            throw 'Can\'t delete root node';
         }
 
         // Remove file if node is an file

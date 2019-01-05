@@ -15,6 +15,7 @@
     },
     "rules": {
         "no-cond-assign": "off",
-        "no-unused-vars": "warn"
+        "no-unused-vars": "warn",
+        "no-console": "warn"
     }
 }

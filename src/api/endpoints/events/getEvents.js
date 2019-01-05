@@ -1,4 +1,3 @@
-const config = require('../../../../config/config');
 const authViaApiKey = require('../../tools/authViaApiKey');
 
 module.exports = async req => {
@@ -13,6 +12,6 @@ module.exports = async req => {
     } else if (['introBoxes'].includes(event)) {
         return user.events[event];
     } else {
-        throw config.errors.invalid.eventname;
+        throw 'Invalid event name';
     }
 };

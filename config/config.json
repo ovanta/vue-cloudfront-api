@@ -10,28 +10,6 @@
         "apikeyExpiry": 12960000000,
         "saltRounds": 10
     },
-    "errors": {
-        "invalid": {
-            "username": "A username can contain only numbers, letters, and underscores.",
-            "password": "Password need to have between 6 and 20 characters.",
-            "apikey": "Invalid APIKey, please try logging out and back in.",
-            "dirname": "Name cannot be emtpy and not above 100 characters.",
-            "hexcolor": "Color format must be hexadecimal.",
-            "destination": "Target folder does not exist or is a file.",
-            "move": "Cannot put a folder into itself.",
-            "eventname": "Event does not exist"
-        },
-        "user": {
-            "userNotFound": "User not found.",
-            "alreadyExists": "Username already exists.",
-            "wrongPassword": "Incorrect password."
-        },
-        "impossible": {
-            "disableRegistration": "Registration is currently not available.",
-            "nodeNotFound": "Node not found.",
-            "deleteroot": "Cannot delete root directory"
-        }
-    },
     "validation": {
         "username": "^[\\w\\d]{2,15}$",
         "password": "^(.){4,20}$",

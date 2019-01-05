@@ -1,10 +1,9 @@
-const config = require('../../../config/config');
 const userModel = require('../../models/user');
 
 module.exports = async apikey => {
 
     if (typeof apikey !== 'string' || !apikey) {
-        throw config.errors.invalid.apikey;
+        throw 'APIKey is invalid';
     }
 
     return userModel.findOne({
@@ -20,7 +19,7 @@ module.exports = async apikey => {
 
         // Check if user exists
         if (!user) {
-            throw config.errors.invalid.apikey;
+            throw 'APIKey is invalid';
         }
 
         return user;

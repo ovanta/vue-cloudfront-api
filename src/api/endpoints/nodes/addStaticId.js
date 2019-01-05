@@ -18,7 +18,7 @@ module.exports = async req => {
             node.lastModified = Date.now();
             return node.save().then(() => newUid);
         } else {
-            return null;
+            throw 'Can\'t find requested node';
         }
     });
 };

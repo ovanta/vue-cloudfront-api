@@ -1,8 +1,7 @@
 const fs = require('fs');
-const {uid,pick} = require('../../../utils');
+const {uid, pick} = require('../../../utils');
 const mongoose = require('mongoose');
 const authViaApiKey = require('../../tools/authViaApiKey');
-const config = require('../../../../config/config');
 const nodeModel = require('../../../models/node');
 
 module.exports = async req => {
@@ -14,10 +13,11 @@ module.exports = async req => {
     // Check if destination exists and is a folder
     const destNode = await nodeModel.findOne({owner: user.id, id: destination}).exec();
     if (!destNode || destNode.type !== 'dir') {
-        throw config.errors.invalid.destination;
+        throw 'Destination does not exist or is not a directory';
     }
 
     const newNodes = [];
+
     async function addChilds(n, newParent) {
         const newId = uid();
 

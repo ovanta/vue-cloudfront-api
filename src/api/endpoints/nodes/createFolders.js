@@ -1,6 +1,5 @@
 const {uid} = require('../../../utils');
 const authViaApiKey = require('../../tools/authViaApiKey');
-const config = require('../../../../config/config');
 const nodeModel = require('../../../models/node');
 const _ = require('../../../utils');
 const Validator = require('jsonschema').Validator;
@@ -42,6 +41,10 @@ module.exports = async req => {
     }
 
     return nodeModel.findOne({owner: user.id, id: parent}).then(async root => {
+
+        if (!root) {
+            throw 'Invalid root node';
+        }
 
         // Fill with real ids
         const idMap = {

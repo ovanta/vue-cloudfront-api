@@ -11,7 +11,7 @@ module.exports = async req => {
 
     // Validate password
     if (!bcrypt.compareSync(currentPassword, user.password)) {
-        throw  config.errors.user.wrongPassword;
+        throw 'Wrong password';
     }
 
     // Apply new username (if set)
@@ -19,14 +19,14 @@ module.exports = async req => {
 
         // Check if already a user has this username
         if (await userModel.findOne({username: newUsername}).exec()) {
-            throw config.errors.user.alreadyExists;
+            throw  'A user with this name already exist';
         }
 
         // Validate username
         if (new RegExp(config.validation.username).test(newUsername)) {
             user.username = newUsername;
         } else {
-            throw config.errors.invalid.username;
+            throw 'Username is too short or contains invalid characters';
         }
     }
 
@@ -37,7 +37,7 @@ module.exports = async req => {
         if (new RegExp(config.validation.password).test(newPassword)) {
             user.password = bcrypt.hashSync(newPassword, config.auth.saltRounds);
         } else {
-            throw config.errors.invalid.password;
+            throw 'Password is too short';
         }
     }
 

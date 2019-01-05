@@ -1,6 +1,5 @@
 const {uid} = require('../../../utils');
 const authViaApiKey = require('../../tools/authViaApiKey');
-const config = require('../../../../config/config');
 const nodeModel = require('../../../models/node');
 const _ = require('../../../utils');
 
@@ -13,7 +12,7 @@ module.exports = async req => {
     return nodeModel.findOne({owner: user.id, id: parent}).then(parent => {
 
         if (!parent) {
-            throw config.errors.impossible.nodeNotFound;
+            throw 'Can\'t find parent';
         }
 
         return new nodeModel({

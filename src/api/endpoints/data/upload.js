@@ -38,13 +38,13 @@ module.exports = async req => {
                  */
                 const [parent] = prefixedParent.match(/^[^-]+/) || [];
                 if (!parent) {
-                    return;
+                    reject('Invalid node key');
                 }
 
                 // Check if destination exists and is a folder
                 const destNode = await nodeModel.findOne({owner: user.id, id: parent}).exec();
                 if (!destNode || destNode.type !== 'dir') {
-                    throw config.errors.invalid.destination;
+                    reject('Invalid parent node');
                 }
 
                 // Rename file
@@ -64,11 +64,12 @@ module.exports = async req => {
                 }).save());
             }
 
-            Promise.all(nodes).then(n => {
-                const filteredNodes = n.map(v => pick(v, ['id', 'parent', 'lastModified', 'type', 'name', 'marked', 'size', 'staticIds']));
-                resolve(filteredNodes);
-            }).catch(() => {
-                // TODO: Log?
+            Promise.all(nodes).then(nodes => {
+                resolve(
+                    nodes.map(v => pick(v, ['id', 'parent', 'lastModified', 'type', 'name', 'marked', 'size', 'staticIds']))
+                );
+            }).catch(e => {
+                console.warn(e); // eslint-disable-line no-console
                 reject('Internal error');
             });
         });

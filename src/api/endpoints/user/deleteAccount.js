@@ -1,7 +1,6 @@
 const fs = require('fs');
 const bcrypt = require('bcrypt');
 const authViaApiKey = require('../../tools/authViaApiKey');
-const config = require('../../../../config/config');
 const userModel = require('../../../models/user');
 const nodeModel = require('../../../models/node');
 
@@ -13,13 +12,13 @@ module.exports = async req => {
 
     // Validate password
     if (!bcrypt.compareSync(password, currentUser.password)) {
-        throw  config.errors.user.wrongPassword;
+        throw 'Password incorrect';
     }
 
     return Promise.all([
 
         // Delete files
-        nodeModel.find({owner: currentUser.id}).then(nodes => {
+        nodeModel.find({owner: currentUser.id}).exec().then(nodes => {
             for (let i = 0, n; n = nodes[i], i < nodes.length; i++) {
                 if (n.type === 'file') {
 
@@ -36,6 +35,6 @@ module.exports = async req => {
         nodeModel.deleteMany({owner: currentUser.id}).exec(),
 
         // Remove user
-        userModel.deleteOne({id: currentUser.id})
+        userModel.deleteOne({id: currentUser.id}).exec()
     ]);
 };

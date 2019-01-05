@@ -11,11 +11,11 @@ module.exports = async req => {
 
         // Validate
         if (!opuser) {
-            throw config.errors.user.userNotFound;
+            throw 'User not found';
         }
 
         if (!bcrypt.compareSync(password, opuser.password)) {
-            throw  config.errors.user.wrongPassword;
+            throw 'Wrong password';
         }
 
         // Create and append new apikey

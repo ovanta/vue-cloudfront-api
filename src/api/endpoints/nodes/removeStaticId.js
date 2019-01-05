@@ -15,7 +15,7 @@ module.exports = async req => {
             node.staticIds = node.staticIds.filter(v => v !== id);
             return node.save().then(() => null);
         } else {
-            return null;
+            throw 'Can\'t find requested node';
         }
     });
 };
