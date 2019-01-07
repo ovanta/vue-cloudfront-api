@@ -10,12 +10,12 @@ module.exports = async req => {
     const user = await authViaApiKey(apikey);
 
     // Validate password
-    if (!bcrypt.compareSync(currentPassword, user.password)) {
+    if (typeof currentPassword !== 'string' || !bcrypt.compareSync(currentPassword, user.password)) {
         throw 'Wrong password';
     }
 
     // Apply new username (if set)
-    if (newUsername) {
+    if (typeof newUsername === 'string') {
 
         // Check if already a user has this username
         if (await userModel.findOne({username: newUsername}).exec()) {
@@ -28,10 +28,12 @@ module.exports = async req => {
         } else {
             throw 'Username is too short or contains invalid characters';
         }
+    } else if (newUsername !== undefined) {
+        throw 'NewUsername must be of type string';
     }
 
     // Apply new password (if set)
-    if (newPassword) {
+    if (typeof newPassword === 'string') {
 
         // Validate password
         if (new RegExp(config.validation.password).test(newPassword)) {
@@ -39,6 +41,8 @@ module.exports = async req => {
         } else {
             throw 'Password is too short';
         }
+    } else if (newUsername !== undefined) {
+        throw 'NewUsername must be of type string';
     }
 
     return user.save().then(() => null);

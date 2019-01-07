@@ -40,6 +40,10 @@ module.exports = async req => {
         throw validationResult.errors.toString();
     }
 
+    if (typeof parent !== 'string') {
+        throw 'Parent must be of type string';
+    }
+
     return nodeModel.findOne({owner: user.id, id: parent}).then(async root => {
 
         if (!root) {

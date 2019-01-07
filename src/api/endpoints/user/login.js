@@ -6,6 +6,10 @@ const userModel = require('../../../models/user');
 module.exports = async req => {
     const {username, password} = req.body;
 
+    if (typeof username !== 'string' || typeof password !== 'string') {
+        throw 'Both username and password must be of type string';
+    }
+
     // Check to see if the user already exists and throw error if so
     return userModel.findOne({username}).exec().then(async opuser => {
 

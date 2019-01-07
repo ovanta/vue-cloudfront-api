@@ -38,13 +38,15 @@ module.exports = async req => {
                  */
                 const [parent] = prefixedParent.match(/^[^-]+/) || [];
                 if (!parent) {
-                    reject('Invalid node key');
+                    fs.unlinkSync(file.path);
+                    return reject('Invalid node key');
                 }
 
                 // Check if destination exists and is a folder
                 const destNode = await nodeModel.findOne({owner: user.id, id: parent}).exec();
                 if (!destNode || destNode.type !== 'dir') {
-                    reject('Invalid parent node');
+                    fs.unlinkSync(file.path);
+                    return reject('Invalid parent node');
                 }
 
                 // Rename file

@@ -7,6 +7,11 @@ module.exports = async req => {
     // Find user
     const user = await authViaApiKey(apikey);
 
+    // Validate
+    if (!Array.isArray(nodes) || nodes.some(v => typeof v !== 'string')) {
+        throw 'Invalid nodes scheme';
+    }
+
     // Find all nodes from this user and filter props
     return nodeModel.find({owner: user.id, id: {$in: nodes}}).exec().then(nds => {
 

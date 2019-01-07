@@ -9,9 +9,15 @@ module.exports = async req => {
     // Authenticate and resolve child nodes
     const user = await authViaApiKey(apikey);
 
-    // Remove nodes
+    // Validate
+    if (!Array.isArray(nodes) || nodes.some(v => typeof v !== 'string')) {
+        throw 'Invalid nodes scheme';
+    }
+
+    // Resolve id's and remove files from file system
     const ids = [];
     await resolveChilds(user, nodes, node => {
+
         // Prevent deleting of root element
         if (node.parent === 'root') {
             throw 'Can\'t delete root node';
@@ -30,6 +36,7 @@ module.exports = async req => {
         ids.push(node.id);
     });
 
+    // Remove nodes
     return nodeModel.deleteMany({owner: user.id, id: {$in: ids}})
         .exec()
         .then(() => null);

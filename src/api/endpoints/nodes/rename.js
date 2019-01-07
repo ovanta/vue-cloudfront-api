@@ -7,8 +7,12 @@ module.exports = async req => {
 
     // Find user
     const user = await authViaApiKey(apikey);
-    if (!new RegExp(config.validation.dirname).test(newName)) {
+    if (typeof newName !== 'string' || !new RegExp(config.validation.dirname).test(newName)) {
         throw 'Invalid new name';
+    }
+
+    if (typeof target !== 'string') {
+        throw 'Target must be of type string';
     }
 
     // Find all nodes from this user and filter props

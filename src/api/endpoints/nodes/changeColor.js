@@ -7,8 +7,14 @@ module.exports = async req => {
 
     // Find user and validate color
     const user = await authViaApiKey(apikey);
+
+    // Validate
     if (!new RegExp(config.validation.hexcolor).test(newColor)) {
         throw 'Color must be in hexadecimal format.';
+    }
+
+    if (!Array.isArray(nodes) || nodes.some(v => typeof v !== 'string')) {
+        throw 'Invalid nodes scheme';
     }
 
     // Find all nodes from this user and filter props

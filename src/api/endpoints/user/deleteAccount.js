@@ -11,7 +11,7 @@ module.exports = async req => {
     const currentUser = await authViaApiKey(apikey);
 
     // Validate password
-    if (!bcrypt.compareSync(password, currentUser.password)) {
+    if (typeof password !== 'string' || !bcrypt.compareSync(password, currentUser.password)) {
         throw 'Password incorrect';
     }
 

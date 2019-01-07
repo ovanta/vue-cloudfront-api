@@ -8,6 +8,10 @@ module.exports = async req => {
 
     const user = await authViaApiKey(apikey);
 
+    if (typeof parent !== 'string') {
+        throw 'Both parent and name must be of type string';
+    }
+
     // Find all nodes from this user and filter props
     return nodeModel.findOne({owner: user.id, id: parent}).then(parent => {
 

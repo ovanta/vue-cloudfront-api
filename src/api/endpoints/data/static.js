@@ -5,15 +5,19 @@ const nodeModel = require('../../../models/node');
 module.exports = async (req, res) => {
     const {id, apikey} = req.query;
 
+    if (typeof id !== 'string') {
+        throw 'Invalid node id';
+    }
+
     // Authenticate user
     const user = await authViaApiKey(apikey);
 
     // Check if user is owner
-    nodeModel.findOne({owner: user.id, id}).then(node => {
+    await nodeModel.findOne({owner: user.id, id}).then(async node => {
 
         // Check node
         if (!node) {
-            throw 'Can\'t find target node';
+            return res.status(404).send();
         }
 
         // Check file
@@ -22,8 +26,10 @@ module.exports = async (req, res) => {
             res.contentType(node.name);
             fs.createReadStream(path).pipe(res);
         } else {
-            console.warn(`Invalid file path: ${path}`); // eslint-disable-line no-console
-            throw 'Can\'t find target node';
+
+            // Delete node because the corresponding file is mising
+            await nodeModel.deleteOne({owner: user.id, id});
+            res.status(404).send();
         }
     });
 };

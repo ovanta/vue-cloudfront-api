@@ -7,6 +7,10 @@ module.exports = async req => {
     // Find user
     const user = await authViaApiKey(apikey);
 
+    if (typeof node !== 'string' || typeof id !== 'string') {
+        throw 'Both node and id must be of type string';
+    }
+
     // Find requested node
     return nodeModel.findOne({owner: user.id, id: node}).exec().then(node => {
         if (node && node.type === 'file') {

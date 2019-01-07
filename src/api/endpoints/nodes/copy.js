@@ -10,10 +10,19 @@ module.exports = async req => {
     // Authenticate
     const user = await authViaApiKey(apikey);
 
+    if (typeof destination !== 'string') {
+        throw 'Destination must be of type string';
+    }
+
     // Check if destination exists and is a folder
     const destNode = await nodeModel.findOne({owner: user.id, id: destination}).exec();
     if (!destNode || destNode.type !== 'dir') {
         throw 'Destination does not exist or is not a directory';
+    }
+
+    // Validate
+    if (!Array.isArray(nodes) || nodes.some(v => typeof v !== 'string')) {
+        throw 'Invalid nodes scheme';
     }
 
     const newNodes = [];
