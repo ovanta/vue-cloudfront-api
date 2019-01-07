@@ -9,7 +9,7 @@ module.exports = mongoose.model('Node', {
     name: String,    // Folder / filename,
     marked: Boolean, // If marked
 
-    // File specific
+    // ==== File specific ===
     size: {
         required: false,
         type: Number
@@ -20,7 +20,7 @@ module.exports = mongoose.model('Node', {
         type: [String]
     },
 
-    // Folder specific
+    // ==== Folder specific ===
     color: {
         required: false,
         type: String // Hex color

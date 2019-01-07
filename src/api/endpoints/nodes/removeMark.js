@@ -14,7 +14,7 @@ module.exports = async req => {
             throw 'Request contains invalid nodes';
         }
 
-        // Mark folders
+        // Remove mark from nodes
         return Promise.all(nds.map(v => {
             v.marked = false;
             v.lastModified = Date.now();

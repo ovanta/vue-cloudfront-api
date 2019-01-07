@@ -8,13 +8,11 @@ module.exports = async req => {
 
     // Authenticate and resolve child nodes
     const user = await authViaApiKey(apikey);
-    const childs = await resolveChilds(user, nodes);
 
-    // Delete files
-    for (let i = 0; i < childs.length; i++) {
-        const node = childs[i];
-
-        // Prevent deleting to root element
+    // Remove nodes
+    const ids = [];
+    await resolveChilds(user, nodes, node => {
+        // Prevent deleting of root element
         if (node.parent === 'root') {
             throw 'Can\'t delete root node';
         }
@@ -28,10 +26,10 @@ module.exports = async req => {
                 fs.unlink(path, () => 0);
             }
         }
-    }
 
-    // Remove nodes
-    const ids = childs.map(v => v.id);
+        ids.push(node.id);
+    });
+
     return nodeModel.deleteMany({owner: user.id, id: {$in: ids}})
         .exec()
         .then(() => null);
