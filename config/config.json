@@ -2,6 +2,7 @@
     "dbname": "vue-cloudfront",
     "storagepath": "/_storage",
     "maxRequestSize": 5000000000,
+    "streamChunkSize": 4096000,
     "disableRegistration": false,
     "server": {
         "port": 8080
