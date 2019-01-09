@@ -4,6 +4,8 @@
     "maxRequestSize": 5000000000,
     "streamChunkSize": 4096000,
     "disableRegistration": false,
+    "defaultUIDLength": 6,
+    "staticLinkUIDLength": 20,
     "server": {
         "port": 8080
     },

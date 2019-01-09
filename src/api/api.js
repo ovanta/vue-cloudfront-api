@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const json = bodyParser.json({limit: '50mb'});
 
 const mapHandler = mod => async (req, res) => {
-    const response = await mod(req).then(res => {
+    const response = await mod(req, res).then(res => {
         return {data: res, error: null};
     }).catch(reason => {
 
@@ -17,7 +17,9 @@ const mapHandler = mod => async (req, res) => {
         return {data: null, error: reason};
     });
 
-    res.send(response);
+    if (!res.headerSent) {
+        res.send(response);
+    }
 };
 
 // === Nodes endpoints
