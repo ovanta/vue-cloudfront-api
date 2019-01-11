@@ -1,79 +1,61 @@
-const formidable = require('formidable');
 const fs = require('fs');
-const {uid, pick} = require('../../../utils');
+const {pick} = require('../../../utils');
 const authViaApiKey = require('../../tools/authViaApiKey');
-const config = require('../../../../config/config');
 const nodeModel = require('../../../models/node');
 
 module.exports = async req => {
+    const {body, files} = req;
 
-    // Create formidable instance and set save-path
-    const form = new formidable.IncomingForm();
-    form.maxFileSize = config.maxRequestSize;
-    form.uploadDir = _storagePath;
+    // Authenticate user
+    const user = await authViaApiKey(body.apikey).catch(reason => {
 
-    return new Promise(async (resolve, reject) => {
+        // Delete files
+        for (const {path} of files) {
+            fs.unlink(path);
+        }
 
-        // Parse form
-        form.parse(req, async (err, fields, files) => {
-            const {apikey} = fields;
+        throw reason;
+    });
 
-            if (err || !apikey) {
-                return reject('Invalid request');
-            }
+    // Rename files and create nodes
+    const nodes = [];
+    for (const {fieldname, filename, originalname, path, size} of files) {
 
-            // Authenticate user
-            const user = await authViaApiKey(apikey);
+        /**
+         * Beause fordata cannot have multiple values assigned to
+         * one key, they're prefixed with a index: [HASH]-[INDEX]
+         *
+         * Extract the hash.
+         */
+        const [parent] = fieldname.match(/^[^-]+/) || [];
+        if (!parent) {
+            fs.unlinkSync(path);
+            throw 'Invalid node key';
+        }
 
-            // Rename files and create nodes
-            const nodes = [];
-            for (const [prefixedParent, file] of Object.entries(files)) {
-                const nodeid = uid();
+        // Check if destination exists and is a folder
+        const destNode = await nodeModel.findOne({owner: user.id, id: parent}).exec();
+        if (!destNode || destNode.type !== 'dir') {
+            fs.unlinkSync(path);
+            throw 'Invalid parent node';
+        }
 
-                /**
-                 * Beause fordata cannot have multiple values assigned to
-                 * one key, they're prefixed with a index: [HASH]-[INDEX]
-                 *
-                 * Extract the hash.
-                 */
-                const [parent] = prefixedParent.match(/^[^-]+/) || [];
-                if (!parent) {
-                    fs.unlinkSync(file.path);
-                    return reject('Invalid node key');
-                }
-
-                // Check if destination exists and is a folder
-                const destNode = await nodeModel.findOne({owner: user.id, id: parent}).exec();
-                if (!destNode || destNode.type !== 'dir') {
-                    fs.unlinkSync(file.path);
-                    return reject('Invalid parent node');
-                }
-
-                // Rename file
-                const [dir] = file.path.match(/.*[\\/]/);
-                fs.rename(file.path, `${dir}${nodeid}`, () => 0);
-
-                // Create and push new node
-                nodes.push(new nodeModel({
-                    owner: user.id,
-                    id: nodeid,
-                    parent: parent,
-                    type: 'file',
-                    name: file.name,
-                    lastModified: Date.now(),
-                    marked: false,
-                    size: file.size
-                }).save());
-            }
-
-            Promise.all(nodes).then(nodes => {
-                resolve(
-                    nodes.map(v => pick(v, ['id', 'parent', 'lastModified', 'type', 'name', 'marked', 'size', 'staticIds']))
-                );
-            }).catch(e => {
-                console.warn(e); // eslint-disable-line no-console
-                reject('Internal error');
-            });
-        });
+        // Create and push new node
+        nodes.push(new nodeModel({
+            owner: user.id,
+            id: filename,
+            parent: parent,
+            type: 'file',
+            name: originalname,
+            lastModified: Date.now(),
+            marked: false,
+            size
+        }).save());
+    }
+    return Promise.all(nodes).then(nodes => {
+        return nodes.map(v => pick(v, ['id', 'parent', 'lastModified', 'type', 'name', 'marked', 'size', 'staticIds']));
+    }).catch(e => {
+        console.warn(e); // eslint-disable-line no-console
+        throw 'Internal error';
     });
 };

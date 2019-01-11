@@ -1,8 +1,12 @@
 const express = require('express');
 const api = express.Router();
 
+// JSON Middleware
 const bodyParser = require('body-parser');
 const json = bodyParser.json({limit: '50mb'});
+
+// multipart/formdata middleware
+const uploadMiddleware = require('./endpoints/data/uploadMiddleware');
 
 const mapHandler = mod => async (req, res) => {
     const response = await mod(req, res).then(res => {
@@ -66,7 +70,7 @@ api.post('/addStaticId', json, mapHandler(addStaticId));
 api.post('/removeStaticId', json, mapHandler(removeStaticId));
 
 api.post('/delete', json, mapHandler(del));
-api.post('/upload', mapHandler(upload));
+api.post('/upload', uploadMiddleware, mapHandler(upload));
 api.get('/static/*', statics);
 api.get('/download', download);
 

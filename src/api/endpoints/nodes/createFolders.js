@@ -53,7 +53,7 @@ module.exports = async req => {
         // Fill with real ids
         const idMap = {
             [-1]: root.id,
-            ...(new Array(folders.length)).fill(0).map(uid)
+            ...(new Array(folders.length)).fill(0).map(() => uid())
         };
 
         for (const folder of folders) {

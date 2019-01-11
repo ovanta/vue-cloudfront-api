@@ -13,6 +13,7 @@
     "scripts": {
         "dev": "nodemon ./src/app.js",
         "launch": "node ./src/app.js",
+        "debug": "node %NODE_DEBUG_OPTION% ./src/app.js",
         "lint": "eslint ./src"
     },
     "dependencies": {
@@ -21,10 +22,10 @@
         "compression": "^1.7.3",
         "cors": "^2.8.5",
         "express": "^4.16.4",
-        "formidable": "^1.2.1",
         "jsonschema": "^1.2.4",
         "mongodb": "^3.1.10",
-        "mongoose": "^5.4.0"
+        "mongoose": "^5.4.0",
+        "multer": "^1.4.1"
     },
     "devDependencies": {
         "eslint": "^5.10.0"
