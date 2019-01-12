@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const json = bodyParser.json({limit: '50mb'});
 
 // multipart/formdata middleware
-const uploadMiddleware = require('./endpoints/data/uploadMiddleware');
+const uploadMiddleware = require('./endpoints/data/upload/uploadMiddleware');
 
 const mapHandler = mod => async (req, res) => {
     const response = await mod(req, res).then(res => {
@@ -49,7 +49,7 @@ const deleteAccount = require('./endpoints/user/deleteAccount.js');
 // === Data endpoints
 const download = require('./endpoints/data/download.js');
 const statics = require('./endpoints/data/static.js');
-const upload = require('./endpoints/data/upload.js');
+const upload = require('./endpoints/data/upload/upload.js');
 const del = require('./endpoints/data/delete.js');
 
 // === Events endpoints

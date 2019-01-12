@@ -1,7 +1,7 @@
 const fs = require('fs');
-const {pick} = require('../../../utils');
-const authViaApiKey = require('../../tools/authViaApiKey');
-const nodeModel = require('../../../models/node');
+const {pick} = require('../../../../utils');
+const authViaApiKey = require('../../../tools/authViaApiKey');
+const nodeModel = require('../../../../models/node');
 
 module.exports = async req => {
     const {body, files} = req;
