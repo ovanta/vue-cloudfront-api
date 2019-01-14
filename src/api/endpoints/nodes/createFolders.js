@@ -68,7 +68,7 @@ module.exports = async req => {
             type: 'dir',
             name: folder.name || 'Unknown',
             lastModified: Date.now(),
-            color: '#7E58C2',
+            color: '#333333',
             marked: false
         }).save());
 
