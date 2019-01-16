@@ -3,6 +3,7 @@
     "storagepath": "/_storage",
     "maxRequestSize": 5000000000,
     "streamChunkSize": 4096000,
+    "userStorageLimit": -1,
     "disableRegistration": false,
     "defaultUIDLength": 6,
     "staticLinkUIDLength": 20,
