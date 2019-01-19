@@ -25,7 +25,8 @@
         "jsonschema": "^1.2.4",
         "mongodb": "^3.1.10",
         "mongoose": "^5.4.0",
-        "multer": "^1.4.1"
+        "multer": "^1.4.1",
+        "graceful-fs": "latest"
     },
     "devDependencies": {
         "eslint": "^5.10.0"

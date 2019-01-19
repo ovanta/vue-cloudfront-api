@@ -56,25 +56,23 @@ module.exports = async req => {
             ...(new Array(folders.length)).fill(0).map(() => uid())
         };
 
+        const nodes = [];
         for (const folder of folders) {
             folder.id = idMap[folder.id];
             folder.parent = idMap[folder.parent];
+
+            nodes.push(await new nodeModel({
+                owner: user.id,
+                id: folder.id,
+                parent: folder.parent,
+                type: 'dir',
+                name: folder.name || 'Unknown',
+                lastModified: Date.now(),
+                color: '#333333',
+                marked: false
+            }).save().then(node => _.pick(node, ['id', 'parent', 'type', 'name', 'lastModified', 'color', 'marked'])));
         }
 
-        const nodes = folders.map(folder => new nodeModel({
-            owner: user.id,
-            id: folder.id,
-            parent: folder.parent,
-            type: 'dir',
-            name: folder.name || 'Unknown',
-            lastModified: Date.now(),
-            color: '#333333',
-            marked: false
-        }).save());
-
-        return Promise.all(nodes).then(nodes => ({
-            idMap,
-            nodes: nodes.map(node => _.pick(node, ['id', 'parent', 'type', 'name', 'lastModified', 'color', 'marked']))
-        }));
+        return {idMap, nodes};
     });
 };

@@ -16,7 +16,7 @@ module.exports = async (user, nodes, cb) => {
 
         // Find all nodes which have n as parent
         await nodeModel.find({owner: user.id, parent: n.id}).exec().then(async rnodes => {
-            for (let i = 0; i < rnodes.length; i++) {
+            for (let i = 0, n = rnodes.length; i < n; i++) {
                 const rnode = rnodes[i];
                 await handleNode(rnode);
             }
