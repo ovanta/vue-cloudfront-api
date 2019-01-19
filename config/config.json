@@ -1,6 +1,6 @@
 {
     "dbname": "vue-cloudfront",
-    "storagepath": "/_storage",
+    "storagePath": "/_storage",
     "maxRequestSize": 5000000000,
     "streamChunkSize": 4096000,
     "userStorageLimit": -1,

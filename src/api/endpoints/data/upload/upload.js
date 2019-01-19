@@ -74,7 +74,7 @@ module.exports = async req => {
         }).save());
     }
     return Promise.all(nodes).then(nodes => {
-        return nodes.map(v => pick(v, ['id', 'parent', 'lastModified', 'type', 'name', 'marked', 'size', 'staticIds']));
+        return nodes.map(v => pick(v, ['id', 'parent', 'lastModified', 'type', 'name', 'marked', 'size', 'bin', 'staticIds']));
     }).catch(e => {
         console.warn(e); // eslint-disable-line no-console
         throw 'Internal error';

@@ -6,7 +6,7 @@ const config = require('../config/config');
 const path = require('path');
 
 // Resolve storage path
-global._storagePath = path.resolve(`./${config.storagepath}`);
+global._storagePath = path.resolve(`./${config.storagePath}`);
 
 // Create app
 const app = express();

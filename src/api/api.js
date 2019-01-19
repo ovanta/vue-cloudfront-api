@@ -39,6 +39,8 @@ const rename = require('./endpoints/nodes/rename.js');
 const update = require('./endpoints/nodes/update.js');
 const addStaticId = require('./endpoints/nodes/addStaticId.js');
 const removeStaticId = require('./endpoints/nodes/removeStaticId.js');
+const moveToBin = require('./endpoints/nodes/moveToBin.js');
+const restoreFromBin = require('./endpoints/nodes/restoreFromBin.js');
 
 // === User endpoints
 const login = require('./endpoints/user/login.js');
@@ -68,6 +70,8 @@ api.post('/rename', json, mapHandler(rename));
 api.post('/update', json, mapHandler(update));
 api.post('/addStaticId', json, mapHandler(addStaticId));
 api.post('/removeStaticId', json, mapHandler(removeStaticId));
+api.post('/moveToBin', json, mapHandler(moveToBin));
+api.post('/restoreFromBin', json, mapHandler(restoreFromBin));
 
 api.post('/delete', json, mapHandler(del));
 api.post('/upload', uploadMiddleware, mapHandler(upload));
