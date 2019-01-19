@@ -24,7 +24,7 @@ module.exports = async req => {
 
         // Validate username
         if (new RegExp(config.validation.username).test(newUsername)) {
-            user.username = newUsername;
+            user.set('username', newUsername);
         } else {
             throw 'Username is too short or contains invalid characters';
         }
@@ -37,7 +37,7 @@ module.exports = async req => {
 
         // Validate password
         if (new RegExp(config.validation.password).test(newPassword)) {
-            user.password = bcrypt.hashSync(newPassword, config.auth.saltRounds);
+            user.set('password', bcrypt.hashSync(newPassword, config.auth.saltRounds));
         } else {
             throw 'Password is too short';
         }

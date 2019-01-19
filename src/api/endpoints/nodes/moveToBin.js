@@ -21,8 +21,8 @@ module.exports = async req => {
 
         // "Restore" nodes from bin
         return Promise.all(nds.map(node => {
-            node.bin = true;
-            node.lastModified = Date.now();
+            node.set('bin', true);
+            node.set('lastModified', Date.now());
             return node.save();
         }));
 

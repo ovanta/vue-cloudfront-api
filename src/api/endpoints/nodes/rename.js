@@ -22,8 +22,8 @@ module.exports = async req => {
             throw 'Can\'t find target node';
         }
 
-        node.name = newName;
-        node.lastModified = Date.now();
+        node.set('name', newName);
+        node.set('lastModified', Date.now());
         return node.save();
     }).then(() => null);
 };

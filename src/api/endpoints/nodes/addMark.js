@@ -21,8 +21,8 @@ module.exports = async req => {
 
         // Mark nodes
         return Promise.all(nds.map(node => {
-            node.marked = true;
-            node.lastModified = Date.now();
+            node.set('marked', true);
+            node.set('lastModified', Date.now());
             return node.save();
         }));
 

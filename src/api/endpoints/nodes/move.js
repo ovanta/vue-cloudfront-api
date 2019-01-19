@@ -41,7 +41,7 @@ module.exports = async req => {
         // Apply new parent
         for (let i = 0; i < nds.length; i++) {
             const node = nds[i];
-            node.parent = destination;
+            node.set('parent', destination);
             await node.save();
         }
     });

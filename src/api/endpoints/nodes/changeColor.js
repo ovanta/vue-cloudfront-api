@@ -26,8 +26,8 @@ module.exports = async req => {
 
         // Change colors and save choosed nodes
         return Promise.all(nds.map(node => {
-            node.color = newColor;
-            node.lastModified = Date.now();
+            node.set('color', newColor);
+            node.set('lastModified', Date.now());
             return node.save();
         }));
 

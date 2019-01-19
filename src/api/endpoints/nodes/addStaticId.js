@@ -20,7 +20,7 @@ module.exports = async req => {
             // Add new static id
             const newUid = uid(config.staticLinkUIDLength);
             node.staticIds.push(newUid);
-            node.lastModified = Date.now();
+            node.set('lastModified', Date.now());
             return node.save().then(() => newUid);
         } else {
             throw 'Can\'t find requested node';

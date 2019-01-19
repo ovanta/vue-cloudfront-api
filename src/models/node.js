@@ -8,6 +8,7 @@ module.exports = mongoose.model('Node', {
     type: String,    // 'dir' or 'file'
     name: String,    // Folder / filename,
     marked: Boolean, // If marked
+    bin: Boolean, // If moved to bin
 
     // ==== File specific ===
     size: {

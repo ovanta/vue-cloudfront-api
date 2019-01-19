@@ -16,7 +16,7 @@ module.exports = async req => {
         if (node && node.type === 'file') {
 
             // Remove static id
-            node.staticIds = node.staticIds.filter(ids => !ids.includes(ids));
+            node.set('staticIds', node.staticIds.filter(ids => !ids.includes(ids)));
             return node.save().then(() => null);
         } else {
             throw 'Can\'t find requested node';
