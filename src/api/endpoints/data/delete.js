@@ -1,6 +1,6 @@
 const fs = require('fs');
 const authViaApiKey = require('../../tools/authViaApiKey');
-const resolveChilds = require('../../tools/resolveChilds');
+const traverseNodes = require('../../tools/traverseNodes');
 const nodeModel = require('../../../models/node');
 
 module.exports = async req => {
@@ -16,7 +16,7 @@ module.exports = async req => {
 
     // Resolve id's and remove files from file system
     const ids = [];
-    await resolveChilds(user, nodes, node => {
+    await traverseNodes(user, nodes, node => {
 
         // Prevent deleting of root element
         if (node.parent === 'root') {

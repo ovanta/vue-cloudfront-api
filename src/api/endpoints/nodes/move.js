@@ -1,4 +1,4 @@
-const resolveChilds = require('../../tools/resolveChilds');
+const traverseNodes = require('../../tools/traverseNodes');
 const authViaApiKey = require('../../tools/authViaApiKey');
 const nodeModel = require('../../../models/node');
 
@@ -8,7 +8,7 @@ module.exports = async req => {
     // Authenticate and resolve child nodes
     const user = await authViaApiKey(apikey);
 
-    await resolveChilds(user, nodes, node => {
+    await traverseNodes(user, nodes, node => {
 
         // Check if user paste folder into itself or one of its siblings
         if (node.id === destination) {

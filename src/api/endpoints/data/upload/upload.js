@@ -48,7 +48,7 @@ module.exports = async req => {
          *
          * Extract the hash.
          */
-        const [parent] = fieldname.match(/^[^-]+/) || [];
+        const parent = fieldname.substring(0, fieldname.indexOf('-'));
         if (!parent) {
             fs.unlinkSync(path);
             throw 'Invalid node key';
@@ -62,7 +62,7 @@ module.exports = async req => {
         }
 
         // Create and push new node
-        nodes.push(new nodeModel({
+        const newNode = await new nodeModel({
             owner: user.id,
             id: filename,
             parent: parent,
@@ -71,12 +71,16 @@ module.exports = async req => {
             lastModified: Date.now(),
             marked: false,
             size
-        }).save());
+        }).save().then(node => {
+            return pick(node, ['id', 'parent', 'lastModified', 'type', 'name', 'marked', 'size', 'bin', 'staticIds']);
+        }).catch(reason => {
+            console.warn(reason); // eslint-disable-line no-console
+            fs.unlinkSync(path);
+            return null;
+        });
+
+        newNode && nodes.push(newNode);
     }
-    return Promise.all(nodes).then(nodes => {
-        return nodes.map(v => pick(v, ['id', 'parent', 'lastModified', 'type', 'name', 'marked', 'size', 'bin', 'staticIds']));
-    }).catch(e => {
-        console.warn(e); // eslint-disable-line no-console
-        throw 'Internal error';
-    });
+
+    return nodes;
 };

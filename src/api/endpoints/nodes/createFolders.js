@@ -1,7 +1,7 @@
 const {uid} = require('../../../utils');
 const authViaApiKey = require('../../tools/authViaApiKey');
 const nodeModel = require('../../../models/node');
-const _ = require('../../../utils');
+const {pick} = require('../../../utils');
 const Validator = require('jsonschema').Validator;
 const FolderstructValidator = new Validator();
 
@@ -50,18 +50,24 @@ module.exports = async req => {
             throw 'Invalid root node';
         }
 
-        // Fill with real ids
-        const idMap = {
-            [-1]: root.id,
-            ...(new Array(folders.length)).fill(0).map(() => uid())
-        };
+        // Create uids
+        const folderAmount = folders.length;
+        const idMap = {[-1]: root.id};
+        for (let i = 0; i < folderAmount; i++) {
+            idMap[i] = uid();
+        }
 
+        // Create nodes
         const nodes = [];
-        for (const folder of folders) {
+        for (let i = 0; i < folderAmount; i++) {
+            const folder = folders[i];
+
+            // Apply id and parent node
             folder.id = idMap[folder.id];
             folder.parent = idMap[folder.parent];
 
-            nodes.push(await new nodeModel({
+            // Create folder
+            const newNode = await new nodeModel({
                 owner: user.id,
                 id: folder.id,
                 parent: folder.parent,
@@ -70,7 +76,11 @@ module.exports = async req => {
                 lastModified: Date.now(),
                 color: '#333333',
                 marked: false
-            }).save().then(node => _.pick(node, ['id', 'parent', 'type', 'name', 'lastModified', 'color', 'marked'])));
+            }).save().then(node => {
+                return pick(node, ['id', 'parent', 'type', 'name', 'lastModified', 'color', 'marked']);
+            });
+
+            nodes.push(newNode);
         }
 
         return {idMap, nodes};
