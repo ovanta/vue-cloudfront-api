@@ -30,7 +30,11 @@ module.exports = async req => {
         }
 
         // Calculate current storage size
-        const currentStorageSize = (await nodeModel.find({owner: user.id, type: 'file'}, 'size').exec()).reduce((a, v) => a + v.size, 0);
+        let currentStorageSize = 0;
+        const nodes = await nodeModel.find({owner: user.id, type: 'file'}, 'size');
+        for (let i = 0, n = nodes.length; i < n; i++) {
+            currentStorageSize += nodes[i].size;
+        }
 
         // Compare current storage size and upload size with limit
         if (contentLength + currentStorageSize > config.userStorageLimit) {
@@ -40,7 +44,8 @@ module.exports = async req => {
 
     // Rename files and create nodes
     const nodes = [];
-    for (const {fieldname, filename, originalname, path, size} of files) {
+    for (let i = 0, n = files.length; i < n; i++) {
+        const {fieldname, filename, originalname, path, size} = files[i];
 
         /**
          * Beause fordata cannot have multiple values assigned to

@@ -26,11 +26,8 @@ module.exports = async req => {
         // Remove file if node is an file
         if (node.type === 'file') {
 
-            // Build local storage path and check if file exists
-            const path = `${_storagePath}/${node.id}`;
-            if (fs.existsSync(path)) {
-                fs.unlink(path, () => 0);
-            }
+            // Delete file
+            fs.unlink(`${_storagePath}/${node.id}`, () => 0);
         }
 
         ids.push(node.id);

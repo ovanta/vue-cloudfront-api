@@ -58,7 +58,7 @@ module.exports = async req => {
                 type: 'dir',
                 name: 'Home',
                 marked: false,
-                color: '#333333'
+                color: config.defaultFolderColor
             }).save()
         ]);
 

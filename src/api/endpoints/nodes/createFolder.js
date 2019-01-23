@@ -1,4 +1,5 @@
 const {uid} = require('../../../utils');
+const config = require('../../../../config/config');
 const authViaApiKey = require('../../tools/authViaApiKey');
 const nodeModel = require('../../../models/node');
 const _ = require('../../../utils');
@@ -26,7 +27,7 @@ module.exports = async req => {
             type: 'dir',
             name: name || 'New Folder',
             lastModified: Date.now(),
-            color: '#333333',
+            color: config.defaultFolderColor,
             marked: false
         }).save();
 

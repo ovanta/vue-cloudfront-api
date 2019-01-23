@@ -7,6 +7,7 @@
     "disableRegistration": false,
     "defaultUIDLength": 6,
     "staticLinkUIDLength": 20,
+    "defaultFolderColor": "#333333",
     "server": {
         "port": 8080
     },

@@ -2,7 +2,7 @@ const nodeModel = require('../../models/node');
 
 module.exports = async (user, nodes, cb) => {
 
-    const handleNode = async node => {
+    async function handleNode(node) {
         if (node) {
             cb(node);
 
@@ -10,15 +10,14 @@ module.exports = async (user, nodes, cb) => {
                 await addChilds(node);
             }
         }
-    };
+    }
 
     async function addChilds(n) {
 
         // Find all nodes which have n as parent
         await nodeModel.find({owner: user.id, parent: n.id}).exec().then(async rnodes => {
             for (let i = 0, n = rnodes.length; i < n; i++) {
-                const rnode = rnodes[i];
-                await handleNode(rnode);
+                await handleNode(rnodes[i]);
             }
         });
     }

@@ -1,6 +1,7 @@
 const {uid} = require('../../../utils');
 const authViaApiKey = require('../../tools/authViaApiKey');
 const nodeModel = require('../../../models/node');
+const config = require('../../../../config/config');
 const {pick} = require('../../../utils');
 const Validator = require('jsonschema').Validator;
 const FolderstructValidator = new Validator();
@@ -74,7 +75,7 @@ module.exports = async req => {
                 type: 'dir',
                 name: folder.name || 'Unknown',
                 lastModified: Date.now(),
-                color: '#333333',
+                color: config.defaultFolderColor,
                 marked: false
             }).save().then(node => {
                 return pick(node, ['id', 'parent', 'type', 'name', 'lastModified', 'color', 'marked']);
