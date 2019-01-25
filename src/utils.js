@@ -1,5 +1,20 @@
 const config = require('../config/config');
 
+const toBase61 = (() => {
+    const base61Set = '0123456789abcdefghijklmnopqrstuvwyxzABCDEFGHIJKLMNOPQRSTUVWYXZ';
+
+    return num => {
+        let result = '';
+
+        while (num > 0) {
+            result = base61Set[num % 61] + result;
+            num = Math.floor(num / 61);
+        }
+
+        return result;
+    };
+})();
+
 module.exports = {
 
     pick(object, props) {
@@ -11,7 +26,7 @@ module.exports = {
     uid(length = config.defaultUIDLength) {
         let uid = '';
         while (uid.length < length) {
-            uid += (Date.now() + Math.floor(Math.random() * 1e15)).toString(36);
+            uid += toBase61(Date.now() * Math.floor(Math.random() * 1e15));
         }
         return uid.substring(0, length);
     }

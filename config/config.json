@@ -5,7 +5,7 @@
     "streamChunkSize": 4096000,
     "userStorageLimit": -1,
     "disableRegistration": false,
-    "defaultUIDLength": 6,
+    "defaultUIDLength": 8,
     "staticLinkUIDLength": 20,
     "defaultFolderColor": "#333333",
     "server": {
