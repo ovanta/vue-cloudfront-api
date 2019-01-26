@@ -1,5 +1,6 @@
 const fs = require('graceful-fs');
 const path = require('path');
+const WritableVoidStream = require('./WritableVoidStream');
 
 class StorageEngine {
 
@@ -15,12 +16,15 @@ class StorageEngine {
             throw `Invalid path: ${dest}`;
         }
 
-        const stream = fs.createWriteStream(dest);
-        file.stream.pipe(stream);
+        // Create file
+        fs.closeSync(fs.openSync(dest, 'w'));
+
+        // Create void stream if in demo mode
+        const stream = _config.demo ? new WritableVoidStream() : fs.createWriteStream(dest);
 
         // Save stream and filepath to request object
         req.incomingFiles = req.incomingFiles || [];
-        req.incomingFiles.push({stream, path: dest});
+        req.incomingFiles.push({stream: stream, path: dest});
 
         stream.on('error', cb);
         stream.on('finish', () => {
@@ -33,6 +37,8 @@ class StorageEngine {
                 size: stream.bytesWritten
             });
         });
+
+        file.stream.pipe(stream);
     }
 
     _removeFile(req, file, cb) {

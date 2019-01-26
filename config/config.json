@@ -1,4 +1,5 @@
 {
+    "demo": false,
     "dbname": "vue-cloudfront",
     "storagePath": "/_storage",
     "maxRequestSize": 5000000000,
