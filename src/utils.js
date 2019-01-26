@@ -1,4 +1,3 @@
-
 const toBase61 = (() => {
     const base61Set = '0123456789abcdefghijklmnopqrstuvwyxzABCDEFGHIJKLMNOPQRSTUVWYXZ';
 
@@ -28,5 +27,16 @@ module.exports = {
             uid += toBase61(Date.now() * Math.floor(Math.random() * 1e15));
         }
         return uid.substring(0, length);
+    },
+
+    readableDuration(ms) {
+        const types = ['millisecond', 'second', 'minute', 'hour', 'day'];
+        const durations = [1, 1000, 60000, 3600000, 216000000, 5184000000];
+        for (let i = 0; i < durations.length - 1; i++) {
+            if (ms < durations[i + 1]) {
+                const v = Math.round(ms / durations[i]);
+                return `${v} ${types[i] + (v > 1 ? 's' : '')}`;
+            }
+        }
     }
 };

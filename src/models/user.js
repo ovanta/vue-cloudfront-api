@@ -5,6 +5,18 @@ module.exports = mongoose.model('User', {
     username: String,
     password: String,
 
+    lastLoginAttempt: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+
+    loginAttempts: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+
     apikeys: [{
         key: String,
         expiry: Number
@@ -12,6 +24,7 @@ module.exports = mongoose.model('User', {
 
     events: {
         type: Object,
+        required: true,
         default: {}
     }
 });
