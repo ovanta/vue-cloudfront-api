@@ -1,6 +1,5 @@
 const {uid} = require('../../../utils');
 const bcrypt = require('bcrypt');
-const config = require('../../../../config/config');
 const nodeModel = require('../../../models/node');
 const userModel = require('../../../models/user');
 
@@ -8,7 +7,7 @@ module.exports = async req => {
     const {username, password} = req.body;
 
     // Check if registrations are disabled
-    if (config.disableRegistration) {
+    if (_config.disableRegistration) {
         throw 'Registration is currently disabled';
     }
 
@@ -24,11 +23,11 @@ module.exports = async req => {
             throw  'A user with this name already exist';
         }
 
-        if (!new RegExp(config.validation.username).test(username)) {
+        if (!new RegExp(_config.validation.username).test(username)) {
             throw 'Username is too short or contains invalid characters';
         }
 
-        if (!new RegExp(config.validation.password).test(password)) {
+        if (!new RegExp(_config.validation.password).test(password)) {
             throw 'Password is too short';
         }
 
@@ -41,11 +40,11 @@ module.exports = async req => {
             new userModel({
                 id: userid,
                 username,
-                password: bcrypt.hashSync(password, config.auth.saltRounds),
+                password: bcrypt.hashSync(password, _config.auth.saltRounds),
 
                 apikeys: [{
                     key: apikey,
-                    expiry: Date.now() + config.auth.apikeyExpiry
+                    expiry: Date.now() + _config.auth.apikeyExpiry
                 }]
             }).save(),
 
@@ -58,7 +57,7 @@ module.exports = async req => {
                 type: 'dir',
                 name: 'Home',
                 marked: false,
-                color: config.defaultFolderColor
+                color: _config.defaultFolderColor
             }).save()
         ]);
 

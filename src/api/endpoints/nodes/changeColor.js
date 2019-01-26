@@ -1,5 +1,4 @@
 const authViaApiKey = require('../../tools/authViaApiKey');
-const config = require('../../../../config/config');
 const nodeModel = require('../../../models/node');
 
 module.exports = async req => {
@@ -9,7 +8,7 @@ module.exports = async req => {
     const user = await authViaApiKey(apikey);
 
     // Validate
-    if (!new RegExp(config.validation.hexcolor).test(newColor)) {
+    if (!new RegExp(_config.validation.hexcolor).test(newColor)) {
         throw 'Color must be in hexadecimal format.';
     }
 

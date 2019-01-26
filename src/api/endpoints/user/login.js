@@ -1,6 +1,5 @@
 const {uid} = require('../../../utils');
 const bcrypt = require('bcrypt');
-const config = require('../../../../config/config');
 const userModel = require('../../../models/user');
 
 module.exports = async req => {
@@ -26,7 +25,7 @@ module.exports = async req => {
         const apikey = uid();
         opuser.apikeys.push({
             key: apikey,
-            expiry: Date.now() + config.auth.apikeyExpiry
+            expiry: Date.now() + _config.auth.apikeyExpiry
         });
 
         // Save user with new apikey

@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 const authViaApiKey = require('../../tools/authViaApiKey');
-const config = require('../../../../config/config');
 const userModel = require('../../../models/user');
 
 module.exports = async req => {
@@ -23,7 +22,7 @@ module.exports = async req => {
         }
 
         // Validate username
-        if (new RegExp(config.validation.username).test(newUsername)) {
+        if (new RegExp(_config.validation.username).test(newUsername)) {
             user.set('username', newUsername);
         } else {
             throw 'Username is too short or contains invalid characters';
@@ -36,8 +35,8 @@ module.exports = async req => {
     if (typeof newPassword === 'string') {
 
         // Validate password
-        if (new RegExp(config.validation.password).test(newPassword)) {
-            user.set('password', bcrypt.hashSync(newPassword, config.auth.saltRounds));
+        if (new RegExp(_config.validation.password).test(newPassword)) {
+            user.set('password', bcrypt.hashSync(newPassword, _config.auth.saltRounds));
         } else {
             throw 'Password is too short';
         }

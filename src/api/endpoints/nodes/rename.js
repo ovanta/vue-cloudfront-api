@@ -1,5 +1,4 @@
 const authViaApiKey = require('../../tools/authViaApiKey');
-const config = require('../../../../config/config');
 const nodeModel = require('../../../models/node');
 
 module.exports = async req => {
@@ -7,7 +6,7 @@ module.exports = async req => {
 
     // Find user
     const user = await authViaApiKey(apikey);
-    if (typeof newName !== 'string' || !new RegExp(config.validation.dirname).test(newName)) {
+    if (typeof newName !== 'string' || !new RegExp(_config.validation.dirname).test(newName)) {
         throw 'Invalid new name';
     }
 

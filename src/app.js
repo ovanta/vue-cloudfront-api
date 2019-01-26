@@ -1,12 +1,14 @@
 const express = require('express');
 const cors = require('cors');
 const compression = require('compression');
-const api = require('./api/api');
-const config = require('../config/config');
 const path = require('path');
 
-// Resolve storage path
-global._storagePath = path.resolve(`./${config.storagePath}`);
+// Resolve storage path and create global config variable
+const config = require('../config/config');
+config.storagePath = path.resolve(`./${config.storagePath}`);
+
+// Freeze and store as global variable
+global._config = Object.freeze(config);
 
 // Create app
 const app = express();
@@ -21,7 +23,7 @@ app.use(compression());
 app.use(cors());
 
 // GraphQL API Module
-app.use('/api', api);
+app.use('/api', require('./api/api'));
 
 // Start
 app.listen(config.server.port);

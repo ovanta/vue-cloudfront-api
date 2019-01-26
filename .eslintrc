@@ -4,7 +4,7 @@
         "es6": true
     },
     "globals": {
-        "_storagePath": true
+        "_config": true
     },
     "extends": [
         "eslint:recommended"

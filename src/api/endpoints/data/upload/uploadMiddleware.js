@@ -1,13 +1,12 @@
-const config = require('../../../../../config/config');
 const {uid} = require('../../../../utils');
 const storageEngine = require('./storageEngine');
 const multer = require('multer');
 const fs = require('fs');
 
 const formdata = multer({
-    storage: storageEngine(() => `${global._storagePath}/${uid(10)}`),
+    storage: storageEngine(() => `${global._config.storagePath}/${uid(10)}`),
     limits: {
-        fileSize: config.maxRequestSize
+        fileSize: _config.maxRequestSize
     }
 }).any();
 

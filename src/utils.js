@@ -1,4 +1,3 @@
-const config = require('../config/config');
 
 const toBase61 = (() => {
     const base61Set = '0123456789abcdefghijklmnopqrstuvwyxzABCDEFGHIJKLMNOPQRSTUVWYXZ';
@@ -23,7 +22,7 @@ module.exports = {
         return newObj;
     },
 
-    uid(length = config.defaultUIDLength) {
+    uid(length = _config.defaultUIDLength) {
         let uid = '';
         while (uid.length < length) {
             uid += toBase61(Date.now() * Math.floor(Math.random() * 1e15));

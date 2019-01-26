@@ -1,5 +1,4 @@
 const fs = require('fs');
-const config = require('../../../../../config/config');
 const {pick} = require('../../../../utils');
 const authViaApiKey = require('../../../tools/authViaApiKey');
 const nodeModel = require('../../../../models/node');
@@ -19,7 +18,7 @@ module.exports = async req => {
     });
 
     // Negative value means infinite upload storage quote
-    if (config.userStorageLimit >= 0) {
+    if (_config.userStorageLimit >= 0) {
 
         // Check if upload size, including other files, don't exceed storage limit
         const contentLength = Number(req.get('content-length'));
@@ -37,8 +36,8 @@ module.exports = async req => {
         }
 
         // Compare current storage size and upload size with limit
-        if (contentLength + currentStorageSize > config.userStorageLimit) {
-            throw `Storage limit of ${config.userStorageLimit} bytes exceed`;
+        if (contentLength + currentStorageSize > _config.userStorageLimit) {
+            throw `Storage limit of ${_config.userStorageLimit} bytes exceed`;
         }
     }
 

@@ -1,4 +1,3 @@
-const config = require('../../../../config/config');
 const authViaApiKey = require('../../tools/authViaApiKey');
 const nodeModel = require('../../../models/node');
 const {uid} = require('../../../utils');
@@ -18,7 +17,7 @@ module.exports = async req => {
         if (node && node.type === 'file') {
 
             // Add new static id
-            const newUid = uid(config.staticLinkUIDLength);
+            const newUid = uid(_config.staticLinkUIDLength);
             node.staticIds.push(newUid);
             node.set('lastModified', Date.now());
             return node.save().then(() => newUid);
