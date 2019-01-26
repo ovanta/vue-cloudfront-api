@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
     const user = await authViaApiKey(apikey);
 
     // Check if user is owner
-    await nodeModel.findOne({owner: user.id, id}).then(async node => {
+    await nodeModel.findOne({owner: user.id, id}).exec().then(async node => {
 
         // Check node
         if (!node) {
@@ -61,7 +61,7 @@ module.exports = async (req, res) => {
         } else {
 
             // Delete node because the corresponding file is mising
-            await nodeModel.deleteOne({owner: user.id, id});
+            await nodeModel.deleteOne({owner: user.id, id}).exec();
             res.status(404).send();
         }
     });

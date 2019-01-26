@@ -45,7 +45,7 @@ module.exports = async req => {
         throw 'Parent must be of type string';
     }
 
-    return nodeModel.findOne({owner: user.id, id: parent}).then(async root => {
+    return nodeModel.findOne({owner: user.id, id: parent}).exec().then(async root => {
 
         if (!root) {
             throw 'Invalid root node';

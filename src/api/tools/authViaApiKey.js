@@ -15,7 +15,7 @@ module.exports = async apikey => {
                 }
             }
         }
-    }).then(user => {
+    }).exec().then(user => {
 
         // Check if user exists
         if (!user) {

@@ -42,7 +42,7 @@ module.exports = async (req, res) => {
         } else {
 
             // Delete node because the corresponding file is mising
-            await nodeModel.deleteOne({id: node.id});
+            await nodeModel.deleteOne({id: node.id}).exec();
             res.status(404).send();
         }
     }

@@ -12,7 +12,7 @@ module.exports = async req => {
 
         // Delete files
         for (const {path} of files) {
-            fs.unlink(path);
+            fs.unlink(path, () => 0);
         }
 
         throw reason;
@@ -31,7 +31,7 @@ module.exports = async req => {
 
         // Calculate current storage size
         let currentStorageSize = 0;
-        const nodes = await nodeModel.find({owner: user.id, type: 'file'}, 'size');
+        const nodes = await nodeModel.find({owner: user.id, type: 'file'}, 'size').exec();
         for (let i = 0, n = nodes.length; i < n; i++) {
             currentStorageSize += nodes[i].size;
         }
@@ -80,7 +80,7 @@ module.exports = async req => {
             return pick(node, ['id', 'parent', 'lastModified', 'type', 'name', 'marked', 'size', 'bin', 'staticIds']);
         }).catch(reason => {
             console.warn(reason); // eslint-disable-line no-console
-            fs.unlinkSync(path);
+            fs.unlink(path, () => 0);
             return null;
         });
 

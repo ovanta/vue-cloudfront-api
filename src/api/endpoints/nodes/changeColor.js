@@ -18,7 +18,7 @@ module.exports = async req => {
     }
 
     // Find all nodes from this user and filter props
-    return nodeModel.find({owner: user.id, id: {$in: nodes}}).then(nds => {
+    return nodeModel.find({owner: user.id, id: {$in: nodes}}).exec().then(nds => {
 
         if (nds.length !== nodes.length) {
             throw 'Request contains invalid nodes';

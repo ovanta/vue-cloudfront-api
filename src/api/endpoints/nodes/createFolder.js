@@ -14,7 +14,7 @@ module.exports = async req => {
     }
 
     // Find all nodes from this user and filter props
-    return nodeModel.findOne({owner: user.id, id: parent}).then(parent => {
+    return nodeModel.findOne({owner: user.id, id: parent}).exec().then(parent => {
 
         if (!parent) {
             throw 'Can\'t find parent';

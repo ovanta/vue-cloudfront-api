@@ -51,6 +51,9 @@ module.exports = async req => {
             const dest = `${_storagePath}/${newId}`;
             if (fs.existsSync(src)) {
                 fs.copyFileSync(src, dest);
+            } else {
+                await nodeModel.deleteOne({owner: user.id, id: n.id});
+                return;
             }
         }
 
