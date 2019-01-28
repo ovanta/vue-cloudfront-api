@@ -22,6 +22,18 @@
         "username": "^[\\w\\d]{2,15}$",
         "password": "^(.){4,20}$",
         "dirname": "^(.){1,100}$",
-        "hexcolor": "^#([\\dA-Fa-f]{6})$"
+        "hexcolor": "^#([\\dA-Fa-f]{6})$",
+        "schemes": {
+            "stats": {
+                "introBoxes": {
+                    "type": "array",
+                    "minItems": 0,
+                    "maxItems": 3,
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
     }
 }

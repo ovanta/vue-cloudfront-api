@@ -55,8 +55,8 @@ const upload = require('./endpoints/data/upload/upload.js');
 const del = require('./endpoints/data/delete.js');
 
 // === Events endpoints
-const getEvents = require('./endpoints/events/getEvents');
-const updateEvents = require('./endpoints/events/updateEvents');
+const getStats = require('./endpoints/stats/getStats');
+const updateStats = require('./endpoints/stats/updateStats');
 
 api.post('/addMark', json, mapHandler(addMark));
 api.post('/changeColor', json, mapHandler(changeColor));
@@ -83,7 +83,7 @@ api.post('/register', json, mapHandler(register));
 api.post('/settings', json, mapHandler(settings));
 api.post('/deleteAccount', json, mapHandler(deleteAccount));
 
-api.post('/updateEvents', json, mapHandler(updateEvents));
-api.post('/getEvents', json, mapHandler(getEvents));
+api.post('/updateStats', json, mapHandler(updateStats));
+api.post('/getStats', json, mapHandler(getStats));
 
 module.exports = api;

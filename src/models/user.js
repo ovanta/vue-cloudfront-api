@@ -22,7 +22,7 @@ module.exports = mongoose.model('User', {
         expiry: Number
     }],
 
-    events: {
+    stats: {
         type: Object,
         required: true,
         default: {}
