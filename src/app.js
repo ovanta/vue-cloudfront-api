@@ -1,6 +1,7 @@
-const express = require('express');
-const cors = require('cors');
 const compression = require('compression');
+const express = require('express');
+const fs = require('fs');
+const cors = require('cors');
 const path = require('path');
 
 // Resolve storage path and create global config variable
@@ -9,6 +10,11 @@ config.server.storagePath = path.resolve(`./${config.server.storagePath}`);
 
 // Freeze and store as global variable
 global._config = Object.freeze(config);
+
+// Create storage directory if not exists
+if (!fs.existsSync(config.server.storagePath)) {
+    fs.mkdirSync(config.server.storagePath);
+}
 
 // Create app
 const app = express();
