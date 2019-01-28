@@ -21,7 +21,7 @@ module.exports = {
         return newObj;
     },
 
-    uid(length = _config.defaultUIDLength) {
+    uid(length = _config.server.defaultUIDLength) {
         let uid = '';
         while (uid.length < length) {
             uid += toBase61(Date.now() * Math.floor(Math.random() * 1e15));

@@ -21,7 +21,7 @@ module.exports = async (req, res) => {
         }
 
         // Make sure the file exists
-        const path = `${_config.storagePath}/${node.id}`;
+        const path = `${_config.server.storagePath}/${node.id}`;
         if (fs.existsSync(path)) {
             const fileSize = fs.statSync(path).size;
 
@@ -34,7 +34,7 @@ module.exports = async (req, res) => {
 
                 if (match) {
                     const start = Number(match[1]) || 0;
-                    const chunkEnd = start + _config.streamChunkSize;
+                    const chunkEnd = start + _config.server.mediaStreamChunckSize;
                     const end = Number(match[2]) || (chunkEnd < fileSize ? chunkEnd : fileSize);
 
                     // Validate range

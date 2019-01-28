@@ -5,7 +5,7 @@ const path = require('path');
 
 // Resolve storage path and create global config variable
 const config = require('../config/config');
-config.storagePath = path.resolve(`./${config.storagePath}`);
+config.server.storagePath = path.resolve(`./${config.server.storagePath}`);
 
 // Freeze and store as global variable
 global._config = Object.freeze(config);

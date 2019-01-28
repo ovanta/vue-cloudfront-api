@@ -7,7 +7,7 @@ module.exports = async req => {
     const {username, password} = req.body;
 
     // Check if registrations are disabled
-    if (_config.disableRegistration) {
+    if (_config.auth.disableRegistration) {
         throw 'Registration is currently disabled';
     }
 
@@ -57,7 +57,7 @@ module.exports = async req => {
                 type: 'dir',
                 name: 'Home',
                 marked: false,
-                color: _config.defaultFolderColor
+                color: _config.server.defaultFolderColor
             }).save()
         ]);
 

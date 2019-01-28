@@ -17,7 +17,7 @@ module.exports = async req => {
         if (node && node.type === 'file') {
 
             // Add new static id
-            const newUid = uid(_config.staticLinkUIDLength);
+            const newUid = uid(_config.server.staticLinkUIDLength);
             node.staticIds.push(newUid);
             node.set('lastModified', Date.now());
             return node.save().then(() => newUid);

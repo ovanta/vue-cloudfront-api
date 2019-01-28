@@ -4,9 +4,9 @@ const multer = require('multer');
 const fs = require('fs');
 
 const formdata = multer({
-    storage: storageEngine(() => `${global._config.storagePath}/${uid(10)}`),
+    storage: storageEngine(() => `${global._config.server.storagePath}/${uid(10)}`),
     limits: {
-        fileSize: _config.maxRequestSize
+        fileSize: _config.server.uploadSizeLimitPerFile
     }
 }).any();
 

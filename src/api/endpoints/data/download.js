@@ -36,7 +36,7 @@ module.exports = async (req, res) => {
     if (node) {
 
         // Check file
-        const path = `${_config.storagePath}/${node.id}`;
+        const path = `${_config.server.storagePath}/${node.id}`;
         if (fs.existsSync(path)) {
             res.download(path, node.name);
         } else {

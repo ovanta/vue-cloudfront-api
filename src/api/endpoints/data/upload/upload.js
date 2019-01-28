@@ -18,7 +18,7 @@ module.exports = async req => {
     });
 
     // Negative value means infinite upload storage quote
-    if (_config.userStorageLimit >= 0) {
+    if (_config.server.totalStorageLimitPerUser >= 0) {
 
         // Check if upload size, including other files, don't exceed storage limit
         const contentLength = Number(req.get('content-length'));
@@ -36,8 +36,8 @@ module.exports = async req => {
         }
 
         // Compare current storage size and upload size with limit
-        if (contentLength + currentStorageSize > _config.userStorageLimit) {
-            throw `Storage limit of ${_config.userStorageLimit} bytes exceed`;
+        if (contentLength + currentStorageSize > _config.server.totalStorageLimitPerUser) {
+            throw `Storage limit of ${_config.server.totalStorageLimitPerUser} bytes exceed`;
         }
     }
 

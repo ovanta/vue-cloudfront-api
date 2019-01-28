@@ -27,7 +27,7 @@ module.exports = async req => {
         if (node.type === 'file') {
 
             // Delete file
-            fs.unlink(`${_config.storagePath}/${node.id}`, () => 0);
+            fs.unlink(`${_config.server.storagePath}/${node.id}`, () => 0);
         }
 
         ids.push(node.id);

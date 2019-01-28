@@ -1,22 +1,22 @@
 {
     "demo": false,
-    "dbname": "vue-cloudfront",
-    "storagePath": "/_storage",
-    "maxRequestSize": 5000000000,
-    "streamChunkSize": 4096000,
-    "userStorageLimit": -1,
-    "disableRegistration": false,
-    "defaultUIDLength": 8,
-    "staticLinkUIDLength": 20,
-    "defaultFolderColor": "#333333",
     "server": {
-        "port": 8080
+        "port": 8080,
+        "mongoDBDatabaseName": "vue-cloudfront",
+        "storagePath": "/_storage",
+        "uploadSizeLimitPerFile": 5000000000,
+        "totalStorageLimitPerUser": -1,
+        "mediaStreamChunckSize": 4096000,
+        "defaultUIDLength": 8,
+        "staticLinkUIDLength": 20,
+        "defaultFolderColor": "#333333"
     },
     "auth": {
         "apikeyExpiry": 12960000000,
         "saltRounds": 10,
         "maxLoginAttempts": 3,
-        "blockedLoginDuration": 30000
+        "blockedLoginDuration": 30000,
+        "disableRegistration": false
     },
     "validation": {
         "username": "^[\\w\\d]{2,15}$",
