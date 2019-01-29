@@ -3,7 +3,8 @@ const authViaApiKey = require('../../tools/authViaApiKey');
 const nodeModel = require('../../../models/node');
 
 module.exports = async (req, res) => {
-    const {id, apikey} = req.query;
+    const {apikey} = req.query;
+    const {id} = req.params;
 
     if (typeof id !== 'string') {
         throw 'Invalid node id';

@@ -3,12 +3,12 @@
     "server": {
         "port": 8080,
         "mongoDBDatabaseName": "vue-cloudfront",
-        "storagePath": "/_storage",
+        "storagePath": "./_storage",
         "uploadSizeLimitPerFile": 5000000000,
         "totalStorageLimitPerUser": -1,
         "mediaStreamChunckSize": 4096000,
         "defaultUIDLength": 8,
-        "staticLinkUIDLength": 20,
+        "staticLinkUIDLength": 5,
         "defaultFolderColor": "#333333"
     },
     "auth": {

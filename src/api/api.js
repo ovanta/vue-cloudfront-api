@@ -75,8 +75,8 @@ api.post('/restoreFromBin', json, mapHandler(restoreFromBin));
 
 api.post('/delete', json, mapHandler(del));
 api.post('/upload', uploadMiddleware, mapHandler(upload));
-api.get('/static/*', statics);
-api.get('/download', download);
+api.get('/s/*', statics);
+api.get('/d/:id', download);
 
 api.post('/login', json, mapHandler(login));
 api.post('/register', json, mapHandler(register));
