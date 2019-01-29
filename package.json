@@ -11,9 +11,9 @@
         "url": "https://github.com/Simonwep/vue-cloudfront-api.git"
     },
     "scripts": {
-        "dev": "nodemon ./src/app.js",
-        "launch": "node ./src/app.js",
+        "dev": "nodemon ./src/app.js --ignore '/_storage'",
         "debug": "node %NODE_DEBUG_OPTION% ./src/app.js",
+        "launch": "pm2 start ecosystem.json",
         "lint": "eslint ./src"
     },
     "dependencies": {
@@ -22,13 +22,15 @@
         "compression": "^1.7.3",
         "cors": "^2.8.5",
         "express": "^4.16.4",
+        "graceful-fs": "latest",
         "jsonschema": "^1.2.4",
         "mongodb": "^3.1.10",
         "mongoose": "^5.4.0",
         "multer": "^1.4.1",
-        "graceful-fs": "latest"
+        "pm2": "^3.2.9"
     },
     "devDependencies": {
-        "eslint": "^5.10.0"
+        "eslint": "^5.10.0",
+        "nodemon": "^1.18.9"
     }
 }
