@@ -7,22 +7,22 @@ module.exports = async (user, nodes, cb) => {
             cb(node);
 
             if (node.type === 'dir') {
-                await addChilds(node);
+                await traverseNode(node);
             }
         }
     }
 
-    async function addChilds(n) {
+    async function traverseNode(n) {
 
         // Find all nodes which have n as parent
         await nodeModel.find({owner: user.id, parent: n.id}).exec().then(async rnodes => {
-            for (let i = 0, n = rnodes.length; i < n; i++) {
+            for (let i = 0, l = rnodes.length; i < l; i++) {
                 await handleNode(rnodes[i]);
             }
         });
     }
 
-    for (let i = 0; i < nodes.length; i++) {
+    for (let i = 0, l = nodes.length; i < l; i++) {
         await handleNode(await nodeModel.findOne({owner: user.id, id: nodes[i]}).exec());
     }
 };

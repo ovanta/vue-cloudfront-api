@@ -53,6 +53,7 @@ const download = require('./endpoints/data/download.js');
 const statics = require('./endpoints/data/static.js');
 const upload = require('./endpoints/data/upload/upload.js');
 const del = require('./endpoints/data/delete.js');
+const zip = require('./endpoints/data/zip.js');
 
 // === Events endpoints
 const getStats = require('./endpoints/stats/getStats');
@@ -74,6 +75,7 @@ api.post('/moveToBin', json, mapHandler(moveToBin));
 api.post('/restoreFromBin', json, mapHandler(restoreFromBin));
 
 api.post('/delete', json, mapHandler(del));
+api.post('/zip', json, mapHandler(zip));
 api.post('/upload', uploadMiddleware, mapHandler(upload));
 api.get('/s/*', statics);
 api.get('/d/:id', download);
