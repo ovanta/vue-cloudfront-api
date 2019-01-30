@@ -12,19 +12,13 @@ module.exports = async req => {
         throw 'Invalid nodes scheme';
     }
 
-    // Find all nodes from this user and filter props
-    return nodeModel.find({owner: user.id, id: {$in: nodes}}).exec().then(nds => {
-
-        if (nds.length !== nodes.length) {
-            throw 'Request contains invalid nodes';
+    await nodeModel.updateMany(
+        {owner: user.id, id: {$in: nodes}},
+        {
+            $set: {
+                bin: true,
+                lastModified: Date.now()
+            }
         }
-
-        // "Restore" nodes from bin
-        return Promise.all(nds.map(node => {
-            node.set('bin', true);
-            node.set('lastModified', Date.now());
-            return node.save();
-        }));
-
-    }).then(() => null);
+    );
 };

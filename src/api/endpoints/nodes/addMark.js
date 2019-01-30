@@ -12,19 +12,14 @@ module.exports = async req => {
         throw 'Invalid nodes scheme';
     }
 
-    // Find all nodes from this user and filter props
-    return nodeModel.find({owner: user.id, id: {$in: nodes}}).exec().then(nds => {
-
-        if (nds.length !== nodes.length) {
-            throw 'Request contains invalid nodes';
+    // Mark nodes
+    await nodeModel.updateMany(
+        {owner: user.id, id: {$in: nodes}},
+        {
+            $set: {
+                marked: true,
+                lastModified: Date.now()
+            }
         }
-
-        // Mark nodes
-        return Promise.all(nds.map(node => {
-            node.set('marked', true);
-            node.set('lastModified', Date.now());
-            return node.save();
-        }));
-
-    }).then(() => null);
+    );
 };

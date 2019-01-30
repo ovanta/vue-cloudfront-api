@@ -14,11 +14,11 @@ module.exports = async req => {
     }
 
     // Apply new username (if set)
-    if (typeof newUsername === 'string') {
+    if (typeof newUsername === 'string' && newUsername) {
 
         // Check if already a user has this username
         if (await userModel.findOne({username: newUsername}).exec()) {
-            throw  'A user with this name already exist';
+            throw 'A user with this name already exist';
         }
 
         // Validate username
@@ -27,12 +27,10 @@ module.exports = async req => {
         } else {
             throw 'Username is too short or contains invalid characters';
         }
-    } else if (newUsername !== undefined) {
-        throw 'NewUsername must be of type string';
     }
 
     // Apply new password (if set)
-    if (typeof newPassword === 'string') {
+    if (typeof newPassword === 'string' && newPassword) {
 
         // Validate password
         if (new RegExp(_config.validation.password).test(newPassword)) {
@@ -40,9 +38,7 @@ module.exports = async req => {
         } else {
             throw 'Password is too short';
         }
-    } else if (newUsername !== undefined) {
-        throw 'NewUsername must be of type string';
     }
 
-    return user.save().then(() => null);
+    await user.save();
 };

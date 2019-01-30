@@ -14,15 +14,14 @@ module.exports = async req => {
         throw 'Target must be of type string';
     }
 
-    // Find all nodes from this user and filter props
-    return nodeModel.findOne({owner: user.id, id: target}).exec().then(node => {
-
-        if (!node) {
-            throw 'Can\'t find target node';
+    // Rename node
+    await nodeModel.updateOne(
+        {owner: user.id, id: target},
+        {
+            $set: {
+                name: newName,
+                lastModified: Date.now()
+            }
         }
-
-        node.set('name', newName);
-        node.set('lastModified', Date.now());
-        return node.save();
-    }).then(() => null);
+    );
 };

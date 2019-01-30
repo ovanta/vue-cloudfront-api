@@ -17,18 +17,13 @@ module.exports = async req => {
     }
 
     // Find all nodes from this user and filter props
-    return nodeModel.find({owner: user.id, id: {$in: nodes}}).exec().then(nds => {
-
-        if (nds.length !== nodes.length) {
-            throw 'Request contains invalid nodes';
+    await nodeModel.updateMany(
+        {owner: user.id, id: {$in: nodes}},
+        {
+            $set: {
+                color: newColor,
+                lastModified: Date.now()
+            }
         }
-
-        // Change colors and save choosed nodes
-        return Promise.all(nds.map(node => {
-            node.set('color', newColor);
-            node.set('lastModified', Date.now());
-            return node.save();
-        }));
-
-    }).then(() => null);
+    );
 };

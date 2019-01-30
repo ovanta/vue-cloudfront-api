@@ -45,7 +45,7 @@ const restoreFromBin = require('./endpoints/nodes/restoreFromBin.js');
 // === User endpoints
 const login = require('./endpoints/user/login.js');
 const register = require('./endpoints/user/register.js');
-const settings = require('./endpoints/user/settings.js');
+const updateCredentials = require('./endpoints/user/updateCredentials.js');
 const deleteAccount = require('./endpoints/user/deleteAccount.js');
 
 // === Data endpoints
@@ -80,7 +80,7 @@ api.get('/d/:id', download);
 
 api.post('/login', json, mapHandler(login));
 api.post('/register', json, mapHandler(register));
-api.post('/settings', json, mapHandler(settings));
+api.post('/updateCredentials', json, mapHandler(updateCredentials));
 api.post('/deleteAccount', json, mapHandler(deleteAccount));
 
 api.post('/updateStats', json, mapHandler(updateStats));
