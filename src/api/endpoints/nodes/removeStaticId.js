@@ -13,7 +13,7 @@ module.exports = async req => {
 
     // Find requested node
     return nodeModel.findOne({owner: user.id, id: node}).exec().then(node => {
-        if (node && node.type === 'file') {
+        if (node) {
 
             // Remove static id
             node.set('staticIds', node.staticIds.filter(ids => !ids.includes(ids)));

@@ -9,7 +9,7 @@ module.exports = async req => authViaApiKey(req.body.apikey).then(user => {
         return {
             nodes: res.map(v => {
                 if (v.type === 'dir') {
-                    return pick(v, ['id', 'parent', 'lastModified', 'type', 'name', 'marked', 'bin', 'color']);
+                    return pick(v, ['id', 'parent', 'lastModified', 'type', 'name', 'marked', 'bin', 'color', 'staticIds']);
                 } else {
                     return pick(v, ['id', 'parent', 'lastModified', 'type', 'name', 'marked', 'size', 'bin', 'staticIds']);
                 }

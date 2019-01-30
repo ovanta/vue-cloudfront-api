@@ -1,4 +1,5 @@
 const fs = require('fs');
+const createZipStream = require('../../tools/createZipStream');
 const authViaApiKey = require('../../tools/authViaApiKey');
 const nodeModel = require('../../../models/node');
 
@@ -11,33 +12,16 @@ module.exports = async (req, res) => {
     }
 
     // Authenticate user
-    const node = await authViaApiKey(apikey).then(async user => {
-        const node = await nodeModel.findOne({owner: user.id, id}).exec();
+    const user = await authViaApiKey(apikey).catch(() => null);
+    const node = await nodeModel.findOne(user ? {owner: user.id, id} : {staticIds: id}).exec();
 
-        // Check node
-        if (!node) {
-            throw node;
-        }
+    if (!node) {
+        return res.status(404).send();
+    }
 
-        return node;
-    }).catch(async () => {
-        const node = await nodeModel.findOne({staticIds: id}).exec();
-
-        // Check node
-        if (!node) {
-            throw 'Can\'t find target node';
-        }
-
-        return node;
-    }).catch(() => {
-        res.status(404).send();
-        return null;
-    });
-
-    if (node) {
-
-        // Check file
+    if (node.type === 'file') {
         const path = `${_config.server.storagePath}/${node.id}`;
+
         if (fs.existsSync(path)) {
             res.download(path, node.name);
         } else {
@@ -46,5 +30,10 @@ module.exports = async (req, res) => {
             await nodeModel.deleteOne({id: node.id}).exec();
             res.status(404).send();
         }
+    } else if (node.type === 'dir') {
+        return createZipStream([node.id]).then(stream => {
+            res.set('Content-Disposition', `attachment; filename=${node.name}.zip`);
+            stream.pipe(res);
+        });
     }
 };

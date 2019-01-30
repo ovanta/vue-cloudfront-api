@@ -14,7 +14,7 @@ module.exports = async req => {
 
     // Find requested node
     return nodeModel.findOne({owner: user.id, id: node}).exec().then(node => {
-        if (node && node.type === 'file') {
+        if (node) {
 
             // Add new static id
             const newUid = uid(_config.server.staticLinkUIDLength);

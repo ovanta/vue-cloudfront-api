@@ -77,7 +77,7 @@ module.exports = async req => {
     return Promise.resolve({
         nodes: newNodes.map(v => {
             if (v.type === 'dir') {
-                return pick(v, ['id', 'parent', 'lastModified', 'type', 'name', 'marked', 'bin', 'color']);
+                return pick(v, ['id', 'parent', 'lastModified', 'type', 'name', 'marked', 'bin', 'color', 'staticIds']);
             } else {
                 return pick(v, ['id', 'parent', 'lastModified', 'type', 'name', 'marked', 'size', 'bin', 'staticIds']);
             }

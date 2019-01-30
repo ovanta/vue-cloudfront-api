@@ -9,16 +9,12 @@ module.exports = mongoose.model('Node', {
     name: String,    // Folder / filename,
     marked: Boolean, // If marked
     bin: Boolean, // If moved to bin
+    staticIds: [String],
 
     // ==== File specific ===
     size: {
         required: false,
         type: Number
-    },
-
-    staticIds: {
-        required: false,
-        type: [String]
     },
 
     // ==== Folder specific ===
