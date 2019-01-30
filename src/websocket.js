@@ -33,6 +33,9 @@ module.exports = server => {
                         }
 
                         userMap[userid].push(ws);
+
+                        // Approve registration
+                        ws.send('registration-approval');
                     }
 
                     break;
