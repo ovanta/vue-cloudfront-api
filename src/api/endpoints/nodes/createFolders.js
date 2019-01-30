@@ -74,7 +74,7 @@ module.exports = async req => {
                 type: 'dir',
                 name: folder.name || 'Unknown',
                 lastModified: Date.now(),
-                color: _config.server.defaultFolderColor,
+                color: _config.mongodb.defaultFolderColor,
                 marked: false
             }).save().then(node => {
                 return pick(node, ['id', 'parent', 'type', 'name', 'lastModified', 'color', 'marked']);

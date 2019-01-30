@@ -17,7 +17,7 @@ module.exports = async req => {
         if (node) {
 
             // Add new static id
-            const newUid = uid(_config.server.staticLinkUIDLength);
+            const newUid = uid(_config.mongodb.staticLinkUIDLength);
             node.staticIds.push(newUid);
             node.set('lastModified', Date.now());
             return node.save().then(() => newUid);

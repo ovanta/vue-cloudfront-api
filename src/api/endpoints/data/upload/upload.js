@@ -76,7 +76,7 @@ module.exports = async req => {
             marked: false,
             size
         }).save().then(node => {
-            return pick(node, ['id', 'parent', 'lastModified', 'type', 'name', 'marked', 'size', 'bin', 'staticIds']);
+            return pick(node, _config.mongodb.exposedProps.fileNode);
         }).catch(reason => {
             console.warn(reason); // eslint-disable-line no-console
             fs.unlink(path, () => 0);

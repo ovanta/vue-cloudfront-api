@@ -26,7 +26,7 @@ module.exports = async req => {
             type: 'dir',
             name: name || 'New Folder',
             lastModified: Date.now(),
-            color: _config.server.defaultFolderColor,
+            color: _config.mongodb.defaultFolderColor,
             marked: false
         }).save();
 

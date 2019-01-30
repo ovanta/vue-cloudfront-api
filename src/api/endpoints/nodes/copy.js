@@ -74,14 +74,9 @@ module.exports = async req => {
         await addChilds(n, destination);
     }
 
+    const {dirNode, fileNode} = _config.mongodb.exposedProps;
     return Promise.resolve({
-        nodes: newNodes.map(v => {
-            if (v.type === 'dir') {
-                return pick(v, ['id', 'parent', 'lastModified', 'type', 'name', 'marked', 'bin', 'color', 'staticIds']);
-            } else {
-                return pick(v, ['id', 'parent', 'lastModified', 'type', 'name', 'marked', 'size', 'bin', 'staticIds']);
-            }
-        })
+        nodes: newNodes.map(v => pick(v, v.type === 'dir' ? dirNode : fileNode))
     });
 };
 

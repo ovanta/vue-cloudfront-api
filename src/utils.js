@@ -17,11 +17,16 @@ module.exports = {
 
     pick(object, props) {
         const newObj = {};
-        props.forEach(v => newObj[v] = object[v]);
+
+        for (let i = 0, l = props.length; i < l; i++) {
+            const prop = props[i];
+            newObj[prop] = object[prop];
+        }
+
         return newObj;
     },
 
-    uid(length = _config.server.defaultUIDLength) {
+    uid(length = _config.mongodb.defaultUIDLength) {
         let uid = '';
         while (uid.length < length) {
             uid += toBase61(Date.now() * Math.floor(Math.random() * 1e15));

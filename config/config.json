@@ -2,14 +2,40 @@
     "demo": false,
     "server": {
         "port": 8080,
-        "mongoDBDatabaseName": "vue-cloudfront",
         "storagePath": "./_storage",
         "uploadSizeLimitPerFile": 5000000000,
         "totalStorageLimitPerUser": -1,
-        "mediaStreamChunckSize": 4096000,
+        "mediaStreamChunckSize": 4096000
+    },
+    "mongodb": {
+        "databaseName": "vue-cloudfront",
         "defaultUIDLength": 8,
         "staticLinkUIDLength": 5,
-        "defaultFolderColor": "#333333"
+        "defaultFolderColor": "#333333",
+        "exposedProps": {
+            "dirNode": [
+                "id",
+                "parent",
+                "lastModified",
+                "type",
+                "name",
+                "marked",
+                "bin",
+                "color",
+                "staticIds"
+            ],
+            "fileNode": [
+                "id",
+                "parent",
+                "lastModified",
+                "type",
+                "name",
+                "marked",
+                "size",
+                "bin",
+                "staticIds"
+            ]
+        }
     },
     "auth": {
         "apikeyExpiry": 12960000000,
