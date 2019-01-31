@@ -35,7 +35,12 @@ module.exports = server => {
                         userMap[userid].push(ws);
 
                         // Approve registration
-                        ws.send('registration-approval');
+                        ws.send(JSON.stringify({
+                            type: 'registration-approval',
+                            value: {
+                                connections: userMap[userid].length
+                            }
+                        }));
                     }
 
                     break;
@@ -49,7 +54,10 @@ module.exports = server => {
                             const socket = socketList[i];
 
                             if (socket !== ws) {
-                                socket.send(JSON.stringify(value));
+                                socket.send(JSON.stringify({
+                                    type: 'broadcast',
+                                    value
+                                }));
                             }
                         }
                     }
