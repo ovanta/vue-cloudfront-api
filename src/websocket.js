@@ -10,6 +10,11 @@ module.exports = server => {
 
         ws.on('message', async message => {
 
+            // Answer ping request
+            if (message === '__ping__') {
+                return ws.send('__pong__');
+            }
+
             // Try to parse message
             try {
                 message = JSON.parse(message);
@@ -30,6 +35,8 @@ module.exports = server => {
                         const userid = user.id;
                         if (!(userid in userMap)) {
                             userMap[userid] = [];
+                        } else if (userMap[userid].includes(ws)) {
+                            return;
                         }
 
                         userMap[userid].push(ws);
