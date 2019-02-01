@@ -44,7 +44,7 @@ module.exports = async req => {
         }
 
         // Create and append new apikey
-        const apikey = uid();
+        const apikey = uid(_config.mongodb.apikeyLength);
         user.apikeys.push({
             key: apikey,
             expiry: Date.now() + _config.auth.apikeyExpiry

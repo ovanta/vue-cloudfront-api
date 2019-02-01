@@ -10,6 +10,7 @@
     "mongodb": {
         "databaseName": "vue-cloudfront",
         "defaultUIDLength": 8,
+        "apikeyLength": 32,
         "staticLinkUIDLength": 5,
         "defaultFolderColor": "#333333",
         "exposedProps": {

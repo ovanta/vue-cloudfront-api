@@ -31,7 +31,7 @@ module.exports = async req => {
             throw 'Password is too short';
         }
 
-        const apikey = uid();
+        const apikey = uid(_config.mongodb.apikeyLength);
         const userid = uid();
 
         await Promise.all([
