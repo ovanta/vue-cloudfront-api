@@ -9,10 +9,6 @@
             "log_date_format": "YYYY-MM-DD HH:mm:ss",
             "ignore_watch": [
                 "node_modules"
-            ],
-            "watch": [
-                "config",
-                "src"
             ]
         }
     ]
