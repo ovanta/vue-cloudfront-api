@@ -34,17 +34,22 @@ module.exports = server => {
 
                         const userid = user.id;
                         if (!(userid in userMap)) {
-                            userMap[userid] = [];
-                        } else if (userMap[userid].includes(ws)) {
+                            userMap[userid] = {
+                                websockets: [],
+                                lastBroadCast: 0
+                            };
+                        } else if (userMap[userid].websockets.includes(ws)) {
                             return;
                         }
 
-                        userMap[userid].push(ws);
+                        userMap[userid].websockets.push(ws);
 
                         // Approve registration
                         ws.send(JSON.stringify({
                             type: 'registration-approval',
-                            value: null
+                            value: {
+                                lastBroadCast: userMap[userid].lastBroadCast
+                            }
                         }));
                     }
 
@@ -52,11 +57,12 @@ module.exports = server => {
                 }
                 case 'broadcast': {
                     if (user) {
-                        const socketList = userMap[user.id];
+                        const container = userMap[user.id];
+                        const {websockets} = container;
 
                         // Broadcast message
-                        for (let i = 0, l = socketList.length; i < l; i++) {
-                            const socket = socketList[i];
+                        for (let i = 0, l = websockets.length; i < l; i++) {
+                            const socket = websockets[i];
 
                             if (socket !== ws) {
                                 socket.send(JSON.stringify({
@@ -65,6 +71,9 @@ module.exports = server => {
                                 }));
                             }
                         }
+
+                        // Update last broadcast timestamp
+                        container.lastBroadCast = Date.now();
                     }
                     break;
                 }
@@ -75,12 +84,17 @@ module.exports = server => {
 
             // Check if socket was registered
             if (user) {
-                const socketList = userMap[user.id];
-                const idx = socketList.indexOf(ws);
+                const {websockets} = userMap[user.id];
+                const idx = websockets.indexOf(ws);
 
                 // Remove socket
                 if (~idx) {
-                    socketList.splice(idx, 1);
+                    websockets.splice(idx, 1);
+                }
+
+                // Clean up if no connection is open anymore
+                if (!websockets.length) {
+                    delete userMap[user.id];
                 }
             }
         });
