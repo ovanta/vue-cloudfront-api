@@ -44,9 +44,7 @@ module.exports = server => {
                         // Approve registration
                         ws.send(JSON.stringify({
                             type: 'registration-approval',
-                            value: {
-                                connections: userMap[userid].length
-                            }
+                            value: null
                         }));
                     }
 
