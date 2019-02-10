@@ -1,5 +1,6 @@
 const compression = require('compression');
 const express = require('express');
+const server = require('http').createServer();
 const fs = require('fs');
 const cors = require('cors');
 const path = require('path');
@@ -31,5 +32,9 @@ app.use(cors());
 // GraphQL API Module
 app.use('/api', require('./api/api'));
 
-// Start
-app.listen(config.server.port);
+// Spawn Websocket
+require('./websocket')(server);
+
+// Add express http-server
+server.on('request', app);
+server.listen(config.server.port);
