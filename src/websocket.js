@@ -36,7 +36,7 @@ module.exports = server => {
                         if (!(userid in userMap)) {
                             userMap[userid] = {
                                 websockets: [],
-                                lastBroadCast: 0
+                                lastBroadcast: 0
                             };
                         } else if (userMap[userid].websockets.includes(ws)) {
                             return;
@@ -48,7 +48,7 @@ module.exports = server => {
                         ws.send(JSON.stringify({
                             type: 'registration-approval',
                             value: {
-                                lastBroadCast: userMap[userid].lastBroadCast
+                                lastBroadcast: userMap[userid].lastBroadcast
                             }
                         }));
                     }
@@ -73,7 +73,7 @@ module.exports = server => {
                         }
 
                         // Update last broadcast timestamp
-                        container.lastBroadCast = Date.now();
+                        container.lastBroadcast = Date.now();
                     }
                     break;
                 }

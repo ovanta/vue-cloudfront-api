@@ -14,6 +14,7 @@
         "dev": "nodemon ./src/app.js --ignore '/_storage'",
         "debug": "node %NODE_DEBUG_OPTION% ./src/app.js",
         "launch": "pm2 start ecosystem.json",
+        "launch:ws": "node ./src/app.js",
         "lint": "eslint ./src"
     },
     "dependencies": {
