@@ -13,9 +13,10 @@
     "scripts": {
         "dev": "nodemon ./src/app.js --ignore '/_storage'",
         "debug": "node %NODE_DEBUG_OPTION% ./src/app.js",
-        "launch": "pm2 start ecosystem.json",
-        "launch:ws": "node ./src/app.js",
-        "lint": "eslint ./src"
+        "start:ws": "node ./src/app.js",
+        "lint": "eslint ./src",
+        "start": "pm2 start ecosystem.json",
+        "stop": "pm2 stop ecosystem.json"
     },
     "dependencies": {
         "bcrypt": "^3.0.2",

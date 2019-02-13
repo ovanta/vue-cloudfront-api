@@ -40,7 +40,8 @@ module.exports = async req => {
         return new Promise((resolve, reject) => {
             stream.pipe(fs.createWriteStream(path.join(_config.server.storagePath, id)))
                 .on('finish', () => resolve(size))
-                .on('error', reject);
+                .on('error', reject)
+                .on('close', reject);
         });
 
     }).then(size => {
