@@ -41,6 +41,7 @@ const addStaticId = require('./endpoints/nodes/addStaticId.js');
 const removeStaticId = require('./endpoints/nodes/removeStaticId.js');
 const moveToBin = require('./endpoints/nodes/moveToBin.js');
 const restoreFromBin = require('./endpoints/nodes/restoreFromBin.js');
+const zip = require('./endpoints/nodes/zip.js');
 
 // === User endpoints
 const login = require('./endpoints/user/login.js');
@@ -72,6 +73,7 @@ api.post('/addStaticId', json, mapHandler(addStaticId));
 api.post('/removeStaticId', json, mapHandler(removeStaticId));
 api.post('/moveToBin', json, mapHandler(moveToBin));
 api.post('/restoreFromBin', json, mapHandler(restoreFromBin));
+api.post('/zip', json, mapHandler(zip));
 
 api.post('/delete', json, mapHandler(del));
 api.post('/upload', uploadMiddleware, mapHandler(upload));

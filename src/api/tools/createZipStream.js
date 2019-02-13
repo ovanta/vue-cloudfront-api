@@ -2,7 +2,7 @@ const nodeModel = require('../../models/node');
 const JSZip = require('jszip');
 const fs = require('fs');
 
-module.exports = async (nodes) => {
+module.exports = async nodes => {
     const zip = new JSZip();
 
     async function handleNode(path = '', node) {
