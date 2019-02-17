@@ -1,5 +1,23 @@
 {
     "demo": false,
+    "demoContent": [
+        {
+            "regex": "\\.(gif|jpe?g|tiff|png)$",
+            "url": "https://raw.githubusercontent.com/Simonwep/vue-cloudfront/master/public/img/icons/android-chrome-512x512.png"
+        },
+        {
+            "regex": "\\.(mp3|adts|ogg|webp|flac)$",
+            "url": "https://github.com/9530f/stuff/blob/master/music_for_programming_1-datassette.mp3?raw=true"
+        },
+        {
+            "regex": "\\.(mp4|wav|webm)$",
+            "url": "https://github.com/9530f/stuff/blob/master/Spinning%20Levers%201936%20-%20How%20A%20Transmission%20Works.mp4?raw=true"
+        },
+        {
+            "regex": "\\.(ttf|otf|woff|woff2|eot)$",
+            "url": "https://fonts.gstatic.com/s/roboto/v18/KFOlCnqEu92Fr1MmEU9fCRc4EsA.woff2"
+        }
+    ],
     "server": {
         "port": 8080,
         "storagePath": "./_storage",

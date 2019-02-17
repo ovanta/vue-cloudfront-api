@@ -20,6 +20,17 @@ module.exports = async (req, res) => {
             return res.status(404).send();
         }
 
+        // Check if in demo mode
+        if (_config.demo) {
+            const {name} = node;
+
+            for (const {regex, url} of _config.demoContent) {
+                if (name.match(new RegExp(regex, 'i'))) {
+                    return res.redirect(url);
+                }
+            }
+        }
+
         // Make sure the file exists
         const path = `${_config.server.storagePath}/${node.id}`;
         if (fs.existsSync(path)) {
