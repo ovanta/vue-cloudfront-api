@@ -3,7 +3,7 @@
     "demoContent": [
         {
             "regex": "\\.(gif|jpe?g|tiff|png)$",
-            "url": "https://raw.githubusercontent.com/Simonwep/vue-cloudfront/master/public/img/icons/android-chrome-512x512.png"
+            "url": "https://raw.githubusercontent.com/9530f/stuff/master/android-chrome-512x512.png"
         },
         {
             "regex": "\\.(mp3|adts|ogg|webp|flac)$",

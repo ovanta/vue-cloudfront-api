@@ -4,6 +4,7 @@ is used to define general behaviour of the official vue-cloudfront api.
 
 **`demo`**  
 If true all files will be saved, but no bytes written into it. Used to show a demo without consuming storage space.
+See `demoContent` to configure which content should be send as placeholder.
 
 **`server.port`**  
 Port where vue-cloudfront-api will listen for requests.
