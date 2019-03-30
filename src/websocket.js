@@ -1,9 +1,13 @@
 const userModel = require('./models/user');
 const WebSocket = require('ws');
+const userMap = {};
 
-module.exports = server => {
+/**
+ * Launches the websocket broadcast server
+ * @param server
+ */
+module.exports.launch = server => {
     const wss = new WebSocket.Server({server: server});
-    const userMap = {};
 
     wss.on('connection', ws => {
         let user;
@@ -99,4 +103,14 @@ module.exports = server => {
             }
         });
     });
+};
+
+/**
+ * Returns the amount of currenty connected user
+ * @param userid
+ * @returns {number}
+ */
+module.exports.getSessionsBy = userid => {
+    const user = userMap[userid];
+    return ((user && user.websockets) || []).length;
 };

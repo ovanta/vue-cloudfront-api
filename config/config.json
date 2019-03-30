@@ -22,7 +22,7 @@
         "port": 8080,
         "storagePath": "./_storage",
         "uploadSizeLimitPerFile": 5000000000,
-        "totalStorageLimitPerUser": -1,
+        "totalStorageLimitPerUser": 10000000000,
         "mediaStreamChunckSize": 4096000
     },
     "mongodb": {

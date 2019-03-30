@@ -33,7 +33,7 @@ app.use(cors());
 app.use('/api', require('./api/api'));
 
 // Spawn Websocket
-require('./websocket')(server);
+require('./websocket').launch(server);
 
 // Add express http-server
 server.on('request', app);
