@@ -2,6 +2,7 @@ const fs = require('fs');
 const {uid, pick} = require('../../../utils');
 const mongoose = require('mongoose');
 const authViaApiKey = require('../../tools/authViaApiKey');
+const usedSpaceBy = require('../../tools/usedSpaceBy');
 const nodeModel = require('../../../models/node');
 
 module.exports = async req => {
@@ -24,6 +25,19 @@ module.exports = async req => {
     if (!Array.isArray(nodes) || nodes.some(v => typeof v !== 'string')) {
         throw 'Invalid nodes scheme';
     }
+
+    // Used to check whenever a copy is because of storage limit not possible
+    let spaceUsed = await usedSpaceBy(user.id);
+    const {totalStorageLimitPerUser} = _config.server;
+    const updateUsedSpace = amount => {
+        if (~totalStorageLimitPerUser) {
+            spaceUsed += amount;
+
+            if (spaceUsed > totalStorageLimitPerUser) {
+                throw `Storage limit of ${totalStorageLimitPerUser} bytes exceed`;
+            }
+        }
+    };
 
     const newNodes = [];
 
@@ -50,6 +64,9 @@ module.exports = async req => {
             const src = `${_config.server.storagePath}/${n.id}`;
             const dest = `${_config.server.storagePath}/${newId}`;
             if (fs.existsSync(src)) {
+                const {size} = fs.statSync(src);
+                await updateUsedSpace(size);
+
                 fs.copyFileSync(src, dest);
             } else {
                 await nodeModel.deleteOne({owner: user.id, id: n.id});

@@ -1,6 +1,7 @@
 const fs = require('fs');
 const {pick} = require('../../../../utils');
 const authViaApiKey = require('../../../tools/authViaApiKey');
+const usedSpaceBy = require('../../../tools/usedSpaceBy');
 const nodeModel = require('../../../../models/node');
 
 module.exports = async req => {
@@ -17,28 +18,17 @@ module.exports = async req => {
         throw reason;
     });
 
-    // Negative value means infinite upload storage quote
-    if (_config.server.totalStorageLimitPerUser >= 0) {
+    const contentLength = Number(req.get('content-length'));
 
-        // Check if upload size, including other files, don't exceed storage limit
-        const contentLength = Number(req.get('content-length'));
+    // Validate header
+    if (isNaN(contentLength)) {
+        throw 'Invalid content-length header';
+    }
 
-        // Validate header
-        if (isNaN(contentLength)) {
-            throw 'Invalid content-length header';
-        }
-
-        // Calculate current storage size
-        let currentStorageSize = 0;
-        const nodes = await nodeModel.find({owner: user.id, type: 'file'}, 'size').exec();
-        for (let i = 0, n = nodes.length; i < n; i++) {
-            currentStorageSize += nodes[i].size;
-        }
-
-        // Compare current storage size and upload size with limit
-        if (contentLength + currentStorageSize > _config.server.totalStorageLimitPerUser) {
-            throw `Storage limit of ${_config.server.totalStorageLimitPerUser} bytes exceed`;
-        }
+    // Compare current storage size and upload size with limit
+    const {totalStorageLimitPerUser} = _config.server;
+    if (~totalStorageLimitPerUser && (await usedSpaceBy(user.id)) + contentLength > totalStorageLimitPerUser) {
+        throw `Storage limit of ${totalStorageLimitPerUser} bytes exceed`;
     }
 
     // Rename files and create nodes
