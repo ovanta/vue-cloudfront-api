@@ -27,33 +27,34 @@ const mapHandler = mod => async (req, res) => {
 };
 
 // === Nodes endpoints
-const addMark = require('./endpoints/nodes/addMark.js');
-const changeColor = require('./endpoints/nodes/changeColor.js');
-const checkApiKey = require('./endpoints/user/checkApiKey.js');
-const copy = require('./endpoints/nodes/copy.js');
-const createFolder = require('./endpoints/nodes/createFolder.js');
-const createFolders = require('./endpoints/nodes/createFolders.js');
-const move = require('./endpoints/nodes/move.js');
-const removeMark = require('./endpoints/nodes/removeMark.js');
-const rename = require('./endpoints/nodes/rename.js');
-const update = require('./endpoints/nodes/update.js');
-const addStaticId = require('./endpoints/nodes/addStaticId.js');
-const removeStaticId = require('./endpoints/nodes/removeStaticId.js');
-const moveToBin = require('./endpoints/nodes/moveToBin.js');
-const restoreFromBin = require('./endpoints/nodes/restoreFromBin.js');
-const zip = require('./endpoints/nodes/zip.js');
+const addMark = require('./endpoints/nodes/addMark');
+const changeColor = require('./endpoints/nodes/changeColor');
+const checkApiKey = require('./endpoints/user/checkApiKey');
+const copy = require('./endpoints/nodes/copy');
+const createFolder = require('./endpoints/nodes/createFolder');
+const createFolders = require('./endpoints/nodes/createFolders');
+const move = require('./endpoints/nodes/move');
+const removeMark = require('./endpoints/nodes/removeMark');
+const rename = require('./endpoints/nodes/rename');
+const update = require('./endpoints/nodes/update');
+const addStaticId = require('./endpoints/nodes/addStaticId');
+const removeStaticId = require('./endpoints/nodes/removeStaticId');
+const moveToBin = require('./endpoints/nodes/moveToBin');
+const restoreFromBin = require('./endpoints/nodes/restoreFromBin');
+const zip = require('./endpoints/nodes/zip');
 
 // === User endpoints
-const login = require('./endpoints/user/login.js');
-const register = require('./endpoints/user/register.js');
-const updateCredentials = require('./endpoints/user/updateCredentials.js');
-const deleteAccount = require('./endpoints/user/deleteAccount.js');
+const login = require('./endpoints/user/login');
+const register = require('./endpoints/user/register');
+const updateCredentials = require('./endpoints/user/updateCredentials');
+const deleteAccount = require('./endpoints/user/deleteAccount');
+const status = require('./endpoints/user/status');
 
 // === Data endpoints
-const download = require('./endpoints/data/download.js');
-const statics = require('./endpoints/data/static.js');
-const upload = require('./endpoints/data/upload/upload.js');
-const del = require('./endpoints/data/delete.js');
+const download = require('./endpoints/data/download');
+const statics = require('./endpoints/data/static');
+const upload = require('./endpoints/data/upload/upload');
+const del = require('./endpoints/data/delete');
 
 // === Events endpoints
 const getStats = require('./endpoints/stats/getStats');
@@ -84,6 +85,7 @@ api.post('/login', json, mapHandler(login));
 api.post('/register', json, mapHandler(register));
 api.post('/updateCredentials', json, mapHandler(updateCredentials));
 api.post('/deleteAccount', json, mapHandler(deleteAccount));
+api.post('/status', json, mapHandler(status));
 
 api.post('/updateStats', json, mapHandler(updateStats));
 api.post('/getStats', json, mapHandler(getStats));
