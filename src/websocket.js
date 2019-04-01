@@ -1,5 +1,10 @@
 const userModel = require('./models/user');
+const maxmind = require('maxmind');
+const geolite2 = require('geolite2');
 const WebSocket = require('ws');
+
+const lookup = maxmind.openSync(geolite2.paths.city);
+
 const userMap = {};
 
 /**
@@ -9,7 +14,7 @@ const userMap = {};
 module.exports.launch = server => {
     const wss = new WebSocket.Server({server: server});
 
-    wss.on('connection', ws => {
+    wss.on('connection', (ws, req) => {
         let user;
 
         ws.on('message', async message => {
@@ -45,6 +50,18 @@ module.exports.launch = server => {
                         } else if (userMap[userid].websockets.includes(ws)) {
                             return;
                         }
+
+                        // Lookup ip info
+                        const lu = lookup.get(req.connection.remoteAddress);
+
+                        ws._sessionInfo = {
+                            city: lu.city.names.en,
+                            continent: lu.continent.names.en,
+                            country: lu.country.names.en,
+                            location: lu.location,
+                            registeredCountry: lu.registered_country.names.en,
+                            registerTimestamp: Date.now()
+                        };
 
                         userMap[userid].websockets.push(ws);
 
@@ -112,5 +129,5 @@ module.exports.launch = server => {
  */
 module.exports.getSessionsBy = userid => {
     const user = userMap[userid];
-    return ((user && user.websockets) || []).length;
+    return ((user && user.websockets) || []).map(v => v._sessionInfo);
 };
