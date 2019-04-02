@@ -1,5 +1,4 @@
 const authViaApiKey = require('../../tools/authViaApiKey');
-const websocket = require('../../../websocket');
 
 module.exports = async req => {
     const {apikey} = req.body;
@@ -10,7 +9,6 @@ module.exports = async req => {
     return {
         availableSpace: _config.server.totalStorageLimitPerUser,
         uploadSizeLimitPerFile: _config.server.uploadSizeLimitPerFile,
-        activeSessions: websocket.getSessionsBy(user.id),
         user: {
             id: user.id,
             username: user.username,

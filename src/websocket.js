@@ -6,120 +6,148 @@ const WebSocket = require('ws');
 const lookup = maxmind.openSync(geolite2.paths.city);
 
 const userMap = {};
+const websocket = {
 
-/**
- * Launches the websocket broadcast server
- * @param server
- */
-module.exports.launch = server => {
-    const wss = new WebSocket.Server({server: server});
+    /**
+     * Launches the websocket broadcast server
+     * @param server
+     */
+    launch(server) {
+        const wss = new WebSocket.Server({server: server});
 
-    wss.on('connection', (ws, req) => {
-        let user;
+        wss.on('connection', (ws, req) => {
+            let user;
 
-        ws.on('message', async message => {
+            ws.on('message', async message => {
 
-            // Answer ping request
-            if (message === '__ping__') {
-                return ws.send('__pong__');
-            }
+                // Answer ping request
+                if (message === '__ping__') {
+                    return ws.send('__pong__');
+                }
 
-            // Try to parse message
-            try {
-                message = JSON.parse(message);
-            } catch (ignored) {
-                return;
-            }
+                // Try to parse message
+                try {
+                    message = JSON.parse(message);
+                } catch (ignored) {
+                    return;
+                }
 
-            const {type, value} = message;
-            switch (type) {
-                case 'register': {
-                    if (typeof value === 'string' && value) {
-                        user = await userModel.findOne({apikeys: {$elemMatch: {key: value}}});
+                const {type, value} = message;
+                switch (type) {
+                    case 'register': {
+                        if (typeof value === 'string' && value) {
+                            user = await userModel.findOne({apikeys: {$elemMatch: {key: value}}});
 
-                        if (!user) {
-                            return;
-                        }
+                            if (!user) {
+                                return;
+                            }
 
-                        const userid = user.id;
-                        if (!(userid in userMap)) {
-                            userMap[userid] = {
-                                websockets: [],
-                                lastBroadcast: 0
+                            const userid = user.id;
+                            if (!(userid in userMap)) {
+                                userMap[userid] = {
+                                    websockets: [],
+                                    lastBroadcast: 0
+                                };
+                            } else if (userMap[userid].websockets.includes(ws)) {
+                                return;
+                            }
+
+                            // Lookup ip info
+                            const lu = lookup.get(req.connection.remoteAddress);
+
+                            ws._sessionInfo = {
+                                id: Math.floor(Math.random() * 1e15).toString(16) + Date.now().toString(16),
+                                city: lu.city.names.en,
+                                continent: lu.continent.names.en,
+                                country: lu.country.names.en,
+                                location: lu.location,
+                                registeredCountry: lu.registered_country.names.en,
+                                registerTimestamp: Date.now()
                             };
-                        } else if (userMap[userid].websockets.includes(ws)) {
-                            return;
+
+                            userMap[userid].websockets.forEach(s => s.send(JSON.stringify({
+                                type: 'open-session',
+                                value: ws._sessionInfo
+                            })));
+
+                            // Append websocket
+                            userMap[userid].websockets.push(ws);
+
+                            // Approve registration
+                            ws.send(JSON.stringify({
+                                type: 'registration-approval',
+                                value: {
+                                    lastBroadcast: userMap[userid].lastBroadcast,
+                                    sessions: websocket.getSessionsBy(userid)
+                                }
+                            }));
                         }
 
-                        // Lookup ip info
-                        const lu = lookup.get(req.connection.remoteAddress);
-
-                        ws._sessionInfo = {
-                            city: lu.city.names.en,
-                            continent: lu.continent.names.en,
-                            country: lu.country.names.en,
-                            location: lu.location,
-                            registeredCountry: lu.registered_country.names.en,
-                            registerTimestamp: Date.now()
-                        };
-
-                        userMap[userid].websockets.push(ws);
-
-                        // Approve registration
-                        ws.send(JSON.stringify({
-                            type: 'registration-approval',
-                            value: {
-                                lastBroadcast: userMap[userid].lastBroadcast
-                            }
-                        }));
+                        break;
                     }
+                    case 'broadcast': {
+                        if (user) {
+                            const container = userMap[user.id];
+                            const {websockets} = container;
 
-                    break;
-                }
-                case 'broadcast': {
-                    if (user) {
-                        const container = userMap[user.id];
-                        const {websockets} = container;
+                            // Broadcast message
+                            for (let i = 0, l = websockets.length; i < l; i++) {
+                                const socket = websockets[i];
 
-                        // Broadcast message
-                        for (let i = 0, l = websockets.length; i < l; i++) {
-                            const socket = websockets[i];
-
-                            if (socket !== ws) {
-                                socket.send(JSON.stringify({
-                                    type: 'broadcast',
-                                    value
-                                }));
+                                if (socket !== ws) {
+                                    socket.send(JSON.stringify({
+                                        type: 'broadcast',
+                                        value
+                                    }));
+                                }
                             }
+
+                            // Update last broadcast timestamp
+                            container.lastBroadcast = Date.now();
                         }
-
-                        // Update last broadcast timestamp
-                        container.lastBroadcast = Date.now();
+                        break;
                     }
-                    break;
                 }
-            }
+            });
+
+            ws.on('close', () => {
+
+                // Check if socket was registered
+                if (user) {
+                    const {websockets} = userMap[user.id];
+                    const idx = websockets.indexOf(ws);
+
+                    // Remove socket
+                    if (~idx) {
+                        const [socket] = websockets.splice(idx, 1);
+
+                        if (socket) {
+                            websockets.forEach(ws => ws.send(JSON.stringify({
+                                type: 'close-session',
+                                value: socket._sessionInfo
+                            })));
+                        }
+                    }
+
+                    // Clean up if no connection is open anymore
+                    if (!websockets.length) {
+                        delete userMap[user.id];
+                    }
+                }
+            });
         });
+    },
 
-        ws.on('close', () => {
+    /**
+     * Returns the amount of currenty connected user
+     * @param userid
+     * @returns {number}
+     */
+    getSessionsBy(userid) {
+        const user = userMap[userid];
+        return ((user && user.websockets) || []).map(v => v._sessionInfo);
+    }
 
-            // Check if socket was registered
-            if (user) {
-                const {websockets} = userMap[user.id];
-                const idx = websockets.indexOf(ws);
-
-                // Remove socket
-                if (~idx) {
-                    websockets.splice(idx, 1);
-                }
-
-                // Clean up if no connection is open anymore
-                if (!websockets.length) {
-                    delete userMap[user.id];
-                }
-            }
-        });
-    });
 };
 
 /**
@@ -127,7 +155,4 @@ module.exports.launch = server => {
  * @param userid
  * @returns {number}
  */
-module.exports.getSessionsBy = userid => {
-    const user = userMap[userid];
-    return ((user && user.websockets) || []).map(v => v._sessionInfo);
-};
+module.exports = websocket;
