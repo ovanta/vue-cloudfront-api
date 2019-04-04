@@ -1,4 +1,5 @@
 const userModel = require('./models/user');
+const userAgentParser = require('ua-parser-js');
 const maxmind = require('maxmind');
 const geolite2 = require('geolite2');
 const WebSocket = require('ws');
@@ -62,13 +63,14 @@ const websocket = {
                                 country: lu.country.names.en,
                                 location: lu.location,
                                 registeredCountry: lu.registered_country.names.en,
-                                registerTimestamp: Date.now()
+                                registerTimestamp: Date.now(),
+                                device: userAgentParser(req.headers['user-agent'])
                             };
 
-                            userMap[userid].websockets.forEach(s => s.send(JSON.stringify({
+                            websocket.broadcast(userid, {
                                 type: 'open-session',
                                 value: ws._sessionInfo
-                            })));
+                            });
 
                             // Append websocket
                             userMap[userid].websockets.push(ws);
@@ -122,10 +124,10 @@ const websocket = {
                         const [socket] = websockets.splice(idx, 1);
 
                         if (socket) {
-                            websockets.forEach(ws => ws.send(JSON.stringify({
+                            websocket.broadcast(user.id, {
                                 type: 'close-session',
                                 value: socket._sessionInfo
-                            })));
+                            });
                         }
                     }
 
@@ -146,8 +148,27 @@ const websocket = {
     getSessionsBy(userid) {
         const user = userMap[userid];
         return ((user && user.websockets) || []).map(v => v._sessionInfo);
-    }
+    },
 
+    /**
+     * Broadcast to all websockets from a single user
+     */
+    broadcast(userid, data) {
+        const user = userMap[userid];
+        const websockets = ((user && user.websockets) || []);
+
+        if (typeof data === 'object') {
+            data = JSON.stringify(data);
+        }
+
+        for (let i = 0, l = websockets.length; i < l; i++) {
+            const socket = websockets[i];
+
+            if (socket.readyState === 1) {
+                socket.send(data);
+            }
+        }
+    }
 };
 
 /**
