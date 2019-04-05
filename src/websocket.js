@@ -56,8 +56,8 @@ const websocket = {
 
                             ws._sessionInfo = {
                                 id: Math.floor(Math.random() * 1e15).toString(16) + Date.now().toString(16),
-                                city: lu.city,
-                                country: i18nCountries.getName(lu.country, 'en'),
+                                city: lu ? lu.city : 'Unknown',
+                                country: lu ? i18nCountries.getName(lu.country, 'en') : 'Unknown',
                                 device: userAgentParser(req.headers['user-agent'])
                             };
 
