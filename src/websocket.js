@@ -1,10 +1,8 @@
 const userModel = require('./models/user');
 const userAgentParser = require('ua-parser-js');
-const maxmind = require('maxmind');
-const geolite2 = require('geolite2');
+const i18nCountries = require('i18n-iso-countries');
+const geoip = require('geoip-lite');
 const WebSocket = require('ws');
-
-const lookup = maxmind.openSync(geolite2.paths.city);
 
 const userMap = {};
 const websocket = {
@@ -54,16 +52,12 @@ const websocket = {
                             }
 
                             // Lookup ip info
-                            const lu = lookup.get(req.connection.remoteAddress);
+                            const lu = geoip.lookup(req.connection.remoteAddress);
 
                             ws._sessionInfo = {
                                 id: Math.floor(Math.random() * 1e15).toString(16) + Date.now().toString(16),
-                                city: lu.city.names.en,
-                                continent: lu.continent.names.en,
-                                country: lu.country.names.en,
-                                location: lu.location,
-                                registeredCountry: lu.registered_country.names.en,
-                                registerTimestamp: Date.now(),
+                                city: lu.city,
+                                country: i18nCountries.getName(lu.country, 'en'),
                                 device: userAgentParser(req.headers['user-agent'])
                             };
 
