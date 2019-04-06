@@ -13,6 +13,7 @@
     "scripts": {
         "dev": "nodemon ./src/app.js --ignore '/_storage'",
         "debug": "node %NODE_DEBUG_OPTION% ./src/app.js",
+        "update:geoip-lite": "cd node_modules/geoip-lite && npm run-script updatedb",
         "start:ws": "node ./src/app.js",
         "lint": "eslint ./src",
         "start": "pm2 start ecosystem.json",
