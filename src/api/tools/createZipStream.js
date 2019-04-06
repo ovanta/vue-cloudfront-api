@@ -31,5 +31,5 @@ module.exports = async nodes => {
         });
     }
 
-    return zip.generateNodeStream({type: 'nodebuffer', streamFiles: true})
+    return zip.generateNodeStream({type: 'nodebuffer', streamFiles: true});
 };

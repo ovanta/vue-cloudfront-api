@@ -46,6 +46,7 @@ const zip = require('./endpoints/nodes/zip');
 // === User endpoints
 const login = require('./endpoints/user/login');
 const logout = require('./endpoints/user/logout');
+const logoutEverywhere = require('./endpoints/user/logoutEverywhere');
 const register = require('./endpoints/user/register');
 const updateCredentials = require('./endpoints/user/updateCredentials');
 const deleteAccount = require('./endpoints/user/deleteAccount');
@@ -83,6 +84,7 @@ api.get('/s/*', statics);
 api.get('/d/:id', download);
 
 api.post('/login', json, mapHandler(login));
+api.post('/logoutEverywhere', json, mapHandler(logoutEverywhere));
 api.post('/logout', json, mapHandler(logout));
 api.post('/register', json, mapHandler(register));
 api.post('/updateCredentials', json, mapHandler(updateCredentials));
