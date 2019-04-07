@@ -69,14 +69,16 @@ const websocket = {
                             // Append websocket
                             userMap[userid].websockets.push(ws);
 
-                            // Approve registration
-                            ws.send(JSON.stringify({
-                                type: 'registration-approval',
-                                value: {
-                                    lastBroadcast: userMap[userid].lastBroadcast,
-                                    sessions: websocket.getSessionsBy(userid)
-                                }
-                            }));
+                            if (ws.readyState === 1) {
+                                // Approve registration
+                                ws.send(JSON.stringify({
+                                    type: 'registration-approval',
+                                    value: {
+                                        lastBroadcast: userMap[userid].lastBroadcast,
+                                        sessions: websocket.getSessionsBy(userid)
+                                    }
+                                }));
+                            }
                         }
 
                         break;
@@ -84,19 +86,12 @@ const websocket = {
                     case 'broadcast': {
                         if (user) {
                             const container = userMap[user.id];
-                            const {websockets} = container;
 
                             // Broadcast message
-                            for (let i = 0, l = websockets.length; i < l; i++) {
-                                const socket = websockets[i];
-
-                                if (socket !== ws) {
-                                    socket.send(JSON.stringify({
-                                        type: 'broadcast',
-                                        value
-                                    }));
-                                }
-                            }
+                            websocket.broadcast(user.id, JSON.stringify({
+                                type: 'broadcast',
+                                value
+                            }), ws);
 
                             // Update last broadcast timestamp
                             container.lastBroadcast = Date.now();
@@ -147,7 +142,7 @@ const websocket = {
     /**
      * Broadcast to all websockets from a single user
      */
-    broadcast(userid, data) {
+    broadcast(userid, data, ignored = null) {
         const user = userMap[userid];
         const websockets = ((user && user.websockets) || []);
 
@@ -158,7 +153,7 @@ const websocket = {
         for (let i = 0, l = websockets.length; i < l; i++) {
             const socket = websockets[i];
 
-            if (socket.readyState === 1) {
+            if (socket !== ignored && socket.readyState === 1) {
                 socket.send(data);
             }
         }
