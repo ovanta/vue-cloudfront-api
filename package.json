@@ -13,11 +13,12 @@
     "scripts": {
         "dev": "nodemon ./src/app.js --ignore '/_storage'",
         "debug": "node %NODE_DEBUG_OPTION% ./src/app.js",
+        "build:docker": "docker build -f docker/Dockerfile . -t vue-cloudfront-rest-api",
         "update:geoip-lite": "cd node_modules/geoip-lite && npm run-script updatedb",
         "start:ws": "node ./src/app.js",
-        "lint": "eslint ./src",
-        "start": "pm2 start ecosystem.json",
-        "stop": "pm2 stop ecosystem.json"
+        "start": "pm2 start ecosystem.json --no-daemon",
+        "stop": "pm2 stop ecosystem.json",
+        "lint": "eslint ./src"
     },
     "dependencies": {
         "bcrypt": "^3.0.5",

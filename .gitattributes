@@ -1,0 +1,7 @@
+* text=auto
+/docker/* text eol=lf
+/ci/* text eol=lf
+/sbt text eol=lf
+/docker-*.sh text eol=lf
+/sbt-dist/bin/*.bash text eol=lf
+/sbt-dist/bin/sbt text eol=lf

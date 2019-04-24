@@ -22,7 +22,6 @@ const app = express();
 // Disable powered-by-message
 app.disable('x-powered-by');
 
-
 // Allow CORS
 app.use(cors());
 
