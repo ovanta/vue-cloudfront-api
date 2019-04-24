@@ -1,4 +1,3 @@
-const compression = require('compression');
 const express = require('express');
 const server = require('http').createServer();
 const fs = require('fs');
@@ -23,8 +22,6 @@ const app = express();
 // Disable powered-by-message
 app.disable('x-powered-by');
 
-// G-Zip compression
-app.use(compression());
 
 // Allow CORS
 app.use(cors());
