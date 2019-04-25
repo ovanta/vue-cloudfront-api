@@ -6,8 +6,10 @@ MAINTAINER Simon Reinisch <toports@gmx.de>
 WORKDIR /app
 
 # Upgrade
-RUN apt-get update && \
-    apt-get upgrade -
+RUN apt update && \
+    apt upgrade -y && \
+    apt install redis-server && \
+    systemctl enable redis-server.service
 
 # Copy content into the container at /app
 COPY . /app
