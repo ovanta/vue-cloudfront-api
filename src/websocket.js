@@ -1,8 +1,13 @@
 const userModel = require('./models/user');
 const userAgentParser = require('ua-parser-js');
 const i18nCountries = require('i18n-iso-countries');
+const redis = require('redis');
+const redisClient = redis.createClient();
 const geoip = require('geoip-lite');
 const WebSocket = require('ws');
+
+// Clear redis db
+redisClient.flushall();
 
 const userMap = {};
 const websocket = {
@@ -61,21 +66,28 @@ const websocket = {
                                 device: userAgentParser(req.headers['user-agent'])
                             };
 
-                            websocket.broadcast(userid, {
-                                type: 'open-session',
-                                value: ws._sessionInfo
+                            // Push to redis
+                            redisClient.rpush(userid.toString(), JSON.stringify(ws._sessionInfo));
+
+                            websocket.broadcast({
+                                userid,
+                                data: {
+                                    type: 'open-session',
+                                    value: ws._sessionInfo
+                                }
                             });
 
                             // Append websocket
                             userMap[userid].websockets.push(ws);
 
                             if (ws.readyState === 1) {
+
                                 // Approve registration
                                 ws.send(JSON.stringify({
                                     type: 'registration-approval',
                                     value: {
                                         lastBroadcast: userMap[userid].lastBroadcast,
-                                        sessions: websocket.getSessionsBy(userid)
+                                        sessions: await websocket.getSessionsBy(userid)
                                     }
                                 }));
                             }
@@ -88,10 +100,14 @@ const websocket = {
                             const container = userMap[user.id];
 
                             // Broadcast message
-                            websocket.broadcast(user.id, JSON.stringify({
-                                type: 'broadcast',
-                                value
-                            }), ws);
+                            websocket.broadcast({
+                                ignored: ws,
+                                userid: user.id,
+                                data: JSON.stringify({
+                                    type: 'broadcast',
+                                    value
+                                })
+                            });
 
                             // Update last broadcast timestamp
                             container.lastBroadcast = Date.now();
@@ -113,9 +129,17 @@ const websocket = {
                         const [socket] = websockets.splice(idx, 1);
 
                         if (socket) {
-                            websocket.broadcast(user.id, {
-                                type: 'close-session',
-                                value: socket._sessionInfo
+
+                            // Remove from redis list
+                            // TODO: Memory leak?
+                            redisClient.lrem(user.id.toString(), 1, JSON.stringify(socket._sessionInfo));
+
+                            websocket.broadcast({
+                                userid: user.id,
+                                data: {
+                                    type: 'close-session',
+                                    value: socket._sessionInfo
+                                }
                             });
                         }
                     }
@@ -134,15 +158,20 @@ const websocket = {
      * @param userid
      * @returns {number}
      */
-    getSessionsBy(userid) {
-        const user = userMap[userid];
-        return ((user && user.websockets) || []).map(v => v._sessionInfo);
+    async getSessionsBy(userid) {
+        return new Promise(resolve => {
+
+            // Resolve table
+            redisClient.lrange(userid.toString(), 0, -1, (err, res) => {
+                resolve(err ? [] : res.map(v => JSON.parse(v)));
+            });
+        });
     },
 
     /**
      * Broadcast to all websockets from a single user
      */
-    broadcast(userid, data, ignored = null) {
+    broadcast({userid, data, ignored = null, preventBroadcast = false}) {
         const user = userMap[userid];
         const websockets = ((user && user.websockets) || []);
 
@@ -157,8 +186,35 @@ const websocket = {
                 socket.send(data);
             }
         }
+
+        if (!preventBroadcast) {
+
+            // Notify other instances
+            process.send({
+                type: 'process:msg',
+                data: {
+                    action: 'broadcast',
+                    userid,
+                    data
+                }
+            });
+        }
     }
 };
+
+// Listen for other processes
+process.on('message', ({data}) => {
+    switch (data.action) {
+        case 'broadcast': {
+            const {userid, data} = data;
+
+            return websocket.broadcast({
+                userid, data,
+                preventBroadcast: true
+            });
+        }
+    }
+});
 
 /**
  * Returns the amount of currenty connected user

@@ -4,6 +4,9 @@
             "name": "vue-cloudfront-server",
             "max_memory_restart": "1G",
             "script": "./src/app.js",
+            "instances" : "max",
+            "exec_mode" : "cluster",
+            "mergeLogs": true,
             "log_date_format": "YYYY-MM-DD HH:mm:ss",
             "env": {
                 "NODE_ENV": "production"
