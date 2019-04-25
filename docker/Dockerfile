@@ -7,9 +7,7 @@ WORKDIR /app
 
 # Upgrade
 RUN apt update && \
-    apt upgrade -y && \
-    apt install redis-server && \
-    systemctl enable redis-server.service
+    apt upgrade -y
 
 # Copy content into the container at /app
 COPY . /app

@@ -16,7 +16,7 @@
         "build:docker": "docker build -f docker/Dockerfile . -t vue-cloudfront-rest-api",
         "update:geoip-lite": "cd node_modules/geoip-lite && npm run-script updatedb",
         "start:ws": "node ./src/app.js",
-        "start": "node ./scripts/start",
+        "start": "node ./scripts/start.js",
         "stop": "pm2 delete vue-cloudfront-server",
         "lint": "eslint ./src"
     },

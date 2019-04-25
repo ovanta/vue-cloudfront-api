@@ -2,7 +2,7 @@ const userModel = require('./models/user');
 const userAgentParser = require('ua-parser-js');
 const i18nCountries = require('i18n-iso-countries');
 const redis = require('redis');
-const redisClient = redis.createClient();
+const redisClient = redis.createClient(process.env.NODE_ENV === 'production' ? {host: 'redis'} : undefined);
 const geoip = require('geoip-lite');
 const WebSocket = require('ws');
 

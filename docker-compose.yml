@@ -10,8 +10,14 @@ services:
             - "8080:8080"
         depends_on:
             - mongo
+            - redis
     mongo:
         container_name: mongo
         image: mongo
         ports:
             - "27017:27017"
+    redis:
+        container_name: redis
+        image: redis
+        ports:
+            - "6379:6379"
