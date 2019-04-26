@@ -8,6 +8,8 @@ services:
             dockerfile: docker/Dockerfile
         ports:
             - "8080:8080"
+        volumes:
+            - vcf-storage:/app/_storage
         depends_on:
             - mongo
             - redis
@@ -16,8 +18,13 @@ services:
         image: mongo
         ports:
             - "27017:27017"
+        volumes:
+            - vcf-mongodb:/data/db
     redis:
         container_name: redis
         image: redis
         ports:
             - "6379:6379"
+volumes:
+    vcf-mongodb:
+    vcf-storage:
