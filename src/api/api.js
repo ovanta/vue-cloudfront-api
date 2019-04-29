@@ -12,12 +12,6 @@ const mapHandler = mod => async (req, res) => {
     const response = await mod(req, res).then(res => {
         return {data: res, error: null};
     }).catch(reason => {
-
-        if (typeof reason !== 'string') {
-            console.warn('Suspicious error', reason); // eslint-disable-line no-console
-            reason = 'Internal error.';
-        }
-
         return {data: null, error: reason};
     });
 
