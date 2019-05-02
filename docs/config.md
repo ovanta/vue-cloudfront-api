@@ -1,5 +1,5 @@
 # Configuration file
-Below is a description of each relevant property in [config.json](https://github.com/Simonwep/vue-cloudfront-api/blob/master/config/config.json) which 
+Below is a description of each relevant property in [config.json](https://github.com/ovanta/vue-cloudfront-api/blob/master/config/config.json) which 
 is used to define general behaviour of the official vue-cloudfront api.
 
 **`demo`**  
