@@ -7,9 +7,12 @@ module.exports = async req => authViaApiKey(req.body.apikey).then(user => {
     // Find all nodes from this user and filter props
     const {dirNode, fileNode} = _config.mongodb.exposedProps;
     return nodeModel.find({owner: user.id}).exec().then(res => {
-        return {
-            nodes: res.map(v => pick(v, v.type === 'dir' ? dirNode : fileNode))
-        };
+        for (let i = 0, l = res.length; i < l; i++) {
+            const node = res[i];
+            res[i] = pick(node, node.type === 'dir' ? dirNode : fileNode);
+        }
+
+        return res;
     });
 });
 

@@ -1,7 +1,6 @@
-const {uid} = require('../../../utils');
+const {uid, pick} = require('../../../utils');
 const authViaApiKey = require('../../tools/authViaApiKey');
 const nodeModel = require('../../../models/node');
-const _ = require('../../../utils');
 
 module.exports = async req => {
     const {parent, name, apikey} = req.body;
@@ -32,7 +31,7 @@ module.exports = async req => {
 
     }).then(node => {
         return {
-            node: _.pick(node, ['id', 'parent', 'type', 'name', 'lastModified', 'color', 'marked'])
+            node: pick(node, ['id', 'parent', 'type', 'name', 'lastModified', 'color', 'marked'])
         };
     });
 };

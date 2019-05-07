@@ -1,7 +1,6 @@
-const {uid} = require('../../../utils');
+const {uid, pick} = require('../../../utils');
 const authViaApiKey = require('../../tools/authViaApiKey');
 const nodeModel = require('../../../models/node');
-const {pick} = require('../../../utils');
 const Validator = require('jsonschema').Validator;
 const FolderstructValidator = new Validator();
 
@@ -62,15 +61,11 @@ module.exports = async req => {
         for (let i = 0; i < folderAmount; i++) {
             const folder = folders[i];
 
-            // Apply id and parent node
-            folder.id = idMap[folder.id];
-            folder.parent = idMap[folder.parent];
-
             // Create folder
             const newNode = await new nodeModel({
                 owner: user.id,
-                id: folder.id,
-                parent: folder.parent,
+                id: idMap[folder.id],
+                parent: idMap[folder.parent],
                 type: 'dir',
                 name: folder.name || 'Unknown',
                 lastModified: Date.now(),
