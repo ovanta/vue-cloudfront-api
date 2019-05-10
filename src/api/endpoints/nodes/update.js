@@ -12,7 +12,7 @@ module.exports = async req => authViaApiKey(req.body.apikey).then(user => {
             res[i] = pick(node, node.type === 'dir' ? dirNode : fileNode);
         }
 
-        return res;
+        return {nodes: res};
     });
 });
 
