@@ -22,7 +22,7 @@
         "port": 8080,
         "storagePath": "./_storage",
         "uploadSizeLimitPerFile": 5000000000,
-        "totalStorageLimitPerUser": 10000000000,
+        "totalStorageLimitPerUser": 1000000000,
         "mediaStreamChunckSize": 4096000
     },
     "mongodb": {
@@ -69,14 +69,19 @@
         "dirname": "^(.){1,100}$",
         "hexcolor": "^#([\\dA-Fa-f]{6})$",
         "schemes": {
-            "stats": {
-                "introBoxes": {
-                    "type": "array",
-                    "minItems": 0,
-                    "maxItems": 3,
-                    "items": {
-                        "type": "string"
+            "settings": {
+                "static": {
+                    "introBoxes": {
+                        "type": "array",
+                        "minItems": 0,
+                        "maxItems": 3,
+                        "items": {
+                            "type": "string"
+                        }
                     }
+                },
+                "user": {
+                    "siPrefix": "boolean"
                 }
             }
         }

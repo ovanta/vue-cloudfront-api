@@ -1,6 +1,7 @@
 {
     "name": "vue-cloudfront-api",
     "version": "0.0.1",
+    "private": true,
     "description": "Official RESTful api for vue-cloudfront",
     "author": "Simon Reinisch",
     "license": "MIT",
