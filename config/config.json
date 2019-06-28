@@ -81,7 +81,9 @@
                     }
                 },
                 "user": {
-                    "siPrefix": "boolean"
+                    "siPrefix": "boolean",
+                    "hideTooltips": "boolean",
+                    "immediateDeletion": "boolean"
                 }
             }
         }
