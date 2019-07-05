@@ -12,7 +12,7 @@ module.exports = async req => {
 
     // Check if validation has failed
     if (validationResult.errors.length) {
-        throw 'Invalid stats scheme';
+        throw 'Invalid settings scheme';
     }
 
     // Apply, mark as modified and save

@@ -70,20 +70,40 @@
         "hexcolor": "^#([\\dA-Fa-f]{6})$",
         "schemes": {
             "settings": {
-                "static": {
-                    "introBoxes": {
-                        "type": "array",
-                        "minItems": 0,
-                        "maxItems": 3,
-                        "items": {
-                            "type": "string"
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "static": {
+                        "type": "object",
+                        "properties": {
+                            "introBoxes": {
+                                "type": "array",
+                                "minItems": 0,
+                                "maxItems": 3,
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "user": {
+                        "type": "object",
+                        "properties": {
+                            "siPrefix": {
+                                "type": "boolean"
+                            },
+                            "hideTooltips": {
+                                "type": "boolean"
+                            },
+                            "immediateDeletion": {
+                                "type": "boolean"
+                            },
+                            "theme": {
+                                "type": "string",
+                                "enum": ["default", "dark"]
+                            }
                         }
                     }
-                },
-                "user": {
-                    "siPrefix": "boolean",
-                    "hideTooltips": "boolean",
-                    "immediateDeletion": "boolean"
                 }
             }
         }
