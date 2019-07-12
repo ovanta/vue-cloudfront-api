@@ -8,7 +8,7 @@ module.exports = async req => {
     const user = await authViaApiKey(apikey);
 
     if (typeof node !== 'string' || !Array.isArray(ids) || ids.some(v => typeof v !== 'string')) {
-        throw {code: 221, text: 'Node must be of type string and ids should be an Array of strings.'};
+        throw {code: 221, text: 'Node must be of type string and ids should be an Array of strings'};
     }
 
     // Find requested node

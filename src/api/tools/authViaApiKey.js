@@ -19,7 +19,7 @@ module.exports = async apikey => {
 
         // Check if user exists
         if (!user) {
-            throw 'APIKey is invalid';
+            throw {code: -1, text: 'APIKey is invalid'};
         }
 
         return user;

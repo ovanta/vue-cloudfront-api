@@ -8,11 +8,11 @@ module.exports = async req => {
 
     // Check if registrations are disabled
     if (_config.auth.disableRegistration) {
-        throw {code: 405, text: 'Registration is currently disabled'};
+        throw {code: 406, text: 'Registration is currently disabled'};
     }
 
     if (typeof username !== 'string' || typeof password !== 'string') {
-        throw {code: 406, text: 'Both username and password must be of type string'};
+        throw {code: 407, text: 'Both username and password must be of type string'};
     }
 
     // Check to see if the user already exists and throw error if so
@@ -20,15 +20,15 @@ module.exports = async req => {
 
         // Validate
         if (opuser) {
-            throw {code: 407, text:  'A user with this name already exist'};
+            throw {code: 408, text: 'A user with this name already exist'};
         }
 
         if (!new RegExp(_config.validation.username).test(username)) {
-            throw {code: 408, text: 'Username is too short or contains invalid characters'};
+            throw {code: 409, text: 'Username is too short or contains invalid characters'};
         }
 
         if (!new RegExp(_config.validation.password).test(password)) {
-            throw {code: 409, text: 'Password is too short'};
+            throw {code: 410, text: 'Password is too short'};
         }
 
         const apikey = uid(_config.mongodb.apikeyLength);

@@ -6,7 +6,7 @@ module.exports = async req => {
     const {username, password} = req.body;
 
     if (typeof username !== 'string' || typeof password !== 'string') {
-        throw {code: 401, text: 'Both username and password must be of type string'};
+        throw {code: 402, text: 'Both username and password must be of type string'};
     }
 
     // Check to see if the user already exists and throw error if so
@@ -25,7 +25,7 @@ module.exports = async req => {
             // Check if user tried to many times to login
             if (user.loginAttempts >= maxLoginAttempts) {
                 if (lastLoginAttemptMs < blockedLoginDuration) {
-                    throw {code: 403, text: `Try again in ${readableDuration(blockedLoginDuration - lastLoginAttemptMs)}`};
+                    throw {code: 404, text: `Try again in ${readableDuration(blockedLoginDuration - lastLoginAttemptMs)}`};
                 } else {
                     user.loginAttempts = 0;
                 }
