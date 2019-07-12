@@ -24,5 +24,4 @@ module.exports = async apikey => {
 
         return user;
     });
-
 };

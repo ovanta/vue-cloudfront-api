@@ -16,6 +16,7 @@
         "debug": "node %NODE_DEBUG_OPTION% ./src/app.js",
         "build:docker": "docker build -f docker/Dockerfile . -t vue-cloudfront-rest-api",
         "update:geoip-lite": "cd node_modules/geoip-lite && npm run-script updatedb",
+        "wipe:sessions": "node ./scripts/wipe-sessions.js",
         "start:ws": "node ./src/app.js",
         "start": "node ./scripts/start.js",
         "stop": "pm2 delete vue-cloudfront-server",
