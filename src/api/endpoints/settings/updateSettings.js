@@ -12,7 +12,7 @@ module.exports = async req => {
 
     // Check if validation has failed
     if (validationResult.errors.length) {
-        throw 'Invalid settings scheme';
+        throw {code: 300, text: 'Invalid settings scheme'};
     }
 
     // Apply, mark as modified and save

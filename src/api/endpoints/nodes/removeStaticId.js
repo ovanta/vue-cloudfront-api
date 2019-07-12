@@ -8,7 +8,7 @@ module.exports = async req => {
     const user = await authViaApiKey(apikey);
 
     if (typeof node !== 'string' || !Array.isArray(ids) || ids.some(v => typeof v !== 'string')) {
-        throw 'Node must be of type string and ids should be an Array of strings.';
+        throw {code: 221, text: 'Node must be of type string and ids should be an Array of strings.'};
     }
 
     // Find requested node
@@ -19,7 +19,7 @@ module.exports = async req => {
             node.set('staticIds', node.staticIds.filter(ids => !ids.includes(ids)));
             return node.save().then(() => null);
         } else {
-            throw 'Can\'t find requested node';
+            throw {code: 222, text: 'Can\'t find requested node'};
         }
     });
 };

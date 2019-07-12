@@ -9,7 +9,7 @@ module.exports = async req => {
 
     // Validate
     if (!Array.isArray(nodes) || nodes.some(v => typeof v !== 'string')) {
-        throw 'Invalid nodes scheme';
+        throw {code: 200, text: 'Invalid nodes scheme'};
     }
 
     // Mark nodes

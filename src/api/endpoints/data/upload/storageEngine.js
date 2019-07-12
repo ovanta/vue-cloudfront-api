@@ -13,7 +13,7 @@ class StorageEngine {
 
         // Check path
         if (!dest || typeof dest !== 'string') {
-            throw `Invalid path: ${dest}`;
+            throw {code: 104, text: `Invalid path: ${dest}`};
         }
 
         // Create file

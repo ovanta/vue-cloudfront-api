@@ -12,7 +12,7 @@ module.exports = async req => {
 
     // Validate password
     if (typeof password !== 'string' || !bcrypt.compareSync(password, currentUser.password)) {
-        throw 'Password incorrect';
+        throw {code: 400, text: 'Password incorrect'};
     }
 
     return Promise.all([

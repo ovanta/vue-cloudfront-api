@@ -12,30 +12,30 @@ module.exports = async req => {
 
         // Check if user paste folder into itself or one of its siblings
         if (node.id === destination) {
-            throw 'A directory cannot be put into itself';
+            throw {code: 214, text: 'A directory cannot be put into itself'};
         }
     });
 
     if (typeof destination !== 'string') {
-        throw 'Destination must be of type string';
+        throw {code: 215, text: 'Destination must be of type string'};
     }
 
     // Check if destination exists and is a folder
     const destNode = await nodeModel.findOne({owner: user.id, id: destination}).exec();
     if (!destNode || destNode.type !== 'dir') {
-        throw 'Destination does not exist or is not a directory';
+        throw {code: 216, text: 'Destination does not exist or is not a directory'};
     }
 
     // Validate
     if (!Array.isArray(nodes) || nodes.some(v => typeof v !== 'string')) {
-        throw 'Invalid nodes scheme';
+        throw {code: 217, text: 'Invalid nodes scheme'};
     }
 
     // Move childs
     await nodeModel.find({owner: user.id, id: {$in: nodes}}).exec().then(async nds => {
 
         if (nds.length !== nodes.length) {
-            throw 'Request contains invalid nodes';
+            throw {code: 218, text: 'Request contains invalid nodes'};
         }
 
         // Apply new parent

@@ -7,11 +7,11 @@ module.exports = async req => {
     // Find user
     const user = await authViaApiKey(apikey);
     if (typeof newName !== 'string' || !new RegExp(_config.validation.dirname).test(newName)) {
-        throw 'Invalid new name';
+        throw {code: 223, text: 'Invalid new name'};
     }
 
     if (typeof target !== 'string') {
-        throw 'Target must be of type string';
+        throw {code: 224, text: 'Target must be of type string'};
     }
 
     // Rename node

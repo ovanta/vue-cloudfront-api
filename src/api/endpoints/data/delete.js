@@ -11,7 +11,7 @@ module.exports = async req => {
 
     // Validate
     if (!Array.isArray(nodes) || nodes.some(v => typeof v !== 'string')) {
-        throw 'Invalid nodes scheme';
+        throw {code: 100, text: 'Invalid nodes scheme'};
     }
 
     // Resolve id's and remove files from file system
@@ -20,7 +20,7 @@ module.exports = async req => {
 
         // Prevent deleting of root element
         if (node.parent === 'root') {
-            throw 'Can\'t delete root node';
+            throw {code: 101, text: 'Can\'t delete root node'};
         }
 
         // Remove file if node is an file

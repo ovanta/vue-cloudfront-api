@@ -13,18 +13,18 @@ module.exports = async req => {
 
     // Validate
     if (!Array.isArray(nodes) || nodes.some(v => typeof v !== 'string')) {
-        throw 'Invalid nodes scheme';
+        throw {code: 226, text: 'Invalid nodes scheme'};
     }
 
     // Create name
     const aNode = await nodeModel.findOne({id: nodes[0]}).exec();
     if (!aNode) {
-        throw 'Trying to zip nothing (or invalid nodes)';
+        throw {code: 227, text: 'Trying to zip nothing (or invalid nodes)'};
     }
 
     const nameNode = nodes.length === 1 ? aNode : await nodeModel.findOne({id: aNode.parent}).exec();
     if (!nameNode) {
-        throw 'Can\'t find parent node';
+        throw {code: 228, text: 'Can\'t find parent node'};
     }
 
     // Zip files
@@ -58,6 +58,6 @@ module.exports = async req => {
     }).then(node => {
         return {node: pick(node, _config.mongodb.exposedProps.fileNode)};
     }).catch(() => {
-        throw 'Zipping failed';
+        throw {code: 229, text: 'Zipping failed'};
     });
 };

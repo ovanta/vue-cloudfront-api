@@ -36,17 +36,17 @@ module.exports = async req => {
 
     // Check if validation has failed
     if (validationResult.errors.length) {
-        throw validationResult.errors.toString();
+        throw {code: 211, text: validationResult.errors.toString()};
     }
 
     if (typeof parent !== 'string') {
-        throw 'Parent must be of type string';
+        throw {code: 212, text: 'Parent must be of type string'};
     }
 
     return nodeModel.findOne({owner: user.id, id: parent}).exec().then(async root => {
 
         if (!root) {
-            throw 'Invalid root node';
+            throw {code: 213, text: 'Invalid root node'};
         }
 
         // Create uids

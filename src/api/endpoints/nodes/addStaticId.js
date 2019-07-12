@@ -9,7 +9,7 @@ module.exports = async req => {
     const user = await authViaApiKey(apikey);
 
     if (typeof node !== 'string') {
-        throw 'Node must be of type string';
+        throw {code: 201, text: 'Node must be of type string'};
     }
 
     // Find requested node
@@ -22,7 +22,7 @@ module.exports = async req => {
             node.set('lastModified', Date.now());
             return node.save().then(() => newUid);
         } else {
-            throw 'Can\'t find requested node';
+            throw {code: 202, text: 'Can\'t find requested node'};
         }
     });
 };

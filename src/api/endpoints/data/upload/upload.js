@@ -15,20 +15,20 @@ module.exports = async req => {
             fs.unlink(path, () => 0);
         }
 
-        throw {code: -1, text: reason};
+        throw {code: 105, text: reason};
     });
 
     const contentLength = Number(req.get('content-length'));
 
     // Validate header
     if (isNaN(contentLength)) {
-        throw {code: 1, text: 'Invalid content-length header'};
+        throw {code: 106, text: 'Invalid content-length header'};
     }
 
     // Compare current storage size and upload size with limit
     const {totalStorageLimitPerUser} = _config.server;
     if (~totalStorageLimitPerUser && (await usedSpaceBy(user.id)) + contentLength > totalStorageLimitPerUser) {
-        throw {code: 2, text: `Storage limit of ${totalStorageLimitPerUser} bytes exceed`};
+        throw {code: 107, text: `Storage limit of ${totalStorageLimitPerUser} bytes exceed`};
     }
 
     // Rename files and create nodes
@@ -45,14 +45,14 @@ module.exports = async req => {
         const parent = fieldname.substring(0, fieldname.indexOf('-'));
         if (!parent) {
             fs.unlinkSync(path);
-            throw {code: 10, text: 'Invalid node key'};
+            throw {code: 108, text: 'Invalid node key'};
         }
 
         // Check if destination exists and is a folder
         const destNode = await nodeModel.findOne({owner: user.id, id: parent}).exec();
         if (!destNode || destNode.type !== 'dir') {
             fs.unlinkSync(path);
-            throw {code: 11, text: 'Invalid parent node'};
+            throw {code: 109, text: 'Invalid parent node'};
         }
 
         // Create and push new node

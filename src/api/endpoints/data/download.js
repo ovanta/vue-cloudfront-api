@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
     const {id} = req.params;
 
     if (typeof id !== 'string') {
-        throw 'Invalid node id';
+        throw {code: 102, text: 'Invalid node id'};
     }
 
     // Authenticate user

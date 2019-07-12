@@ -12,18 +12,18 @@ module.exports = async req => {
     const user = await authViaApiKey(apikey);
 
     if (typeof destination !== 'string') {
-        throw 'Destination must be of type string';
+        throw {code: 205, text: 'Destination must be of type string'};
     }
 
     // Check if destination exists and is a folder
     const destNode = await nodeModel.findOne({owner: user.id, id: destination}).exec();
     if (!destNode || destNode.type !== 'dir') {
-        throw 'Destination does not exist or is not a directory';
+        throw {code: 206, text: 'Destination does not exist or is not a directory'};
     }
 
     // Validate
     if (!Array.isArray(nodes) || nodes.some(v => typeof v !== 'string')) {
-        throw 'Invalid nodes scheme';
+        throw {code: 207, text: 'Invalid nodes scheme'};
     }
 
     // Used to check whenever a copy is because of storage limit not possible
@@ -34,13 +34,14 @@ module.exports = async req => {
             spaceUsed += amount;
 
             if (spaceUsed > totalStorageLimitPerUser) {
-                throw `Storage limit of ${totalStorageLimitPerUser} bytes exceed`;
+                throw {code: 208, text: `Storage limit of ${totalStorageLimitPerUser} bytes exceed`};
             }
         }
     };
 
     const newNodes = [];
 
+    /* eslint-disable require-atomic-updates */
     async function addChilds(n, newParent) {
         const newId = uid();
 
