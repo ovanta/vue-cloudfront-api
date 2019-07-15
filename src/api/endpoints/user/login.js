@@ -3,7 +3,12 @@ const bcrypt = require('bcrypt');
 const userModel = require('../../../models/user');
 
 module.exports = async req => {
-    const {username, password} = req.body;
+    const {
+        username,
+        password,
+        expireAfter = _config.auth.apikeyExpiry,
+        expireAt = null
+    } = req.body;
 
     if (typeof username !== 'string' || typeof password !== 'string') {
         throw {code: 402, text: 'Both username and password must be of type string'};
@@ -44,10 +49,11 @@ module.exports = async req => {
         }
 
         // Create and append new apikey
+        const expire = (Date.now() + expireAfter) || (Date.now() + _config.auth.apikeyExpiry);
         const apikey = uid(_config.mongodb.apikeyLength);
         user.apikeys.push({
             key: apikey,
-            expiry: Date.now() + _config.auth.apikeyExpiry
+            expiry: typeof expireAt === 'number' ? expireAt : expire
         });
 
         // Save user with new apikey
