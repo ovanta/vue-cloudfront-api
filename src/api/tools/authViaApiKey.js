@@ -9,10 +9,7 @@ module.exports = async apikey => {
     return userModel.findOne({
         apikeys: {
             $elemMatch: {
-                key: apikey, // Match key
-                expiry: {
-                    $gte: Date.now() // Make sure that the API key is not expired
-                }
+                key: apikey
             }
         }
     }).exec().then(user => {
@@ -22,6 +19,12 @@ module.exports = async apikey => {
             throw {code: -1, text: 'APIKey is invalid'};
         }
 
-        return user;
+        // Remove expired apikeys
+        const now = Date.now();
+        user.apikeys = user.apikeys.filter(
+            ({expiry}) => expiry > now
+        );
+
+        return user.save();
     });
 };
