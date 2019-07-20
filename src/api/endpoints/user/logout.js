@@ -1,19 +1,14 @@
-const authViaApiKey = require('../../tools/authViaApiKey');
-
 module.exports = async req => {
-    const {apikey} = req.body;
-
-    // Find user and validate color
-    const user = await authViaApiKey(apikey);
+    const {_user, apikey} = req.body;
 
     // Remove apikey
-    const apikeyIndex = user.apikeys.findIndex(v => v.key === apikey);
+    const apikeyIndex = _user.apikeys.findIndex(v => v.key === apikey);
 
     // Validate index and logout user
     if (~apikeyIndex) {
-        user.apikeys.splice(apikeyIndex, 1);
-        user.markModified('apikeys');
+        _user.apikeys.splice(apikeyIndex, 1);
+        _user.markModified('apikeys');
     }
 
-    return user.save().then(() => null);
+    return _user.save().then(() => null);
 };

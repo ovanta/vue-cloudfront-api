@@ -1,7 +1,7 @@
-const fs = require('fs');
 const createZipStream = require('../../tools/createZipStream');
 const authViaApiKey = require('../../tools/authViaApiKey');
 const nodeModel = require('../../../models/node');
+const fs = require('fs');
 
 module.exports = async (req, res) => {
     const {apikey} = req.query;

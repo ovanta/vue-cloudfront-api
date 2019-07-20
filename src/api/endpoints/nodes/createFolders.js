@@ -1,14 +1,12 @@
 const {uid, pick} = require('../../../utils');
-const authViaApiKey = require('../../tools/authViaApiKey');
 const nodeModel = require('../../../models/node');
 const Validator = require('jsonschema').Validator;
 const FolderstructValidator = new Validator();
 
 module.exports = async req => {
-    const {folders, parent, apikey} = req.body;
+    const {_user, folders, parent} = req.body;
 
-    // Check user, find parent and validate folders
-    const user = await authViaApiKey(apikey);
+    // Validate structure
     const validationResult = FolderstructValidator.validate(folders, {
         'type': 'array',
         'items': {
@@ -43,7 +41,7 @@ module.exports = async req => {
         throw {code: 212, text: 'Parent must be of type string'};
     }
 
-    return nodeModel.findOne({owner: user.id, id: parent}).exec().then(async root => {
+    return nodeModel.findOne({owner: _user.id, id: parent}).exec().then(async root => {
 
         if (!root) {
             throw {code: 213, text: 'Invalid root node'};
@@ -63,7 +61,7 @@ module.exports = async req => {
 
             // Create folder
             const newNode = await new nodeModel({
-                owner: user.id,
+                owner: _user.id,
                 id: idMap[folder.id],
                 parent: idMap[folder.parent],
                 type: 'dir',

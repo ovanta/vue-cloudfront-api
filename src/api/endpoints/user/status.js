@@ -1,19 +1,14 @@
-const authViaApiKey = require('../../tools/authViaApiKey');
-
 module.exports = async req => {
-    const {apikey} = req.body;
-
-    // Find user and validate color
-    const user = await authViaApiKey(apikey);
+    const {_user} = req.body;
 
     return {
         availableSpace: _config.server.totalStorageLimitPerUser,
         uploadSizeLimitPerFile: _config.server.uploadSizeLimitPerFile,
         user: {
-            id: user.id,
-            username: user.username,
-            lastLogin: user.lastLoginAttempt,
-            loginAttempts: user.loginAttempts
+            id: _user.id,
+            username: _user.username,
+            lastLogin: _user.lastLoginAttempt,
+            loginAttempts: _user.loginAttempts
         }
     };
 };

@@ -1,19 +1,15 @@
-const fs = require('fs');
-const authViaApiKey = require('../../tools/authViaApiKey');
 const nodeModel = require('../../../models/node');
+const fs = require('fs');
 
 module.exports = async (req, res) => {
-    const {id, apikey} = req.query;
+    const {_user, id} = req.query;
 
     if (typeof id !== 'string') {
         throw {code: 103, text: 'Invalid node id'};
     }
 
-    // Authenticate user
-    const user = await authViaApiKey(apikey);
-
     // Check if user is owner
-    await nodeModel.findOne({owner: user.id, id}).exec().then(async node => {
+    await nodeModel.findOne({owner: _user.id, id}).exec().then(async node => {
 
         // Check node
         if (!node) {
@@ -71,7 +67,7 @@ module.exports = async (req, res) => {
         } else {
 
             // Delete node because the corresponding file is mising
-            await nodeModel.deleteOne({owner: user.id, id}).exec();
+            await nodeModel.deleteOne({owner: _user.id, id}).exec();
             res.status(404).send();
         }
     });

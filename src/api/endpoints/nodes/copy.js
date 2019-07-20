@@ -1,22 +1,18 @@
-const fs = require('fs');
-const {uid, pick} = require('../../../utils');
-const mongoose = require('mongoose');
-const authViaApiKey = require('../../tools/authViaApiKey');
 const usedSpaceBy = require('../../tools/usedSpaceBy');
 const nodeModel = require('../../../models/node');
+const {uid, pick} = require('../../../utils');
+const mongoose = require('mongoose');
+const fs = require('fs');
 
 module.exports = async req => {
-    const {destination, nodes, apikey} = req.body;
-
-    // Authenticate
-    const user = await authViaApiKey(apikey);
+    const {_user, destination, nodes} = req.body;
 
     if (typeof destination !== 'string') {
         throw {code: 205, text: 'Destination must be of type string'};
     }
 
     // Check if destination exists and is a folder
-    const destNode = await nodeModel.findOne({owner: user.id, id: destination}).exec();
+    const destNode = await nodeModel.findOne({owner: _user.id, id: destination}).exec();
     if (!destNode || destNode.type !== 'dir') {
         throw {code: 206, text: 'Destination does not exist or is not a directory'};
     }
@@ -27,7 +23,7 @@ module.exports = async req => {
     }
 
     // Used to check whenever a copy is because of storage limit not possible
-    let spaceUsed = await usedSpaceBy(user.id);
+    let spaceUsed = await usedSpaceBy(_user.id);
     const {totalStorageLimitPerUser} = _config.server;
     const updateUsedSpace = amount => {
         if (~totalStorageLimitPerUser) {
@@ -52,7 +48,7 @@ module.exports = async req => {
         if (n.type === 'dir') {
 
             // Find all nodes which have n as parent
-            await nodeModel.find({owner: user.id, parent: n.id}).exec().then(async rnodes => {
+            await nodeModel.find({owner: _user.id, parent: n.id}).exec().then(async rnodes => {
                 for (let i = 0, n; n = rnodes[i], i < rnodes.length; i++) {
 
                     // Find all children recursive
@@ -70,7 +66,7 @@ module.exports = async req => {
 
                 fs.copyFileSync(src, dest);
             } else {
-                await nodeModel.deleteOne({owner: user.id, id: n.id});
+                await nodeModel.deleteOne({owner: _user.id, id: n.id});
                 return;
             }
         }
@@ -81,8 +77,8 @@ module.exports = async req => {
         newNodes.push(await n.save());
     }
 
-    const rnodes = await nodeModel.find({owner: user.id, id: {$in: nodes}}).exec();
-    const destNodes = await nodeModel.find({owner: user.id, parent: destination}).exec();
+    const rnodes = await nodeModel.find({owner: _user.id, id: {$in: nodes}}).exec();
+    const destNodes = await nodeModel.find({owner: _user.id, parent: destination}).exec();
     for (let i = 0, n; n = rnodes[i], i < rnodes.length; i++) {
 
         // Apply new name

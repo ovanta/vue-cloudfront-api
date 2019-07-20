@@ -1,21 +1,18 @@
-const authViaApiKey = require('../../tools/authViaApiKey');
 const websocket = require('../../../websocket');
 
 module.exports = async req => {
-    const {apikey} = req.body;
-
-    // Find user and validate color
-    const user = await authViaApiKey(apikey);
+    const {_user} = req.body;
 
     // Clear apikeys
-    user.apikeys = [];
-    user.markModified('apikeys');
+    _user.apikeys = [];
+    _user.markModified('apikeys');
 
     // Broadcast logout
-    websocket.broadcast(user.id, {
+    websocket.broadcast({
+        userid: _user.id,
         type: 'logout',
         data: null
     });
 
-    return user.save().then(() => null);
+    return _user.save().then(() => null);
 };

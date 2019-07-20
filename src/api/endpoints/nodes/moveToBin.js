@@ -1,11 +1,7 @@
-const authViaApiKey = require('../../tools/authViaApiKey');
 const nodeModel = require('../../../models/node');
 
 module.exports = async req => {
-    const {nodes, apikey} = req.body;
-
-    // Find user
-    const user = await authViaApiKey(apikey);
+    const {_user, nodes} = req.body;
 
     // Validate
     if (!Array.isArray(nodes) || nodes.some(v => typeof v !== 'string')) {
@@ -13,7 +9,7 @@ module.exports = async req => {
     }
 
     await nodeModel.updateMany(
-        {owner: user.id, id: {$in: nodes}},
+        {owner: _user.id, id: {$in: nodes}},
         {
             $set: {
                 bin: true,

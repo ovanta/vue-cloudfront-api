@@ -1,11 +1,8 @@
-const authViaApiKey = require('../../tools/authViaApiKey');
 const nodeModel = require('../../../models/node');
 
 module.exports = async req => {
-    const {target, newName, apikey} = req.body;
+    const {_user, target, newName} = req.body;
 
-    // Find user
-    const user = await authViaApiKey(apikey);
     if (typeof newName !== 'string' || !new RegExp(_config.validation.dirname).test(newName)) {
         throw {code: 223, text: 'Invalid new name'};
     }
@@ -16,7 +13,7 @@ module.exports = async req => {
 
     // Rename node
     await nodeModel.updateOne(
-        {owner: user.id, id: target},
+        {owner: _user.id, id: target},
         {
             $set: {
                 name: newName,

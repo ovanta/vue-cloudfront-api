@@ -1,14 +1,10 @@
 const traverseNodes = require('../../tools/traverseNodes');
-const authViaApiKey = require('../../tools/authViaApiKey');
 const nodeModel = require('../../../models/node');
 
 module.exports = async req => {
-    const {destination, nodes, apikey} = req.body;
+    const {_user, destination, nodes} = req.body;
 
-    // Authenticate and resolve child nodes
-    const user = await authViaApiKey(apikey);
-
-    await traverseNodes(user, nodes, node => {
+    await traverseNodes(_user, nodes, node => {
 
         // Check if user paste folder into itself or one of its siblings
         if (node.id === destination) {
@@ -21,7 +17,7 @@ module.exports = async req => {
     }
 
     // Check if destination exists and is a folder
-    const destNode = await nodeModel.findOne({owner: user.id, id: destination}).exec();
+    const destNode = await nodeModel.findOne({owner: _user.id, id: destination}).exec();
     if (!destNode || destNode.type !== 'dir') {
         throw {code: 216, text: 'Destination does not exist or is not a directory'};
     }
@@ -32,7 +28,7 @@ module.exports = async req => {
     }
 
     // Move childs
-    await nodeModel.find({owner: user.id, id: {$in: nodes}}).exec().then(async nds => {
+    await nodeModel.find({owner: _user.id, id: {$in: nodes}}).exec().then(async nds => {
 
         if (nds.length !== nodes.length) {
             throw {code: 218, text: 'Request contains invalid nodes'};

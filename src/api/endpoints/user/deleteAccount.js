@@ -1,24 +1,20 @@
-const fs = require('fs');
-const bcrypt = require('bcrypt');
-const authViaApiKey = require('../../tools/authViaApiKey');
-const userModel = require('../../../models/user');
 const nodeModel = require('../../../models/node');
+const userModel = require('../../../models/user');
+const bcrypt = require('bcrypt');
+const fs = require('fs');
 
 module.exports = async req => {
-    const {password, apikey} = req.body;
-
-    // Find user and validate color
-    const currentUser = await authViaApiKey(apikey);
+    const {_user, password} = req.body;
 
     // Validate password
-    if (typeof password !== 'string' || !bcrypt.compareSync(password, currentUser.password)) {
+    if (typeof password !== 'string' || !bcrypt.compareSync(password, _user.password)) {
         throw {code: 400, text: 'Password incorrect'};
     }
 
     return Promise.all([
 
         // Delete files
-        nodeModel.find({owner: currentUser.id}).exec().then(nodes => {
+        nodeModel.find({owner: _user.id}).exec().then(nodes => {
             for (let i = 0, n; n = nodes[i], i < nodes.length; i++) {
                 if (n.type === 'file') {
 
@@ -32,9 +28,9 @@ module.exports = async req => {
         }),
 
         // Remove nodes
-        nodeModel.deleteMany({owner: currentUser.id}).exec(),
+        nodeModel.deleteMany({owner: _user.id}).exec(),
 
         // Remove user
-        userModel.deleteOne({id: currentUser.id}).exec()
+        userModel.deleteOne({id: _user.id}).exec()
     ]);
 };

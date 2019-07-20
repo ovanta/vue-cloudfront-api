@@ -1,3 +1,1 @@
-const authViaApiKey = require('../../tools/authViaApiKey');
-
-module.exports = async ({body: {apikey}}) => (await authViaApiKey(apikey)).settings;
+module.exports = async ({body: {_user}}) => _user.settings;

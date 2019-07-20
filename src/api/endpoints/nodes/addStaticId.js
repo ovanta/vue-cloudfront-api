@@ -1,19 +1,18 @@
-const authViaApiKey = require('../../tools/authViaApiKey');
 const nodeModel = require('../../../models/node');
 const {uid} = require('../../../utils');
 
 module.exports = async req => {
-    const {node, apikey} = req.body;
-
-    // Find user
-    const user = await authViaApiKey(apikey);
+    const {_user, node} = req.body;
 
     if (typeof node !== 'string') {
         throw {code: 201, text: 'Node must be of type string'};
     }
 
     // Find requested node
-    return nodeModel.findOne({owner: user.id, id: node}).exec().then(node => {
+    return nodeModel.findOne({
+        owner: _user.id,
+        id: node
+    }).exec().then(node => {
         if (node) {
 
             // Add new static id

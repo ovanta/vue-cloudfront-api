@@ -1,11 +1,7 @@
-const authViaApiKey = require('../../tools/authViaApiKey');
 const nodeModel = require('../../../models/node');
 
 module.exports = async req => {
-    const {nodes, newColor, apikey} = req.body;
-
-    // Find user and validate color
-    const user = await authViaApiKey(apikey);
+    const {_user, nodes, newColor} = req.body;
 
     // Validate
     if (!new RegExp(_config.validation.hexcolor).test(newColor)) {
@@ -18,7 +14,7 @@ module.exports = async req => {
 
     // Find all nodes from this user and filter props
     await nodeModel.updateMany(
-        {owner: user.id, id: {$in: nodes}},
+        {owner: _user.id, id: {$in: nodes}},
         {
             $set: {
                 color: newColor,

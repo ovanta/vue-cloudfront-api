@@ -1,13 +1,11 @@
-const authViaApiKey = require('../../tools/authViaApiKey');
+const userModel = require('../../../models/user');
 const Validator = new (require('jsonschema').Validator);
 const settingsScheme = _config.validation.schemes.settings;
-const userModel = require('../../../models/user');
 
 module.exports = async req => {
-    const {settings, apikey} = req.body;
+    const {_user, settings} = req.body;
 
-    // Find user
-    const user = await authViaApiKey(apikey);
+    // Validate body
     const validationResult = Validator.validate(settings, settingsScheme);
 
     // Check if validation has failed
@@ -17,7 +15,7 @@ module.exports = async req => {
 
     // Apply, mark as modified and save
     return userModel.updateOne(
-        {id: user.id},
+        {id: _user.id},
         {$set: {settings}}
     ).exec().then(() => null);
 };

@@ -1,13 +1,9 @@
 const fs = require('fs');
-const authViaApiKey = require('../../tools/authViaApiKey');
 const traverseNodes = require('../../tools/traverseNodes');
 const nodeModel = require('../../../models/node');
 
 module.exports = async req => {
-    const {nodes, apikey} = req.body;
-
-    // Authenticate and resolve child nodes
-    const user = await authViaApiKey(apikey);
+    const {_user, nodes} = req.body;
 
     // Validate
     if (!Array.isArray(nodes) || nodes.some(v => typeof v !== 'string')) {
@@ -16,7 +12,7 @@ module.exports = async req => {
 
     // Resolve id's and remove files from file system
     const ids = [];
-    await traverseNodes(user, nodes, node => {
+    await traverseNodes(_user, nodes, node => {
 
         // Prevent deleting of root element
         if (node.parent === 'root') {
@@ -34,7 +30,7 @@ module.exports = async req => {
     });
 
     // Remove nodes
-    return nodeModel.deleteMany({owner: user.id, id: {$in: ids}})
+    return nodeModel.deleteMany({owner: _user.id, id: {$in: ids}})
         .exec()
         .then(() => null);
 };

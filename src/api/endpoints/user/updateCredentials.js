@@ -1,15 +1,11 @@
-const bcrypt = require('bcrypt');
-const authViaApiKey = require('../../tools/authViaApiKey');
 const userModel = require('../../../models/user');
+const bcrypt = require('bcrypt');
 
 module.exports = async req => {
-    const {currentPassword, newUsername, newPassword, apikey} = req.body;
-
-    // Find user and validate color
-    const user = await authViaApiKey(apikey);
+    const {_user, currentPassword, newUsername, newPassword} = req.body;
 
     // Validate password
-    if (typeof currentPassword !== 'string' || !bcrypt.compareSync(currentPassword, user.password)) {
+    if (typeof currentPassword !== 'string' || !bcrypt.compareSync(currentPassword, _user.password)) {
         throw {code: 411, text: 'Wrong password'};
     }
 
@@ -23,7 +19,7 @@ module.exports = async req => {
 
         // Validate username
         if (new RegExp(_config.validation.username).test(newUsername)) {
-            user.set('username', newUsername);
+            _user.set('username', newUsername);
         } else {
             throw {code: 413, text: 'Username is too short or contains invalid characters'};
         }
@@ -34,11 +30,11 @@ module.exports = async req => {
 
         // Validate password
         if (new RegExp(_config.validation.password).test(newPassword)) {
-            user.set('password', bcrypt.hashSync(newPassword, _config.auth.saltRounds));
+            _user.set('password', bcrypt.hashSync(newPassword, _config.auth.saltRounds));
         } else {
             throw {code: 414, text: 'Password is too short'};
         }
     }
 
-    await user.save();
+    await _user.save();
 };

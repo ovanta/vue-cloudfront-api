@@ -1,15 +1,11 @@
-const authViaApiKey = require('../../tools/authViaApiKey');
+const createZipStream = require('../../tools/createZipStream');
 const nodeModel = require('../../../models/node');
 const {uid, pick} = require('../../../utils');
-const createZipStream = require('../../tools/createZipStream');
 const path = require('path');
 const fs = require('fs');
 
 module.exports = async req => {
-    const {nodes, apikey} = req.body;
-
-    // Find user
-    const user = await authViaApiKey(apikey);
+    const {_user, nodes} = req.body;
 
     // Validate
     if (!Array.isArray(nodes) || nodes.some(v => typeof v !== 'string')) {
@@ -46,7 +42,7 @@ module.exports = async req => {
 
     }).then(size => {
         return new nodeModel({
-            owner: user.id,
+            owner: _user.id,
             id,
             parent: aNode.parent,
             type: 'file',
