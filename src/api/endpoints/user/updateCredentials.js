@@ -37,4 +37,5 @@ module.exports = async req => {
     }
 
     await _user.save();
+    return true;
 };

@@ -1,8 +1,8 @@
 const express = require('express');
 const server = require('http').createServer();
-const fs = require('fs');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 
 // Resolve storage path and create global config variable
 const config = require('../config/config');
