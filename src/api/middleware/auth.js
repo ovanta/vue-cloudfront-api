@@ -1,7 +1,7 @@
 const userModel = require('../../models/user');
 
 module.exports = (req, res, next) => {
-    const {apikey} = req.body;
+    const {apikey} = (req.body || req.query);
 
     if (typeof apikey !== 'string' || !apikey) {
         throw 'APIKey is invalid';
@@ -22,12 +22,19 @@ module.exports = (req, res, next) => {
 
         // Remove expired apikeys
         const now = Date.now();
-        user.apikeys = user.apikeys.filter(
+        user.set('apikeys', user.apikeys.filter(
             ({expiry}) => expiry > now
-        );
+        ));
 
         return user.save();
     }).then(user => {
+
+        // Merge query and body
+        req.body = {
+            ...req.body,
+            ...req.query
+        };
+
         req.body._user = user;
         next();
     });

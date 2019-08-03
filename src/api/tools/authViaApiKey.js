@@ -21,9 +21,9 @@ module.exports = async apikey => {
 
         // Remove expired apikeys
         const now = Date.now();
-        user.apikeys = user.apikeys.filter(
+        user.set('apikeys', user.apikeys.filter(
             ({expiry}) => expiry > now
-        );
+        ));
 
         return user.save();
     });

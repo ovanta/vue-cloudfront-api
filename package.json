@@ -12,7 +12,7 @@
         "url": "git+https://github.com/ovanta/vue-cloudfront-api"
     },
     "scripts": {
-        "dev": "nodemon ./src/app.js --ignore '/_storage'",
+        "dev": "nodemon ./src/app.js --ignore '/_storage' --watch src",
         "debug": "node %NODE_DEBUG_OPTION% ./src/app.js",
         "build:docker": "docker build -f docker/Dockerfile . -t vue-cloudfront-rest-api",
         "update:geoip-lite": "cd node_modules/geoip-lite && npm run-script updatedb",

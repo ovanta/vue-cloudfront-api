@@ -6,8 +6,8 @@ MAINTAINER Simon Reinisch <toports@gmx.de>
 WORKDIR /app
 
 # Upgrade
-RUN apt update && \
-    apt upgrade -y
+RUN apt-get update && \
+    apt-get upgrade -y
 
 # Copy content into the container at /app
 COPY . /app

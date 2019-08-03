@@ -98,6 +98,9 @@
                             "immediateDeletion": {
                                 "type": "boolean"
                             },
+                            "usePreferredColorScheme": {
+                                "type": "boolean"
+                            },
                             "theme": {
                                 "type": "string",
                                 "enum": ["default", "dark"]

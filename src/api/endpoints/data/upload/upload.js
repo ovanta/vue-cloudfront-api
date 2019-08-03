@@ -56,7 +56,7 @@ module.exports = async req => {
         }
 
         // Create and push new node
-        const newNode = await new nodeModel({
+        nodes.push(new nodeModel({
             owner: user.id,
             id: filename,
             parent: parent,
@@ -71,10 +71,8 @@ module.exports = async req => {
             console.warn(reason); // eslint-disable-line no-console
             fs.unlink(path, () => 0);
             return null;
-        });
-
-        newNode && nodes.push(newNode);
+        }));
     }
 
-    return nodes;
+    return Promise.all(nodes);
 };

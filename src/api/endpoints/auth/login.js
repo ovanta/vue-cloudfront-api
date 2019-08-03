@@ -32,7 +32,7 @@ module.exports = async req => {
                 if (lastLoginAttemptMs < blockedLoginDuration) {
                     throw {code: 404, text: `Try again in ${readableDuration(blockedLoginDuration - lastLoginAttemptMs)}`};
                 } else {
-                    user.loginAttempts = 0;
+                    user.set('loginAttempts', 0);
                 }
             }
 

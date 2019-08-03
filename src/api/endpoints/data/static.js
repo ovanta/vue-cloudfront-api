@@ -2,7 +2,7 @@ const nodeModel = require('../../../models/node');
 const fs = require('fs');
 
 module.exports = async (req, res) => {
-    const {_user, id} = req.query;
+    const {_user, id} = req.body;
 
     if (typeof id !== 'string') {
         throw {code: 103, text: 'Invalid node id'};

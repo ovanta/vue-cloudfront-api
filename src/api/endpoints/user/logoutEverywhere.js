@@ -4,8 +4,7 @@ module.exports = async req => {
     const {_user} = req.body;
 
     // Clear apikeys
-    _user.apikeys = [];
-    _user.markModified('apikeys');
+    _user.set('apikeys', []);
 
     // Broadcast logout
     websocket.broadcast({
