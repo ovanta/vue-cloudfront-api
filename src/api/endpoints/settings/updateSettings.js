@@ -1,15 +1,16 @@
 const userModel = require('../../../models/user');
-const Validator = new (require('jsonschema').Validator);
+const Ajv = require('ajv');
 const settingsScheme = _config.validation.schemes.settings;
 
 module.exports = async req => {
     const {_user, settings} = req.body;
 
     // Validate body
-    const validationResult = Validator.validate(settings, settingsScheme);
+    const ajv = new Ajv();
+    const valid = ajv.validate(settingsScheme, settings);
 
     // Check if validation has failed
-    if (validationResult.errors.length) {
+    if (!valid) {
         throw {code: 300, text: 'Invalid settings scheme'};
     }
 

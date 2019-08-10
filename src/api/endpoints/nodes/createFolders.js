@@ -1,40 +1,37 @@
 const {uid, pick} = require('../../../utils');
 const nodeModel = require('../../../models/node');
-const Validator = require('jsonschema').Validator;
-const FolderstructValidator = new Validator();
+const Ajv = require('ajv');
 
 module.exports = async req => {
     const {_user, folders, parent} = req.body;
 
-    // Validate structure
-    const validationResult = FolderstructValidator.validate(folders, {
+    const ajv = new Ajv();
+    const valid = ajv.validate({
         'type': 'array',
         'items': {
             'type': 'object',
+            'required': ['parent', 'id', 'name'],
             'properties': {
                 'parent': {
                     'type': 'number',
                     'minimum': -1,
-                    'maximum': folders.length,
-                    'required': true
+                    'maximum': folders.length
                 },
                 'id': {
                     'type': 'number',
                     'minimum': -1,
-                    'maximum': folders.length,
-                    'required': true
+                    'maximum': folders.length
                 },
                 'name': {
-                    'type': 'string',
-                    'required': true
+                    'type': 'string'
                 }
             }
         }
-    });
+    }, folders);
 
     // Check if validation has failed
-    if (validationResult.errors.length) {
-        throw {code: 211, text: validationResult.errors.toString()};
+    if (!valid) {
+        throw {code: 211, text: 'Invalid scheme'};
     }
 
     if (typeof parent !== 'string') {

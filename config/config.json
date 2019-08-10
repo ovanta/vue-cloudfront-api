@@ -72,9 +72,11 @@
             "settings": {
                 "type": "object",
                 "additionalProperties": false,
+                "required": ["static", "user"],
                 "properties": {
                     "static": {
                         "type": "object",
+                        "required": ["introBoxes"],
                         "properties": {
                             "introBoxes": {
                                 "type": "array",
