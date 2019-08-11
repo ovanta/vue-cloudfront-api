@@ -30,7 +30,6 @@
         "defaultUIDLength": 8,
         "apikeyLength": 32,
         "staticLinkUIDLength": 5,
-        "defaultFolderColor": "#333333",
         "exposedProps": {
             "dirNode": [
                 "id",
@@ -113,7 +112,7 @@
                     "user": {
                         "type": "object",
                         "additionalProperties": false,
-                        "required": ["siPrefix", "hideTooltips", "immediateDeletion", "usePreferredColorScheme", "theme"],
+                        "required": ["siPrefix", "hideTooltips", "immediateDeletion", "usePreferredColorScheme", "theme", "defaultFolderColor"],
                         "properties": {
                             "siPrefix": {
                                 "type": "boolean"
@@ -130,6 +129,10 @@
                             "theme": {
                                 "type": "string",
                                 "enum": ["default", "dark"]
+                            },
+                            "defaultFolderColor": {
+                                "type": "string",
+                                "pattern": "^#([a-fA-F\\d]){6}$"
                             }
                         }
                     }

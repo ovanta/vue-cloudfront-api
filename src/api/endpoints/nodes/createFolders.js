@@ -11,7 +11,7 @@ module.exports = async req => {
 
     // Check if validation has failed
     if (!valid) {
-        throw {code: 211, text: 'Invalid scheme'};
+        throw {code: 211, text: 'Invalid request properties'};
     }
 
     if (typeof parent !== 'string') {
@@ -45,7 +45,7 @@ module.exports = async req => {
                 type: 'dir',
                 name: folder.name || 'Unknown',
                 lastModified: Date.now(),
-                color: _config.mongodb.defaultFolderColor,
+                color: _user.settings.user.defaultFolderColor,
                 marked: false
             }).save().then(node => {
                 return pick(node, exposedDirNodeProps);

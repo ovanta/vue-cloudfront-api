@@ -57,7 +57,7 @@ module.exports = async req => {
                 type: 'dir',
                 name: 'Home',
                 marked: false,
-                color: _config.mongodb.defaultFolderColor
+                color: null
             }).save()
         ]);
 

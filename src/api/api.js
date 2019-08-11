@@ -13,7 +13,7 @@ for (const group of ['nodes', 'user', 'settings']) {
     const groupPath = path.join(progBase, group);
 
     // Resolve modules in this group
-    for (const name of  fs.readdirSync(groupPath)) {
+    for (const name of fs.readdirSync(groupPath)) {
         const loc = `/${path.basename(name, '.js')}`;
         const module = require(path.join(groupPath, name));
 
@@ -51,7 +51,7 @@ function serializeResponseOf(mod) {
         if (!res.headerSent) {
             res.send(response);
         }
-    }
+    };
 }
 
 module.exports = api;

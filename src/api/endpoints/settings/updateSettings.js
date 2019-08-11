@@ -11,7 +11,7 @@ module.exports = async req => {
 
     // Check if validation has failed
     if (!valid) {
-        throw {code: 300, text: 'Invalid settings scheme'};
+        throw {code: 300, text: 'Invalid request properties'};
     }
 
     // Apply, mark as modified and save
