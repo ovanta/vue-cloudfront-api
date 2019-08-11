@@ -1,7 +1,7 @@
 const userModel = require('../../../models/user');
 const Ajv = require('ajv');
-const settingsScheme = _config.validation.schemes.settings;
 
+const settingsScheme = _config.validation.schemes.settings;
 module.exports = async req => {
     const {_user, settings} = req.body;
 

@@ -9,6 +9,7 @@ module.exports = async req => {
     }
 
     // Find all nodes from this user and filter props
+    const exposedDirNodeProps = _config.mongodb.exposedProps.dirNode;
     return nodeModel.findOne({owner: _user.id, id: parent}).exec().then(parent => {
 
         if (!parent) {
@@ -28,7 +29,7 @@ module.exports = async req => {
 
     }).then(node => {
         return {
-            node: pick(node, ['id', 'parent', 'type', 'name', 'lastModified', 'color', 'marked'])
+            node: pick(node, exposedDirNodeProps)
         };
     });
 };

@@ -69,6 +69,27 @@
         "dirname": "^(.){1,100}$",
         "hexcolor": "^#([\\dA-Fa-f]{6})$",
         "schemes": {
+            "foldertree": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["parent", "id", "name"],
+                    "properties": {
+                        "parent": {
+                            "type": "number",
+                            "minimum": -1
+                        },
+                        "id": {
+                            "type": "number",
+                            "minimum": -1
+                        },
+                        "name": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
             "settings": {
                 "type": "object",
                 "additionalProperties": false,
@@ -76,6 +97,7 @@
                 "properties": {
                     "static": {
                         "type": "object",
+                        "additionalProperties": false,
                         "required": ["introBoxes"],
                         "properties": {
                             "introBoxes": {
@@ -90,6 +112,8 @@
                     },
                     "user": {
                         "type": "object",
+                        "additionalProperties": false,
+                        "required": ["siPrefix", "hideTooltips", "immediateDeletion", "usePreferredColorScheme", "theme"],
                         "properties": {
                             "siPrefix": {
                                 "type": "boolean"
