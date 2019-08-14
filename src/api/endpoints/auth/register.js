@@ -45,7 +45,9 @@ module.exports = async req => {
                 apikeys: [{
                     key: apikey,
                     expiry: Date.now() + _config.auth.apikeyExpiry
-                }]
+                }],
+
+                settings: _config.auth.defaultSettings
             }).save(),
 
             // Create entry node

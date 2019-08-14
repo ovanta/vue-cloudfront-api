@@ -60,7 +60,20 @@
         "saltRounds": 10,
         "maxLoginAttempts": 3,
         "blockedLoginDuration": 30000,
-        "disableRegistration": false
+        "disableRegistration": false,
+        "defaultSettings": {
+            "static": {
+                "introBoxes": ["0", "1", "2"]
+            },
+            "user": {
+                "siPrefix": true,
+                "hideTooltips": false,
+                "immediateDeletion": false,
+                "usePreferredColorScheme": false,
+                "defaultFolderColor": "#333333",
+                "theme": "light"
+            }
+        }
     },
     "validation": {
         "username": "^[\\w\\d]{2,15}$",
@@ -128,7 +141,7 @@
                             },
                             "theme": {
                                 "type": "string",
-                                "enum": ["default", "dark"]
+                                "enum": ["light", "dark"]
                             },
                             "defaultFolderColor": {
                                 "type": "string",
